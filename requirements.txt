@@ -21,3 +21,6 @@ Flask-Mailman==1.0.0
 requests
 xhtml2pdf
 locust
+Flask-Admin==1.6.1
+Flask-Login==0.6.2
+poetry==1.7.1
