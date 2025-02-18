@@ -14,14 +14,14 @@
             font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #808080; /* Gray background */
-            transition: margin-left 0.5s; /* Smooth transition when sidenav opens */
+            background-color: #FFFAFF;
+            transition: margin-left 0.5s;
         }
 
         /* Navbar */
         .navbar {
             background-color: #0A2463;
-            color: white;
+            color: #FFFAFF;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -66,7 +66,7 @@
             padding: 8px 8px 8px 32px;
             text-decoration: none;
             font-size: 20px;
-            color: #818181;
+            color: #f1f1f1;
             display: block;
             transition: 0.3s;
         }
@@ -85,7 +85,7 @@
         }
 
         #main-content {
-            margin-top: 80px; /* Push content below fixed navbar */
+            margin-top: 80px;
             transition: margin-left 0.5s;
             padding: 16px;
         }
@@ -93,7 +93,7 @@
         /* Profile Section */
         .profile-container {
             text-align: center;
-            background-color: #9FB1BC;
+            background-color: #FFFAFF;
             padding: 30px;
             border-radius: 10px;
             width: 60%;
@@ -130,29 +130,24 @@
 
         /* Reviews Section */
         .reviews-container {
-            width: 80%;
+            width: 50%;
             margin: 20px auto;
         }
 
         h3 {
-            color: white;
+            color: black;
             font-size: 24px;
+            margin-bottom: 15px;
         }
 
-        /* Review Cards Grid */
-        .reviews-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 20px;
-        }
-
-        /* Individual Review Card */
+        /* Reviews should be stacked (like mobile) */
         .review-card {
-            background-color: #6E8898;
+            background-color: #3E92CC;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
             color: white;
+            margin-bottom: 20px;
         }
 
         /* Review Header */
@@ -237,31 +232,52 @@
             <button class="review-btn">Create Review</button>
             <p class="faculty">Faculty: Science and Technology</p>
         </div>
+        <br><hr>
 
         <!-- Reviews Section -->
         <div class="reviews-container">
             <h3>Your Reviews:</h3>
-            <div class="reviews-grid">
-                <div class="review-card">
-                    <div class="review-header">
-                        <img src="profile-pic.jpg" alt="User" class="review-avatar">
-                        <div class="review-details">
-                            <strong>Andre Benjamin (81xxxxxxx)</strong>
-                            <p>Posted by Kris</p>
-                        </div>
-                        <i class="fas fa-external-link-alt"></i>
+
+            <div class="review-card">
+                <div class="review-header">
+                    <img src="profile-pic.jpg" alt="User" class="review-avatar">
+                    <div class="review-details">
+                        <strong>Andre Benjamin (81xxxxxxx)</strong>
+                        <p>Posted by Kris</p>
                     </div>
-                    <div class="review-content">
-                        <h4>Student is Rude</h4>
-                        <p>Andre used to be a good kid but now he only plays Assetto Corsa every day...</p>
-                    </div>
-                    <div class="review-footer">
-                        <div class="likes"><i class="fas fa-thumbs-up"></i> 1.1K</div>
-                        <div class="comments"><i class="fas fa-comment"></i> 24K</div>
-                        <button class="expand-btn">Expand</button>
-                    </div>
+                    <i class="fas fa-external-link-alt"></i>
+                </div>
+                <div class="review-content">
+                    <h4>Student is Rude</h4>
+                    <p>Andre used to be a good kid but now he only plays Assetto Corsa every day...</p>
+                </div>
+                <div class="review-footer">
+                    <div class="likes"><i class="fas fa-thumbs-up"></i> 1.1K</div>
+                    <div class="comments"><i class="fas fa-comment"></i> 24K</div>
+                    <button class="expand-btn">Expand</button>
                 </div>
             </div>
+
+            <div class="review-card">
+                <div class="review-header">
+                    <img src="profile-pic.jpg" alt="User" class="review-avatar">
+                    <div class="review-details">
+                        <strong>Andre Benjamin (81xxxxxxx)</strong>
+                        <p>Posted by Kris</p>
+                    </div>
+                    <i class="fas fa-external-link-alt"></i>
+                </div>
+                <div class="review-content">
+                    <h4>Student is Rude</h4>
+                    <p>Andre used to be a good kid but now he only plays Assetto Corsa every day...</p>
+                </div>
+                <div class="review-footer">
+                    <div class="likes"><i class="fas fa-thumbs-up"></i> 1.1K</div>
+                    <div class="comments"><i class="fas fa-comment"></i> 24K</div>
+                    <button class="expand-btn">Expand</button>
+                </div>
+            </div>
+
         </div>
     </div>
 
