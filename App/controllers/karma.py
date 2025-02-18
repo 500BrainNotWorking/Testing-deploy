@@ -23,11 +23,6 @@ def get_karma_student(student):
 
 def create_karma(studentID):
   newKarma = Karma(points=0.0,
-                   academicPoints=0.0,
-                   accomplishmentPoints=0.0,
-                   reviewsPoints=0.0,
-                   incidentPoints=0.0,
-                   rank=-99,
                    studentID=studentID)
   db.session.add(newKarma)
   try:
