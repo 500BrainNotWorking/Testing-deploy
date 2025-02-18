@@ -7,223 +7,276 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-</head>
-<style>
+
+    <style>
         /* General Styling */
-    body {
-        font-family: 'Roboto', sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #808080; /* Gray background */
-    }
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #808080; /* Gray background */
+            transition: margin-left 0.5s; /* Smooth transition when sidenav opens */
+        }
 
-    /* Navbar */
-    .navbar {
-        background-color: #0A2463;
-        color: white;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 15px 20px;
-    }
+        /* Navbar */
+        .navbar {
+            background-color: #0A2463;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
 
-    .menu-icon {
-        font-size: 24px;
-        cursor: pointer;
-    }
+        .menu-icon {
+            font-size: 24px;
+            cursor: pointer;
+        }
 
-    .navbar-title {
-        font-size: 22px;
-        font-weight: bold;
-    }
+        .navbar-title {
+            font-size: 22px;
+            font-weight: bold;
+        }
 
-    .profile-pic img {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-    }
+        .profile-pic img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
 
-    /* Profile Section */
-    .profile-container {
-        text-align: center;
-        background-color: #9FB1BC;
-        padding: 30px;
-        border-radius: 10px;
-        width: 60%;
-        margin: 30px auto;
-    }
+        /* Sidenav Styles */
+        .sidenav {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1001;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
 
-    .profile-image {
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
-    }
+        .sidenav a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 20px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
 
-    .logout-btn {
-        display: block;
-        margin-top: 10px;
-        color: red;
-        text-decoration: none;
-        font-weight: bold;
-    }
+        .sidenav a:hover {
+            color: #f1f1f1;
+        }
 
-    .review-btn {
-        background-color: #808080;
-        border: none;
-        padding: 10px 15px;
-        margin-top: 10px;
-        cursor: pointer;
-        border-radius: 5px;
-    }
+        .sidenav .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+            cursor: pointer;
+        }
 
-    .faculty {
-        font-style: italic;
-        margin-top: 10px;
-    }
+        #main-content {
+            margin-top: 80px; /* Push content below fixed navbar */
+            transition: margin-left 0.5s;
+            padding: 16px;
+        }
 
-    /* Reviews Section */
-    .reviews-container {
-        width: 80%;
-        margin: 20px auto;
-    }
+        /* Profile Section */
+        .profile-container {
+            text-align: center;
+            background-color: #9FB1BC;
+            padding: 30px;
+            border-radius: 10px;
+            width: 60%;
+            margin: 30px auto;
+        }
 
-    h3 {
-        color: white;
-        font-size: 24px;
-    }
+        .profile-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+        }
 
-    /* Review Cards Grid */
-    .reviews-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-        gap: 20px;
-    }
+        .logout-btn {
+            display: block;
+            margin-top: 10px;
+            color: red;
+            text-decoration: none;
+            font-weight: bold;
+        }
 
-    /* Individual Review Card */
-    .review-card {
-        background-color: #6E8898;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-        color: white;
-    }
+        .review-btn {
+            background-color: #808080;
+            border: none;
+            padding: 10px 15px;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
 
-    /* Review Header */
-    .review-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
+        .faculty {
+            font-style: italic;
+            margin-top: 10px;
+        }
 
-    .review-avatar {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        margin-right: 10px;
-    }
+        /* Reviews Section */
+        .reviews-container {
+            width: 80%;
+            margin: 20px auto;
+        }
 
-    .review-details {
-        flex-grow: 1;
-    }
+        h3 {
+            color: white;
+            font-size: 24px;
+        }
 
-    .review-details p {
-        margin: 2px 0;
-        font-size: 14px;
-    }
+        /* Review Cards Grid */
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+        }
 
-    /* Review Content */
-    .review-content h4 {
-        margin: 10px 0 5px;
-    }
+        /* Individual Review Card */
+        .review-card {
+            background-color: #6E8898;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+            color: white;
+        }
 
-    .review-footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 10px;
-    }
+        /* Review Header */
+        .review-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
 
-    .likes, .comments {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-    }
+        .review-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
 
-    .expand-btn {
-        background-color: transparent;
-        border: 1px solid white;
-        color: white;
-        padding: 5px 10px;
-        cursor: pointer;
-        border-radius: 5px;
-    }
+        .review-details {
+            flex-grow: 1;
+        }
 
-</style>
+        .review-details p {
+            margin: 2px 0;
+            font-size: 14px;
+        }
+
+        /* Review Content */
+        .review-content h4 {
+            margin: 10px 0 5px;
+        }
+
+        .review-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .likes, .comments {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .expand-btn {
+            background-color: transparent;
+            border: 1px solid white;
+            color: white;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+    </style>
+</head>
 <body>
+
+    <!-- Sidenav -->
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="#">Home</a>
+        <a href="#">Profile</a>
+        <a href="#">Settings</a>
+        <a href="#">Logout</a>
+    </div>
 
     <!-- Navbar -->
     <nav class="navbar">
-        <div class="menu-icon"><i class="fas fa-ellipsis-v"></i></div>
+        <div class="menu-icon" onclick="openNav()"><i class="fas fa-ellipsis-v"></i></div>
         <div class="navbar-title">Student Conduct Tracker</div>
         <div class="profile-pic">
             <img src="profile-pic.jpg" alt="Profile">
         </div>
     </nav>
 
-    <!-- Profile Section -->
-    <div class="profile-container">
-        <img src="profile-pic.jpg" alt="User Profile" class="profile-image">
-        <h2>Kris Smith</h2>
-        <a href="#" class="logout-btn">Logout</a>
-        <button class="review-btn">Create Review</button>
-        <p class="faculty">Faculty: Science and Technology</p>
-    </div>
+    <!-- Main Content -->
+    <div id="main-content">
+        <!-- Profile Section -->
+        <div class="profile-container">
+            <img src="profile-pic.jpg" alt="User Profile" class="profile-image">
+            <h2>Kris Smith</h2>
+            <a href="#" class="logout-btn">Logout</a>
+            <button class="review-btn">Create Review</button>
+            <p class="faculty">Faculty: Science and Technology</p>
+        </div>
 
-    <!-- Reviews Section -->
-    <div class="reviews-container">
-        <h3>Your Reviews:</h3>
-        <div class="reviews-grid">
-            <div class="review-card">
-                <div class="review-header">
-                    <img src="profile-pic.jpg" alt="User" class="review-avatar">
-                    <div class="review-details">
-                        <strong>Andre Benjamin (81xxxxxxx)</strong>
-                        <p>Posted by Kris</p>
+        <!-- Reviews Section -->
+        <div class="reviews-container">
+            <h3>Your Reviews:</h3>
+            <div class="reviews-grid">
+                <div class="review-card">
+                    <div class="review-header">
+                        <img src="profile-pic.jpg" alt="User" class="review-avatar">
+                        <div class="review-details">
+                            <strong>Andre Benjamin (81xxxxxxx)</strong>
+                            <p>Posted by Kris</p>
+                        </div>
+                        <i class="fas fa-external-link-alt"></i>
                     </div>
-                    <i class="fas fa-external-link-alt"></i>
-                </div>
-                <div class="review-content">
-                    <h4>Student is Rude</h4>
-                    <p>Andre used to be a good kid but now he only plays Assetto Corsa every day...</p>
-                </div>
-                <div class="review-footer">
-                    <div class="likes"><i class="fas fa-thumbs-up"></i> 1.1K</div>
-                    <div class="comments"><i class="fas fa-comment"></i> 24K</div>
-                    <button class="expand-btn">Expand</button>
-                </div>
-            </div>
-
-            <div class="review-card">
-                <div class="review-header">
-                    <img src="profile-pic.jpg" alt="User" class="review-avatar">
-                    <div class="review-details">
-                        <strong>Andre Benjamin (81xxxxxxx)</strong>
-                        <p>Posted by Kris</p>
+                    <div class="review-content">
+                        <h4>Student is Rude</h4>
+                        <p>Andre used to be a good kid but now he only plays Assetto Corsa every day...</p>
                     </div>
-                    <i class="fas fa-external-link-alt"></i>
-                </div>
-                <div class="review-content">
-                    <h4>Student is Rude</h4>
-                    <p>Andre used to be a good kid but now he only plays Assetto Corsa every day...</p>
-                </div>
-                <div class="review-footer">
-                    <div class="likes"><i class="fas fa-thumbs-up"></i> 1.1K</div>
-                    <div class="comments"><i class="fas fa-comment"></i> 24K</div>
-                    <button class="expand-btn">Expand</button>
+                    <div class="review-footer">
+                        <div class="likes"><i class="fas fa-thumbs-up"></i> 1.1K</div>
+                        <div class="comments"><i class="fas fa-comment"></i> 24K</div>
+                        <button class="expand-btn">Expand</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- JavaScript -->
+    <script>
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "250px";
+            document.getElementById("main-content").style.marginLeft = "250px";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+            document.getElementById("main-content").style.marginLeft = "0";
+        }
+    </script>
 
 </body>
 </html>
