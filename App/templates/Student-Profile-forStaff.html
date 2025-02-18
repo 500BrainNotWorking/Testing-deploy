@@ -14,13 +14,13 @@
             font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #FFFAFF;
+            background-color: #7C90A0;
             transition: margin-left 0.5s;
         }
 
         /* Navbar */
         .navbar {
-            background-color: #0A2463;
+            background-color: #25283D;
             color: #FFFAFF;
             display: flex;
             justify-content: space-between;
@@ -92,12 +92,23 @@
 
         /* Profile Section */
         .profile-container {
+            color: black;
             text-align: center;
             background-color: #FFFAFF;
             padding: 30px;
             border-radius: 10px;
             width: 60%;
-            margin: 30px auto;
+            margin: 5px auto;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-description {
+            text-align: left;
+            background-color: #FFFAFF;
+            padding: 0px;
+            border-radius: 10px;
+            width: 100%;
+            margin-top: 30px;
         }
 
         .profile-image {
@@ -115,12 +126,13 @@
         }
 
         .review-btn {
-            background-color: #808080;
+            background-color: #355834;
             border: none;
             padding: 10px 15px;
             margin-top: 10px;
             cursor: pointer;
             border-radius: 5px;
+            color: white;
         }
 
         .faculty {
@@ -135,18 +147,18 @@
         }
 
         h3 {
-            color: black;
+            color: white;
             font-size: 24px;
             margin-bottom: 15px;
         }
 
         /* Reviews should be stacked (like mobile) */
         .review-card {
-            background-color: #3E92CC;
+            background-color: #FFFAFF;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-            color: white;
+            color: black;
             margin-bottom: 20px;
         }
 
@@ -200,6 +212,11 @@
             border-radius: 5px;
         }
 
+        /* Hide scrollbar for Webkit browsers */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
     </style>
 </head>
 <body>
@@ -208,9 +225,9 @@
     <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
         <a href="#">Home</a>
-        <a href="#">Profile</a>
-        <a href="#">Settings</a>
-        <a href="#">Logout</a>
+        <a href="#">Students</a>
+        <a href="#">Staff</a>
+        <a href="#">Create Review</a>
     </div>
 
     <!-- Navbar -->
@@ -218,7 +235,7 @@
         <div class="menu-icon" onclick="openNav()"><i class="fas fa-ellipsis-v"></i></div>
         <div class="navbar-title">Student Conduct Tracker</div>
         <div class="profile-pic">
-            <img src="profile-pic.jpg" alt="Profile">
+            <img src="https://i.ibb.co/KS9VcFr/profile-pic.jpg" alt="Profile">
         </div>
     </nav>
 
@@ -226,21 +243,27 @@
     <div id="main-content">
         <!-- Profile Section -->
         <div class="profile-container">
-            <img src="profile-pic.jpg" alt="User Profile" class="profile-image">
-            <h2>Kris Smith</h2>
-            <a href="#" class="logout-btn">Logout</a>
-            <button class="review-btn">Create Review</button>
-            <p class="faculty">Faculty: Science and Technology</p>
+            <img src="https://th.bing.com/th/id/OIP.ddo_V6IbnSEbnhL7HaPuJAHaHb?rs=1&pid=ImgDetMain" alt="User Profile" class="profile-image">
+            <h2>Andre Benjamin</h2>
+            <h4 style="color: #111;">Karma: 186</h4>
+            <!-- <a href="#" class="logout-btn">Logout</a> -->
+            <button class="review-btn">Review</button> 
+            <div class="profile-description">
+                <p class="faculty">Faculty: Science and Technology</p>
+                <p class="faculty">Degree: BSc. Computer Science (Special)</p>
+                <p class="faculty">Email: andre.benjamin@my.uwi.edu</p>
+            </div>
+
         </div>
         <br><hr>
 
         <!-- Reviews Section -->
         <div class="reviews-container">
-            <h3>Your Reviews:</h3>
+            <h3>Andre's Reviews:</h3>
 
             <div class="review-card">
                 <div class="review-header">
-                    <img src="profile-pic.jpg" alt="User" class="review-avatar">
+                    <img src="https://i.ibb.co/KS9VcFr/profile-pic.jpg" alt="User" class="review-avatar">
                     <div class="review-details">
                         <strong>Andre Benjamin (81xxxxxxx)</strong>
                         <p>Posted by Kris</p>
@@ -260,7 +283,7 @@
 
             <div class="review-card">
                 <div class="review-header">
-                    <img src="profile-pic.jpg" alt="User" class="review-avatar">
+                    <img src="https://i.ibb.co/KS9VcFr/profile-pic.jpg" alt="User" class="review-avatar">
                     <div class="review-details">
                         <strong>Andre Benjamin (81xxxxxxx)</strong>
                         <p>Posted by Kris</p>
