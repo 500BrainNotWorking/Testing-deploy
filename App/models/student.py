@@ -24,9 +24,7 @@ class Student(User, StudentInterface):
   grades = db.relationship('Grades', backref='studentGrades', lazy='joined')
   transcripts = db.relationship('Transcript', backref='student', lazy='joined')
   badges = db.relationship('Badges', backref='studentbadge', lazy='joined')
-
-  
-  karmaID = db.Column(db.Integer, db.ForeignKey('karma.karmaID'))
+  karma_history = db.relationship('Karma')
 
   __mapper_args__ = {"polymorphic_identity": "student"}
 
@@ -87,10 +85,7 @@ class Student(User, StudentInterface):
         "grades": [grade.to_json() for grade in self.grades],
         "transcripts":
         [transcript.to_json() for transcript in self.transcripts],
-        "karmaScore":
-        karma.points if karma else None,
-        "karmaRank":
-        karma.rank if karma else None,
+        "karma_history" : [karma.to_json() for karma in self.karma_history]
     }
 
   def get_karma(self):

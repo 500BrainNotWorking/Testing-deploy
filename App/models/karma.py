@@ -48,3 +48,6 @@ class Karma(db.Model):
         "score": self.points,
         "timestamp": self.timestamp
     }
+  
+  def __repr__(self):
+    return f"Student ID: {self.studentID} Points: {self.points} Timestamp: {self.timestamp}"
