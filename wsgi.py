@@ -594,3 +594,18 @@ def manage_accomplishment(UniId, action, description, topic, staff, points, stat
     else:
         print(f"Student with UniId {UniId} not found.")
         
+
+@app.cli.command("create_karma")
+@click.argument("student_id")
+@click.argument("points")
+def new_karma(student_id, points):
+   karma = Karma(points, student_id)
+   db.session.add(karma)
+   db.session.commit()
+
+@app.cli.command("karma_history")
+@click.argument("student_id")
+def view_karma_history(student_id):
+   student = get_student_by_id(student_id)
+   if (student):
+      print (student.karma_history)

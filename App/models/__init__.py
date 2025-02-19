@@ -6,7 +6,6 @@ from .review import *
 from .recommendation import *
 from .accomplishment import *
 from .karma import *
-from .karmaInterface import *
 from .incidentReport import *
 from .grades import *
 from .transcript import *
