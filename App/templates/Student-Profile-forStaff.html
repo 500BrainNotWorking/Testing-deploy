@@ -8,6 +8,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
     <style>
         /* General Styling */
@@ -361,6 +362,15 @@
             pointer-events: auto;
         }
 
+        /*For star rating */
+        .stars {
+            font-size: 24px;
+            color: gold;
+        }
+        .empty {
+            color: lightgray;
+        }
+
     </style>
 </head>
 <body>
@@ -417,9 +427,9 @@
             <button class="review-btn">Review</button> 
             <div class="profile-description">
                 <p class="faculty">ID Number: {{student.UniId}}</p>
-                <p class="faculty">Faculty: Science and Technology</p>   <!--TO CHANGE-->
+                <p class="faculty">Faculty: {{student.faculty}}</p>   <!--TO CHANGE-->
                 <p class="faculty">Degree: {{student.degree}}</p>
-                <p class="faculty">Email: andre.benjamin@my.uwi.edu</p>
+                <p class="faculty">Email: {{student.email}}</p>
             </div>
 
         </div>
@@ -429,20 +439,35 @@
         <div class="reviews-container">
             <h3>{{student.fullname}}'s Reviews:</h3>
 
-           <!--{%for review in student.getReviews()%}--> 
+            {% for review in reviews %}
 
             <div class="review-card">
                 <div class="review-header">
                     <img src="https://i.ibb.co/KS9VcFr/profile-pic.jpg" alt="User" class="review-avatar">
                     <div class="review-details">
-                        <strong>Andre Benjamin (81xxxxxxx)</strong>
-                        <p>Posted by Kris</p>
+                        <strong>{{review.staff_name}}</strong>
+                        <p>Posted on {{review.dateCreated}} </p>
                     </div>
                     <i class="fas fa-external-link-alt"></i>
                 </div>
+                <div class="stars">
+                    {% if review.starRating is not none %}
+                        {% for i in range(review.starRating|int) %}
+                            <i class="fas fa-star"></i>
+                        {% endfor %}
+                        {% for i in range(5 - review.starRating|int) %}
+                            <i class="far fa-star empty"></i>
+                        {% endfor %}
+                    {% else %}
+                        {% for i in range(5) %}
+                            <i class="far fa-star empty"></i>
+                        {% endfor %}  
+                    {% endif %}
+                </div>
+                
                 <div class="review-content">
-                    <h4>Student is Rude</h4>
-                    <p>Andre used to be a good kid but now he only plays Assetto Corsa every day...</p>
+                    <h4>Review for {{student.fullname}} ({{student.UniId}})</h4>
+                    <p>{{review.details}}</p>
                 </div>
                 <div class="review-footer">
                     <div class="likes"><i class="fas fa-thumbs-up"></i> 1.1K</div>
@@ -451,26 +476,11 @@
                 </div>
             </div>
 
-            <div class="review-card">
-                <div class="review-header">
-                    <img src="https://i.ibb.co/KS9VcFr/profile-pic.jpg" alt="User" class="review-avatar">
-                    <div class="review-details">
-                        <strong>Andre Benjamin (81xxxxxxx)</strong>
-                        <p>Posted by Kris</p>
-                    </div>
-                    <i class="fas fa-external-link-alt"></i>
-                </div>
-                <div class="review-content">
-                    <h4>Student is Rude</h4>
-                    <p>Andre used to be a good kid but now he only plays Assetto Corsa every day...</p>
-                </div>
-                <div class="review-footer">
-                    <div class="likes"><i class="fas fa-thumbs-up"></i> 1.1K</div>
-                    <div class="comments"><i class="fas fa-comment"></i> 24K</div>
-                    <button class="expand-btn">Expand</button>
-                </div>
-            </div>
+            {% endfor %}
 
+            {% if reviews|length == 0 %}
+            <h4 style="text-align: center;color: white;margin-top: 30px;">No Reviews</h4>
+            {% endif %}
         </div>
     </div>
 
