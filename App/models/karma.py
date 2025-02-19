@@ -12,34 +12,6 @@ class Karma(db.Model):
   def __init__(self, points, studentID):
     self.points = points
     self.studentID = studentID
-    
-    
-  def calculate_total_points(self):
-    print("Calculating total points using only review points...")
-
-    # Multiplier for review points
-    review_multiplier = 1.0  # Complete weighting of karma depends on reviews, to be altered to include diversity of reviewers
-
-    # Calculation
-    print("Review Points:", self.reviewsPoints) 
-    print("Review Points Multiplier:", review_multiplier, "giving",
-          self.reviewsPoints, "*", review_multiplier, "=", self.reviewsPoints * review_multiplier)
-
-    self.points = round(self.reviewsPoints * review_multiplier, 2)
-
-    # Display the total points calculation
-    print("Total Karma Points:", self.points)
-
-
-  #updates Karma Level
-  def updateKarmaLevel(self, rank):
-    if (self.rank != rank):
-       self.rank = rank
-       db.session.add(self)
-       db.session.commit()       
-       return True
-    else:
-       return False
 
   def to_json(self):
     return {
