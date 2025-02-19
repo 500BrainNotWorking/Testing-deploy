@@ -411,13 +411,14 @@
         <!-- Profile Section -->
         <div class="profile-container">
             <img src="https://th.bing.com/th/id/OIP.ddo_V6IbnSEbnhL7HaPuJAHaHb?rs=1&pid=ImgDetMain" alt="User Profile" class="profile-image">
-            <h2>Andre Benjamin</h2>
-            <h4 style="color: #111;">Karma: 186</h4>
-            <!-- <a href="#" class="logout-btn">Logout</a> -->
+            <h2>{{student.fullname}}</h2>
+            <h4 style="color: #111;">Karma: {{student.get_karma().points}}</h4>   <!--NOTE - CHANGE TO OUR PATTERN-->
+            <!-- <a href="#" class="logout-btn">Logout</a> -->   <!--TO REMOVE: For staff-->
             <button class="review-btn">Review</button> 
             <div class="profile-description">
-                <p class="faculty">Faculty: Science and Technology</p>
-                <p class="faculty">Degree: BSc. Computer Science (Special)</p>
+                <p class="faculty">ID Number: {{student.UniId}}</p>
+                <p class="faculty">Faculty: Science and Technology</p>   <!--TO CHANGE-->
+                <p class="faculty">Degree: {{student.degree}}</p>
                 <p class="faculty">Email: andre.benjamin@my.uwi.edu</p>
             </div>
 
@@ -426,7 +427,9 @@
 
         <!-- Reviews Section -->
         <div class="reviews-container">
-            <h3>Andre's Reviews:</h3>
+            <h3>{{student.fullname}}'s Reviews:</h3>
+
+           <!--{%for review in student.getReviews()%}--> 
 
             <div class="review-card">
                 <div class="review-header">
