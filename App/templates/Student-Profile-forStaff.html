@@ -24,9 +24,9 @@
             background-color: #25283D;
             color: #FFFAFF;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 20px;
+            justify-content: left;
+            align-items: left;
+            padding: 20px;
             position: fixed;
             width: 100%;
             top: 0;
@@ -34,6 +34,7 @@
         }
 
         .menu-icon {
+            padding-right: 20px;
             font-size: 24px;
             cursor: pointer;
         }
@@ -225,9 +226,9 @@
         min-height: 640px;
         }
         .container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
+            position:fixed;
+            top: 4%;
+            left: 96%;                          /* adjusted to have at the right! */
             margin-right: -50%;
             transform: translate(-50%, -50%);
             text-align: center;
@@ -380,11 +381,6 @@
         <!-- Profile Options -->
         <div class="container">
             <div class="more">
-                <!-- <button id="more-btn" class="more-btn">
-                    <span class="more-dot"></span>
-                    <span class="more-dot"></span>
-                    <span class="more-dot"></span>
-                </button> -->
                 <div class="profile-pic more-btn">
                     <img src="https://i.ibb.co/KS9VcFr/profile-pic.jpg" alt="Profile">
                 </div>
@@ -396,19 +392,13 @@
                     </div>
                     <ul class="more-menu-items" tabindex="-1" role="menu" aria-labelledby="more-btn" aria-hidden="true">
                         <li class="more-menu-item" role="presentation">
-                            <button type="button" class="more-menu-btn" role="menuitem">Share</button>
+                            <button type="button" class="more-menu-btn" role="menuitem">Profile</button>
                         </li>
                         <li class="more-menu-item" role="presentation">
-                            <button type="button" class="more-menu-btn" role="menuitem">Copy</button>
+                            <button type="button" class="more-menu-btn" role="menuitem">Settings</button>
                         </li>
                         <li class="more-menu-item" role="presentation">
-                            <button type="button" class="more-menu-btn" role="menuitem">Embed</button>
-                        </li>
-                        <li class="more-menu-item" role="presentation">
-                            <button type="button" class="more-menu-btn" role="menuitem">Block</button>
-                        </li>
-                        <li class="more-menu-item" role="presentation">
-                            <button type="button" class="more-menu-btn" role="menuitem">Report</button>
+                            <button type="button" class="more-menu-btn" role="menuitem">Logout</button>
                         </li>
                     </ul>
                 </div>
