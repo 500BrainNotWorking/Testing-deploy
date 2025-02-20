@@ -35,14 +35,23 @@
         }
 
         .menu-icon {
-            padding-right: 20px;
             font-size: 24px;
             cursor: pointer;
         }
 
+        .logo img {
+            width: 50px;
+            height: 50px;
+            margin-top: 0px;
+            margin-left: 10px;
+        }
+
         .navbar-title {
-            font-size: 22px;
+            padding-left: 15px;
+            padding-top: 10px;
+            font-size: 30px;
             font-weight: bold;
+            font-family: 'Times New Roman', Times, serif;
         }
 
         .profile-pic img {
@@ -224,11 +233,11 @@
         /* Dropdown Menu for Profile */
         .cd__main{
             position: relative;
-        min-height: 640px;
+            min-height: 640px;
         }
         .container {
             position:fixed;
-            top: 4%;
+            top: 6%;                            /* adjust the distance from top */
             left: 96%;                          /* adjusted to have at the right! */
             margin-right: -50%;
             transform: translate(-50%, -50%);
@@ -371,6 +380,53 @@
             color: lightgray;
         }
 
+        /*For hamburger Menu*/
+        .slide{
+            margin-top: 13px;
+        }
+        .burger {
+            position: relative;
+            width: 40px;
+            height: 30px;
+            background: transparent;
+            cursor: pointer;
+            display: block;
+            padding-right: 5px;
+        }
+
+        .burger input {
+            display: none;
+        }
+
+        .burger span {
+            display: block;
+            position: absolute;
+            height: 4px;
+            width: 100%;
+            background: #FFFAFF;
+            border-radius: 9px;
+            opacity: 1;
+            left: 0;
+            transform: rotate(0deg);
+            transition: .25s ease-in-out;
+        }
+
+        .burger span:nth-of-type(1) {
+            top: 0px;
+            transform-origin: left center;
+        }
+
+        .burger span:nth-of-type(2) {
+            top: 50%;
+            transform: translateY(-50%);
+            transform-origin: left center;
+        }
+
+        .burger span:nth-of-type(3) {
+            top: 100%;
+            transform-origin: left center;
+            transform: translateY(-100%);
+        }
     </style>
 </head>
 <body>
@@ -386,7 +442,18 @@
 
     <!-- Navbar -->
     <nav class="navbar">
-        <div class="menu-icon" onclick="openNav()"><i class="fas fa-ellipsis-v"></i></div>
+        <!-- From Uiverse.io by Cevorob --> 
+        <div class="slide">
+            <label class="burger" onclick="openNav()" for="burger">
+                <input type="checkbox" id="burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+        </div>
+        <div class="logo">
+            <img src="/static/logo.png" alt="Profile">
+        </div>
         <div class="navbar-title">Student Conduct Tracker</div>
         <!-- Profile Options -->
         <div class="container">
