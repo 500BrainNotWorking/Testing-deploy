@@ -13,3 +13,4 @@ from .schoolRecommendation import *
 from .jobRecommendation import *
 from .badges import *
 from .reply import *
+from .comment import *

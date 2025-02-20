@@ -14,6 +14,8 @@ class Review(db.Model):
   details = db.Column(db.String(400), nullable=False)
   studentSeen = db.Column(db.Boolean, nullable=False, default=False)
 
+  comments = db.relationship('Comment', backref='review', lazy=True)
+
   def __init__(self, staff, student, isPositive, starRating, details, studentSeen):
     self.createdByStaffID = staff.ID
     # self.student= student
