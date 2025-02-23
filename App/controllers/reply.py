@@ -3,8 +3,28 @@ from App.models import Comment
 from App.database import db
 
 
-def get_all_repliess():
+def get_all_replies():
     return Reply.query.all()
+
+def get_parent_reply(reply_id):
+    reply = get_reply(reply_id)
+
+    if reply and reply.parentReplyID is not None:
+        parent_reply = get_reply(reply.parentReplyID)
+        return parent_reply
+    else:
+        return None
+
+
+#Use this function to get the very first reply in a thread of replies.
+def get_root_parent_reply(reply_id):
+    reply = get_reply(reply_id)
+
+    if reply and reply.parentReplyID is not None:
+        parent_reply = get_reply(reply.parentReplyID)
+        return get_root_parent_reply(parent_reply.ID)
+    else:
+        return reply 
 
 def get_reply(id):
     return Reply.query.filter_by(ID=id).first()
