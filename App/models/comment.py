@@ -8,6 +8,8 @@ class Comment(db.Model):
     createdByStaffID = db.Column(db.Integer, db.ForeignKey('staff.ID'), nullable = False)
     dateCreated = db.Column(db.DateTime, default=datetime.utcnow)
     details = db.Column(db.String(400), nullable=False)
+
+    replies = db.relationship('Reply', backref='comment', lazy=True)
     
     def __init__(self, reviewID, staffID, details):
         self.createdByStaffID = staffID

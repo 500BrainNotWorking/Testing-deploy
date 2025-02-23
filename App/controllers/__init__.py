@@ -16,4 +16,5 @@ from .nltk import *
 from .schoolRecommendation import *
 from .jobRecommendation import *
 from .badges import *
+from .comment import *
 

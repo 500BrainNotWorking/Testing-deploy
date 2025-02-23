@@ -6,7 +6,7 @@ from flask.cli import with_appcontext, AppGroup
 
 from App.database import db, get_migrate
 from App.main import create_app
-from App.models import Student, Karma, Badges, Accomplishment
+from App.models import Student, Karma, Badges, Accomplishment, Comment
 from App.controllers import (
     create_student, create_staff, create_admin, get_all_users_json,
     get_all_users, get_transcript, get_student_by_UniId, setup_nltk,
@@ -15,7 +15,7 @@ from App.controllers import (
     create_accomplishment, get_staff_by_id, get_student_by_id,
     create_job_recommendation, create_karma, get_karma, create_badge, 
     calculate_review_points, calculate_accomplishment_points, calculate_incident_points,calculate_academic_points, calculate_ranks, update_total_points,
-    get_accomplishments_by_studentID, get_staff_by_name)
+    get_accomplishments_by_studentID, get_staff_by_name, create_comment)
 
 # This commands file allow you to create convenient CLI commands for testing controllers
 
@@ -122,7 +122,7 @@ def initialize():
 
   staff = get_staff_by_id(7)
   student1 = get_student_by_UniId(816031609)
-  create_review(staff, student1, 5, "Behaves very well in class!")
+  review1 = create_review(staff, student1, 5, "Behaves very well in class!")
   create_review(staff, student1, 2, "Late to class")
   create_review(staff, student1, 5, "Good CW grades")
   create_review(staff, student1, 3, "Okay Final grades")
