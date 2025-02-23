@@ -33,3 +33,14 @@ def delete_comment(comment_id):
         db.session.commit()
     else:
         return None
+
+def edit_comment(details, comment_id):
+    
+    existing_comment = get_comment(comment_id)
+    if existing_comment:
+        
+        existing_comment.details = details
+        db.session.add(existing_comment)
+        db.session.commit()
+    else:
+        return None
