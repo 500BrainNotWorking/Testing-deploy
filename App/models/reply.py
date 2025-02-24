@@ -1,3 +1,6 @@
+from App.database import db
+from datetime import datetime
+
 class Reply(db.Model):
     __tablename__ = 'reply'
 
