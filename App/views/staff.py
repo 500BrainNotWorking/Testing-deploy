@@ -129,6 +129,20 @@ def edit_reply(reply_id):
 
   return render_template('',current_user=current_user)# Put the appropriate template here, and current_user if needed.
 
+@staff_views.route('/deleteReply/<int:reply_id>', methods=['GET'])
+@login_required
+def delete_reply(reply_id):
+  reply = get_reply(reply_id)
+  #user = User.query.filter_by(ID=current_user.ID).first()
+
+  staff_id = current_user.get_id()
+  staff = get_staff_by_id(staff_id) 
+
+  delete_reply(reply_id=reply_id, staff_id=staff_id)
+
+  return render_template('',current_user=current_user)# Put the appropriate template here, and current_user if needed.
+
+
 @staff_views.route('/createComment', methods=['POST'])
 @login_required
 def createComment():
