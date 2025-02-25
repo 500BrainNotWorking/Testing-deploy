@@ -464,4 +464,12 @@ def staff_profile():
     # Fetch reviews written by this staff member
     reviews = Review.query.filter_by(createdByStaffID=staff_id).all()
 
-    return render_template('StaffProfile.html', staff=staff, reviews=reviews)
+    # Create a list of student names corresponding to each review
+    student_names = []
+    for review in reviews:
+        student = get_student_by_id(review.studentID)
+        student_names.append(student.fullname if student else "Unknown Student")
+
+    return render_template('StaffProfile.html', staff=staff, reviews=reviews, student_names=student_names)
+
+
