@@ -17,7 +17,7 @@ from App.controllers import (
     calculate_academic_points, calculate_accomplishment_points,
     calculate_review_points, get_all_verified, 
     get_reviews, get_review, 
-    create_comment, get_comment,
+    create_comment, get_comment, get_comment_staff
     get_reply, create_reply)            #added get_reviews
 
 staff_views = Blueprint('staff_views',
@@ -114,6 +114,23 @@ def view_all_comments(review_id):
   comments = get_all_comments()
 
   return render_template('', comments=comments, review=review)# Put the appropriate template here, and current_user if needed.
+
+@staff_views.route('/editComment/<int:comment_id>', methods=['GET'])
+@login_required
+def edit_comment(comment_id):
+  comment = get_comment(comment_id)
+  #user = User.query.filter_by(ID=current_user.ID).first()
+
+  staff_id = current_user.get_id()
+  staff = get_staff_by_id(staff_id) 
+
+  data = request.form #Depening on how the create comment form is made/designed this si subject to change, along with attribute names.
+
+  details = data['selected-details']
+
+  edit_comment(details=details, comment_id=comment_id, staff_id=staff_id):
+
+  return render_template('',current_user=current_user)# Put the appropriate template here, and current_user if needed.
   
 @staff_views.route('/createReview', methods=['POST'])
 @login_required
