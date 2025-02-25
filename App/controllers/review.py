@@ -89,6 +89,10 @@ def get_total_negative_review_starRating(studentID):
     total_negative = sum(review.starRating for review in reviews)
     return total_negative
 
+def get_reviews(studentID):
+  reviews = Review.query.filter_by(studentID=studentID).all()                   #added this function for staff views (by A.M.)
+  return reviews
+
 def get_review(id):
   review = Review.query.filter_by(ID=id).first()
   if review:

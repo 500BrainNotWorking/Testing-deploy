@@ -15,7 +15,7 @@ from App.controllers import (
     analyze_sentiment, get_requested_accomplishments_count,
     get_recommendations_staff_count, calculate_ranks, update_total_points,
     calculate_academic_points, calculate_accomplishment_points,
-    calculate_review_points, get_all_verified)
+    calculate_review_points, get_all_verified, get_reviews)            #added get_reviews
 
 staff_views = Blueprint('staff_views',
                         __name__,
@@ -317,40 +317,79 @@ def view_all_student_achievements(uniID):
   return render_template('AllStudentAchivements.html', student=student,user=user)
 
 
+# @staff_views.route('/getStudentProfile/<string:uniID>', methods=['GET'])
+# @login_required
+# def getStudentProfile(uniID):
+#   student = Student.query.filter_by(UniId=uniID).first()
+
+#   if student is None:
+#     student = Student.query.filter_by(ID=uniID).first()
+
+#   user = User.query.filter_by(ID=student.ID).first()
+#   karma = get_karma(student.ID)
+
+#   if karma:
+
+#     calculate_academic_points(student.ID)
+#     calculate_accomplishment_points(student.ID)
+#     calculate_review_points(student.ID)
+#     #Points: academic (0.4),accomplishment (0,3 shared)
+#     #missing points: incident , reivew
+#     #calculate the accomplishment - incident for 0.3 shared
+#     #assign review based on 1 time reivew max 5pts for 0.3
+#     update_total_points(karma.karmaID)
+#     #updaing ranks
+#     calculate_ranks()
+#     student.update(karma.rank) #202412 student updates karma rank
+#     karma.notify()
+#   transcripts = get_transcript(student.UniId)
+#   numAs = get_total_As(student.UniId)
+#   reviews = get_reviews(student.ID)
+
+#   return render_template('Student-Profile-forStaff.html',
+#                          student=student,
+#                          user=user,
+#                          transcripts=transcripts,
+#                          numAs=numAs,
+#                          karma=karma,
+#                          reviews = reviews)
+
 @staff_views.route('/getStudentProfile/<string:uniID>', methods=['GET'])
 @login_required
 def getStudentProfile(uniID):
-  student = Student.query.filter_by(UniId=uniID).first()
+    student = Student.query.filter_by(UniId=uniID).first()
 
-  if student is None:
-    student = Student.query.filter_by(ID=uniID).first()
+    if student is None:
+        student = Student.query.filter_by(ID=uniID).first()
 
-  user = User.query.filter_by(ID=student.ID).first()
-  karma = get_karma(student.ID)
+    user = User.query.filter_by(ID=student.ID).first()
+    karma = get_karma(student.ID)
 
-  if karma:
+    if karma:
+        calculate_academic_points(student.ID)
+        calculate_accomplishment_points(student.ID)
+        calculate_review_points(student.ID)
+        update_total_points(karma.karmaID)
+        calculate_ranks()
+        student.update(karma.rank)
+        karma.notify()
 
-    calculate_academic_points(student.ID)
-    calculate_accomplishment_points(student.ID)
-    calculate_review_points(student.ID)
-    #Points: academic (0.4),accomplishment (0,3 shared)
-    #missing points: incident , reivew
-    #calculate the accomplishment - incident for 0.3 shared
-    #assign review based on 1 time reivew max 5pts for 0.3
-    update_total_points(karma.karmaID)
-    #updaing ranks
-    calculate_ranks()
-    student.update(karma.rank) #202412 student updates karma rank
-    karma.notify()
-  transcripts = get_transcript(student.UniId)
-  numAs = get_total_As(student.UniId)
+    transcripts = get_transcript(student.UniId)
+    numAs = get_total_As(student.UniId)
+    reviews = get_reviews(student.ID)
 
-  return render_template('Student-Profile-forStaff.html',
-                         student=student,
-                         user=user,
-                         transcripts=transcripts,
-                         numAs=numAs,
-                         karma=karma)
+    # Attach staff name dynamically
+    for review in reviews:
+        staff = get_staff_by_id(review.createdByStaffID)  # Get Staff object
+        review.staff_name = staff.firstname + " " + staff.lastname if staff else "Unknown Staff"  # Attach fullname
+
+    return render_template('Student-Profile-forStaff.html',
+                           student=student,
+                           user=user,
+                           transcripts=transcripts,
+                           numAs=numAs,
+                           karma=karma,
+                           reviews=reviews)
 
 
 @staff_views.route('/allRecommendationRequests', methods=['GET'])

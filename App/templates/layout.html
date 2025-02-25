@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+
+    <style>
+      body{
+        background-color: white;
+      }
+      /* Sidenav Styles */
+      .sidenav {
+        width: 250px;
+        height: 100vh; /* Full viewport height */
+        background-color: #0A2463;
+        color: white;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1000; /* Ensure it's above other elements */
+        transform: translateX(-100%); /* Hide by default */
+        transition: transform 0.3s ease-in-out;
+      }
+
+      .sidenav a {
+        color: white;
+        display: block;
+        padding: 15px;
+        text-decoration: none;
+      }
+
+      .sidenav a:hover {
+        background-color: #1e3a8a;
+      }
+
+      /* Show sidenav when open */
+      .sidenav.open {
+        transform: translateX(0);
+      }
+
+      /* Sidenav Trigger (Menu Icon) */
+      .sidenav-trigger {
+        color: white;
+        font-size: 30px;
+        cursor: pointer;
+        padding-left: 15px;
+      }
+
+      /* Overlay for when sidenav is open */
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        display: none;
+      }
+
+      .overlay.active {
+        display: block;
+      }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar with Sidenav Trigger -->
+    <nav style="background-color: #0A2463;">
+      <div class="nav-wrapper">
+        
+        <a style="font-family: copperplate; padding-left: 30px;" href="/" class="brand-logo left">
+          {% block page %}{% endblock %}
+        </a>
+      </div>
+    </nav>
+
+    <!-- Sidenav (Fully Outside Navbar) -->
+    <div id="sidenav" class="sidenav">
+      <a href="#" id="sidenav-close"><i class="material-icons">close</i></a>
+      <a href="/"><i class="material-icons">home</i> Home</a>
+      <a href="/profile"><i class="material-icons">account_circle</i> Profile</a>
+      <a href="/settings"><i class="material-icons">settings</i> Settings</a>
+      <a href="/logout"><i class="material-icons">exit_to_app</i> Logout</a>
+    </div>
+
+    <!-- Overlay (Click to Close Sidenav) -->
+     <!-- Sidenav Trigger (☰ icon inside navbar) -->
+     <a id="sidenav-trigger" class="sidenav-trigger">
+      <i class="material-icons">menu</i>
+    </a>
+    <div id="overlay" class="overlay"></div>
+
+    <div class="login-container">
+      {% block content %}{% endblock %}
+    </div>
+    
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const sidenav = document.getElementById('sidenav');
+        const overlay = document.getElementById('overlay');
+        const openBtn = document.getElementById('sidenav-trigger');
+        const closeBtn = document.getElementById('sidenav-close');
+
+        function openSidenav() {
+          sidenav.classList.add('open');
+          overlay.classList.add('active');
+        }
+
+        function closeSidenav() {
+          sidenav.classList.remove('open');
+          overlay.classList.remove('active');
+        }
+
+        openBtn.addEventListener('click', openSidenav);
+        closeBtn.addEventListener('click', closeSidenav);
+        overlay.addEventListener('click', closeSidenav);
+      });
+    </script>
+
+</body>
+</html>

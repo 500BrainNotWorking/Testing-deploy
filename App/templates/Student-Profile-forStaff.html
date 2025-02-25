@@ -1,599 +1,598 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Lilita+One&family=Titan+One&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Lilita+One&family=Titan+One&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Conduct Tracker - Profile</title>
-  <link rel="icon" href="https://github.com/RichardR963/Info3604_Project/blob/main/images/AV2.png?raw=true" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
     <style>
+        /* General Styling */
         body {
+            font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
-            background: #fff;
+            background-color: #7C90A0;
+            transition: margin-left 0.5s;
         }
 
-        header {
+        /* Navbar */
+        .navbar {
+            background-color: #25283D;
+            color: #FFFAFF;
+            display: flex;
+            justify-content: left;
+            align-items: left;
+            padding: 20px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .menu-icon {
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .logo img {
+            width: 50px;
+            height: 50px;
+            margin-top: 0px;
+            margin-left: 10px;
+        }
+
+        .navbar-title {
+            padding-left: 15px;
+            padding-top: 10px;
+            font-size: 30px;
+            font-weight: bold;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        .profile-pic img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        /* Sidenav Styles */
+        .sidenav {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1001;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+
+        .sidenav a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 20px;
+            color: #f1f1f1;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .sidenav a:hover {
+            color: #f1f1f1;
+        }
+
+        .sidenav .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+            cursor: pointer;
+        }
+
+        #main-content {
+            margin-top: 80px;
+            transition: margin-left 0.5s;
+            padding: 16px;
+        }
+
+        /* Profile Section */
+        .profile-container {
+            color: black;
+            text-align: center;
+            background-color: #FFFAFF;
+            padding: 30px;
+            border-radius: 10px;
+            width: 60%;
+            margin: 5px auto;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-description {
+            text-align: left;
+            background-color: #FFFAFF;
+            padding: 0px;
+            border-radius: 10px;
+            width: 100%;
+            margin-top: 30px;
+        }
+
+        .profile-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+        }
+
+        .logout-btn {
+            display: block;
+            margin-top: 10px;
+            color: red;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .review-btn {
+            background-color: #355834;
+            border: none;
+            padding: 10px 15px;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            color: white;
+        }
+
+        .faculty {
+            font-style: italic;
+            margin-top: 10px;
+        }
+
+        /* Reviews Section */
+        .reviews-container {
+            width: 50%;
+            margin: 20px auto;
+        }
+
+        h3 {
+            color: white;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        /* Reviews should be stacked (like mobile) */
+        .review-card {
+            background-color: #FFFAFF;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+            color: black;
+            margin-bottom: 20px;
+        }
+
+        /* Review Header */
+        .review-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .review-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .review-details {
+            flex-grow: 1;
+        }
+
+        .review-details p {
+            margin: 2px 0;
+            font-size: 14px;
+        }
+
+        /* Review Content */
+        .review-content h4 {
+            margin: 10px 0 5px;
+        }
+
+        .review-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: fixed; /* Fix the header at the top of the screen */
-            top: 0; /* Align the header at the top of the screen */
-            width: 100%; /* Make the header span the entire width */
-            z-index: 999; /* Ensure the header appears above other content */
-            background: #fff;
+            margin-top: 10px;
         }
 
-        .logo {
-            background-color: #051d3c;
-            border-bottom-right-radius: 50px;
-            border-top-right-radius: 50px;
-            padding: 10px 20px;
-            padding-left: 50px; /* This value can be increased or decreased to adjust the visible curve */
-            font-family: "Titan One", sans-serif;
-            font-weight: bold;
-        }
-
-        .logo h1 {
-            margin: 0;
-            color: white;
-            font-size: 30px; /* Adjust the font size as needed */
-        }
-
-        .nav-bar {
-            list-style: none;
+        .likes, .comments {
             display: flex;
-            padding: 10px 20px;
-            background-color: #051d3c;
-            border-bottom-left-radius: 40px;
-            border-top-left-radius: 40px;
-            font-family: "Titan One", sans-serif;
-            font-weight: bold;
+            align-items: center;
+            gap: 5px;
         }
 
-        .nav-bar li {
-            padding: 0 20px; /* Adjust padding as needed */
-        }
-
-        .nav-bar li a {
-            text-decoration: none;
+        .expand-btn {
+            background-color: transparent;
+            border: 1px solid white;
             color: white;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
         }
 
-        .logo2 {
-            position: absolute;
-            left: 140px;
-            color: #051d3c;
+        /* Hide scrollbar for Webkit browsers */
+        ::-webkit-scrollbar {
+            display: none;
         }
-      .flex.items-center.space-x-4.mb-4 {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          margin-bottom: -3rem; /* Adjust this value as needed */
-      }
-      .student-info-card {
-          width: 400px;
-          max-width: 90%; /* Ensure the card doesn't exceed 90% of the viewport width */
-          height: 510px; /* Allow the height to adjust based on content */
-          padding: 1.5rem; /* Use rem units for padding */
-          background-color: #fff;
-          border-radius: 10px;
-          margin: 220px auto 0; /* Center the card horizontally */
-          border: 2px solid #051d3c;
-          position: relative;
-          font-family: "Kanit", sans-serif;
-          font-weight: 1000;
-          font-style: italic;
-          color: #051d3c;
-          font-size: 1.25rem; /* Use rem units for font size */
-        right: 480px;
-      }
-      .student-info-container {
-          max-height: 500px; /* Adjust this value as needed */
-          overflow-y: auto; /* Enable vertical scrolling */
-      }
-
-      .student-info {
-          margin-top: 1rem;
-          display: flex;
-          flex-direction: column;
-         align-items: flex-start;
-      }
-
-      .student-info .block {
-          margin-bottom: 1rem;
-          display: flex;
-          align-items: center;
-      }
-
-      .student-info .block img {
-          width: 1.25rem; /* Use rem units for image dimensions */
-          height: 1.25rem;
-          margin-right: 0.5rem;
-      }
-
-      .user-avatar {
-          width: 100px;
-          height: 100px;
-          border-radius: 50%;
-          margin-bottom: 10px;
-      }
-
-      .edit-button {
-          position: absolute;
-          top: 0;
-          right: 0;
-          transform: translate(50%, -50%);
-          background-color: #051d3c;
-          color: white;
-          padding: 5px 10px;
-          border-radius: 5px;
-          font-size: 14px;
-          cursor: pointer;
-          opacity: 0;
-          transition: opacity 0.3s ease-in-out;
-      }
-
-      .relative:hover .edit-button {
-          opacity: 1;
-      }
 
 
-.student-info span {
-    display: block;
-    margin-bottom: 5px;
-}
-
-
-        .badge-section img {
-            width: 50px; /* Adjust badge size */
-            height: 50px; /* Adjust badge size */
-            margin-right: 5px; /* Adjust spacing between badges */
+        /* Dropdown Menu for Profile */
+        .cd__main{
+            position: relative;
+            min-height: 640px;
+        }
+        .container {
+            position:fixed;
+            top: 6%;                            /* adjust the distance from top */
+            left: 96%;                          /* adjusted to have at the right! */
+            margin-right: -50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
         }
         
-        .student-name {
-  position: absolute; /* Position the student name absolutely */
-  top: 100px; /* Adjust as needed */
-  right: 20px; /* Adjust as needed */
-  font-family: 'Titan One', sans-serif; /* Use the desired font */
-  font-size: 100px; /* Adjust the font size as needed */
-  color: #0056b3; /* Adjust the color to match your design */
-}
-
-.text, .text3 {
-  position: absolute; /* Absolute positioning to place text exactly where it's needed */
-  font-size: 100px; /* Adjust as needed */
-   /* Assuming you want bold text */
-  color: #0056b3; /* Adjust the color to match your design */
-  font-family: "Titan One", sans-serif;
-  
-}
-
-.text {
-  /* "Student" */
-  top: 100px; /* Adjust as needed */
-  left: 250px; /* Adjust as needed */
-  color: #051d3c;
-}
-
-.text3 {
-  /* "Conduct" - Rotate and position as needed */
-  top: 100px; /* Adjust as needed */
-  left: 750px; /* Centers the text */
-   /* Centers and rotates the text */
-  transform-origin: center; /* Ensures the text rotates around its center */
-  background: -webkit-linear-gradient(#084f71, #051d3c); /* For Safari 5.1 to 6.0 */
-  background: linear-gradient(#084f71, #051d3c); /* Standard syntax; top to bottom gradient */
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent; /* Makes the text color transparent so the gradient shows through */
-  -webkit-text-fill-color: transparent; /* Needed for Safari */
-}
-
-.mini-icon {
-    width: 20px; /* Adjust icon size */
-    height: 20px; /* Adjust icon size */
-    margin-right: 5px; /* Adjust spacing between icon and text */
-}
-.name{
-    position:absolute;
-    left: 150px;
-    top: 70px;
-}
-
-.badges-container {
-    position:absolute;
-    top: 0px;
-    right: -950px; /* Center items horizontally */
-    
-}
-
-      .badges-card {
-          position: relative; /* Ensure relative positioning */
-          width: 800px; /* Adjust card width */
-          height: 200px; /* Adjust card height */
-          padding: 30px;
-          background-color: #fff;
-          border-radius: 10px;
-          margin-left: 20px; /* Adjust margin between cards */
-          border: 2px solid #051d3c; /* Add border */
-          font-family: "Kanit", sans-serif;
-          font-weight: 700;
-          font-style: italic;
-          color: #051d3c;
-          display: flex;
-          flex-direction: column; /* Arrange children in a column */
-          justify-content: space-between; /* Space out children evenly */
-          align-items: center; /* Align items horizontally */
-          position: relative; /* Ensure relative positioning */
-      }
-      .badge-section {
-                  display: flex; /* Use flexbox to arrange badge images horizontally */
-                  justify-content: center; /* Center badge images horizontally */
-                  flex-wrap: wrap;
-              }
-
-      .badge-section img {
-                  width: 130px; /* Adjust badge width */
-                  height: 130px; /* Adjust badge height */
-                  margin-left: 20px;
-                  margin-right: 20px;
-                  margin-bottom: 10px;
-              }
-      .badgestitle {
-          text-align: center; /* Center the text horizontally */
-          font-weight: bold; /* Optionally make the text bold */
-          margin-bottom: 5px; /* Adjust margin as needed */
-      }
-
-.badge-section img {
-            width: 130px; /* Adjust badge width */
-            height: 130px; /* Adjust badge height */
-            margin-right: 55px; /* Adjust spacing between badges */
+        .more-menu {
+            width: 100px;
         }
-        .badge-section2 img {
-            width: 130px; /* Adjust badge width */
-            height: 130px; /* Adjust badge height */
-            margin-right: 55px; /* Adjust spacing between badges */
+        
+        /* More Button / Dropdown Menu */
+        
+        .more-btn,
+        .more-menu-btn {
+            background: none;
+            border: 0 none;
+            line-height: normal;
+            overflow: visible;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            width: 100%;
+            text-align: left;
+            outline: none;
+            cursor: pointer;
         }
-
-.request-card {
-    width: 800px; /* Adjust card width */
-    height: 200px; /* Adjust card height */
-    padding: 30px;
-    background-color: #fff;
-    border-radius: 10px;
-    margin-left: 20px; /* Adjust margin between cards */
-    border: 2px solid #051d3c; /* Add border */
-    font-family: "Kanit", sans-serif;
-    font-weight: 700;
-    font-style: italic;
-    color: #051d3c;
-    display: flex;
-   justify-content: center;
-   position:absolute;
-    top: 300px;
-    right: -950px; /* Center items horizontally */
-}
-
-.reco-section2-image{
-    width: 250px;
-    height: 200px;
-    
-}
-.reco-section2{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    text-align: center;
-
-}
-.reco-section{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    text-align: center;
-}
-.badge-section3 img {
-            width: 120px; /* Adjust badge width */
-            height: 120px; /* Adjust badge height */
-            margin-right: 55px; /* Adjust spacing between badges */
-            display: flex; /* Use flexbox to arrange badge images horizontally */
-            justify-content: center; /* Center badge images horizontally */
-            flex-wrap: wrap;
+        
+        .more-dot {
+            background-color: #aab8c2;
+            margin: 0 auto;
+            display: inline-block;
+            width: 7px;
+            height: 7px;
+            margin-right: 1px;
+            border-radius: 50%;
+            transition: background-color 0.3s;
         }
-        .badge-section4 img {
-            width: 140px; /* Adjust badge width */
-            height: 140px; /* Adjust badge height */
-            margin-right: 55px; /* Adjust spacing between badges */
-            display: flex; /* Use flexbox to arrange badge images horizontally */
-            justify-content: center; /* Center badge images horizontally */
-            flex-wrap: wrap;
-           
-         
+        
+        .more-menu {
+            position: absolute;
+            top: 100%;
+            z-index: 900;
+            float: left;
+            padding: 10px 0;
+            margin-top: 9px;
+            background-color: #fff;
+            border: 1px solid #ccd8e0;
+            border-radius: 4px;
+            box-shadow: 1px 1px 3px rgba(0,0,0,0.25);
+            opacity: 0;
+            transform: translate(0, 15px) scale(.95);
+            transition: transform 0.1s ease-out, opacity 0.1s ease-out;
+            pointer-events: none;
+        }
+        
+        .more-menu-caret {
+            position: absolute;
+            top: -10px;
+            left: 12px;
+            width: 18px;
+            height: 10px;
+            float: left;
+            overflow: hidden;
+        }
+        
+        .more-menu-caret-outer,
+        .more-menu-caret-inner {
+            position: absolute;
+            display: inline-block;
+            margin-left: -1px;
+            font-size: 0;
+            line-height: 1;
+        }
+        
+        .more-menu-caret-outer {
+            border-bottom: 10px solid #c1d0da;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            height: auto;
+            left: 0;
+            top: 0;
+            width: auto;    
+        }
+        
+        .more-menu-caret-inner {
+            top: 1px;
+            left: 1px;
+            border-left: 9px solid transparent;
+            border-right: 9px solid transparent;
+            border-bottom: 9px solid #fff;
+        }
+        
+        .more-menu-items {
+            margin: 0;
+            list-style: none;
+            padding: 0;
+        }
+        
+        .more-menu-item {
+            display: block;
+        }
+        
+        .more-menu-btn {
+            min-width: 100%;
+            color: #66757f;
+            cursor: pointer;
+            display: block;
+            font-size: 13px;
+            line-height: 18px;
+            padding: 5px 20px;
+            position: relative;
+            white-space: nowrap;
+        }
+        
+        .more-menu-item:hover {
+            background-color: #489fe5;
+        }
+        
+        .more-menu-item:hover .more-menu-btn {
+            color: #fff;
+        }
+        
+        .more-btn:hover .more-dot,
+        .show-more-menu .more-dot {
+            background-color: #516471;
+        }
+        
+        .show-more-menu .more-menu {
+            opacity: 1;
+            transform: translate(0, 0) scale(1);
+            pointer-events: auto;
         }
 
-      .rcontainer {
-          display: flex;
-          justify-content: space-between; /* Distribute the containers evenly */
-        margin-left: 500px;
-        margin-top: -310px;
-      }
+        /*For star rating */
+        .stars {
+            font-size: 24px;
+            color: gold;
+        }
+        .empty {
+            color: lightgray;
+        }
 
-      .reviews-container,
-      .reviews-container2,
-      .reviews-container3{
-          width: 470px;
-        margin-top: 120px;
-        margin-right: 50px;
-        margin-bottom: 80px;
-        margin-left: 20px;
-      }
+        /*For hamburger Menu*/
+        .slide{
+            margin-top: 13px;
+        }
+        .burger {
+            position: relative;
+            width: 40px;
+            height: 30px;
+            background: transparent;
+            cursor: pointer;
+            display: block;
+            padding-right: 5px;
+        }
 
-      
+        .burger input {
+            display: none;
+        }
 
-.reviews-card{
-    width: 100%; /* Adjust card width */
-    height: 200px; /* Adjust card height */
-    padding: 10px;
-    background-color: #fff;
-    border-radius: 10px;
-    border: 3px solid #051d3c;  /* Add border */
-    font-family: "Kanit", sans-serif;
-    font-weight: 50;
-    font-style: italic;
-    color: #051d3c;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-    justify-content: center;
-  flex-direction: column;
-}
-.arrow-icon {
-    width: 50px;
-    height: 50px;
-    margin-right: 5px; /* Adjust spacing between the arrow icon and text */
-}
-.view-all-reviews {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    color: #0056b3; /* Adjust the color as needed */
-}
+        .burger span {
+            display: block;
+            position: absolute;
+            height: 4px;
+            width: 100%;
+            background: #FFFAFF;
+            border-radius: 9px;
+            opacity: 1;
+            left: 0;
+            transform: rotate(0deg);
+            transition: .25s ease-in-out;
+        }
 
-.review {
-    margin-bottom: 20px; /* Adjust margin between each review */
-    
-    padding: 20px; /* Add padding to the entire review */
-    
-    overflow: hidden; /* Prevent content from overflowing */
-}
+        .burger span:nth-of-type(1) {
+            top: 0px;
+            transform-origin: left center;
+        }
 
-.left, .right {
-    flex: 10;
-    margin-right: 200px;
-}
+        .burger span:nth-of-type(2) {
+            top: 50%;
+            transform: translateY(-50%);
+            transform-origin: left center;
+        }
 
-.left h3, .right h3 {
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.left p, .right p {
-    font-size: 14px;
-    margin-bottom: 10px;
-}
-
-.review-details {
-    width: calc(100% - 150px); /* Adjust width of review details */
-    float: left; /* Float left to keep it aligned */
-}
-.review-content {
-    width: 130px; /* Adjust width of review content */
-    float: right; /* Float right to keep it aligned */
-}
-
-      .icon-container {
-        position: relative;
-        width: 100%;
-        height: 100%;
-      }
-
-      .icon-number {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 24px;
-        font-weight: bold;
-        color: white;
-        background-color: red; 
-        padding: 5px 16px;
-        border-radius: 50%;
-      }
-
-      .content strong {
-                font-weight: bold;
-            }
-
-            .badge-image-container {
-          display: inline-block; /* Ensure images and icons are displayed inline */
-          position: relative; /* Position the badge image container */
-          margin-bottom: 10px;
-      }
-
-      .badge-image {
-          vertical-align: middle; /* Align the image vertically with the text */
-      }
-
-      .view-all-badges {
-          display: inline-flex; /* Ensure the link and arrow are displayed inline */
-          align-items: center; /* Align items vertically */
-          text-decoration: none;
-          color: #0056b3; /* Adjust the color as needed */
-      }
-
-      .center {
-          position: absolute; /* Position the link absolutely */
-          bottom: -15px; /* Adjust distance from the bottom */
-          align-content: center;
-      }
-
-
+        .burger span:nth-of-type(3) {
+            top: 100%;
+            transform-origin: left center;
+            transform: translateY(-100%);
+        }
     </style>
 </head>
 <body>
 
-<header>
-    <div class="logo">
-        <h1>UWI</h1> <!-- Updated to have text inside -->
-    </div>
-    <div class="logo2"><h2>Student Conduct Tracker</h2></div>
-    <ul class="nav-bar">
-        <!-- Adjusted to only have the left side curved -->
-        <li><a href="/staffhome">Home</a></li>
-        <li><a href="/logout">Logout</a></li>
-    </ul>
-  <!--  <div class="text">Student</div>
-  <div class="text3">Name</div>-->
-</header>
- 
-
-<div class="student-info-card">
-
-    <nav class="student-info">
-      <div class="block text-gray-700 font-semibold">
-          <span class="font-bold">Student Name: {{ student.fullname }}</span>
-      </div>
-      <div class="block text-gray-700 font-semibold">
-          <span class="font-bold">Student ID: {{ student.UniId }}</span>
-      </div>
-    <div class="block text-gray-700 font-semibold">
-        <img src="https://github.com/RichardR963/Info3604_Project/blob/main/images/GPA.png?raw=true" alt="GPA Icon" class="mini-icon"> GPA: {{ student.gpa }}
+    <!-- Sidenav -->
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="#">Home</a>
+        <a href="#">Students</a>
+        <a href="#">Staff</a>
+        <a href="#">Create Review</a>
     </div>
 
-      <div class="block text-gray-700 font-semibold">
-          <img src="https://github.com/RichardR963/Info3604_Project/blob/main/images/email.png?raw=true" alt="Email Icon" class="mini-icon"> Email: {{ student.email }}
-      </div>
-      <div class="block text-gray-700 font-semibold">
-          <img src="https://github.com/RichardR963/Info3604_Project/blob/main/images/degreeprogram.png?raw=true" alt="Programme Icon" class="mini-icon"> Degree: {{ student.degree }}
-      </div>
-    <div class="block text-gray-700 font-semibold">
-        <img src="https://github.com/RichardR963/Info3604_Project/blob/main/images/Leaderboard.png?raw=true" alt="Leaderboard Icon" class="mini-icon"> Leaderboard Rank: {{ karma.rank}}
-    </div>
-    
-    <!--
-      <div class="block text-gray-700 font-semibold">
-          <img src="https://github.com/RichardR963/Info3604_Project/blob/main/images/Points.png?raw=true" alt="Points Icon" class="mini-icon"> Academic Points:  {{ karma.academicPoints}} 
-      </div>
-    <div class="block text-gray-700 font-semibold">
-        <img src="https://github.com/RichardR963/Info3604_Project/blob/main/images/Points.png?raw=true" alt="Points Icon" class="mini-icon"> Review Points: {{ karma.reviewsPoints}} 
-    </div>
-      <div class="block text-gray-700 font-semibold">
-          <img src="https://github.com/RichardR963/Info3604_Project/blob/main/images/Points.png?raw=true" alt="Points Icon" class="mini-icon"> Achievement Points: {{ karma.accomplishmentPoints}}
-      </div>
-    -->
-      <div class="block text-gray-700 font-semibold">
-          <img src="https://github.com/RichardR963/Info3604_Project/blob/main/images/Points.png?raw=true" alt="Points Icon" class="mini-icon"> Karma Points: {{ karma.points}}
-      </div>
-      <div><br><br><br></div>
-    <!-- <div class="block text-gray-700 font-semibold">
-        <img src="yearofstudy.png" alt="Year Icon" class="mini-icon"> Year of Study: No
-    </div> -->
-    <!-- <div class="block text-gray-700 font-semibold">
-        <img src="https://github.com/RichardR963/Info3604_Project/blob/main/images/admittedterm.png?raw=true" alt="Admitted Term Icons" class="mini-icon"> <a>Admitted Term: {{ student.admittedTerm }}</a>
-    </div> -->
-</nav>
-
-<div class="badges-container">
-    <div class="badges-card">
-        <div class="badgestitle">Badges</div>
-        <div class="badge-section">
-          {% for badge in student.badges[-3:] %}
-            <div class="badge-image-container">
-              <img src={{badge.imageLink}} alt="Badge placeholder" class="badge-image">
+    <!-- Navbar -->
+    <nav class="navbar">
+        <!-- From Uiverse.io by Cevorob --> 
+        <div class="slide">
+            <label class="burger" onclick="openNav()" for="burger">
+                <input type="checkbox" id="burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+        </div>
+        <div class="logo">
+            <img src="/static/logo.png" alt="Profile">
+        </div>
+        <div class="navbar-title">Student Conduct Tracker</div>
+        <!-- Profile Options -->
+        <div class="container">
+            <div class="more">
+                <div class="profile-pic more-btn">
+                    <img src="https://i.ibb.co/KS9VcFr/profile-pic.jpg" alt="Profile">
+                </div>
+                
+                <div class="more-menu">
+                    <div class="more-menu-caret">
+                        <div class="more-menu-caret-outer"></div>
+                        <div class="more-menu-caret-inner"></div>
+                    </div>
+                    <ul class="more-menu-items" tabindex="-1" role="menu" aria-labelledby="more-btn" aria-hidden="true">
+                        <li class="more-menu-item" role="presentation">
+                            <button type="button" class="more-menu-btn" role="menuitem">Profile</button>
+                        </li>
+                        <li class="more-menu-item" role="presentation">
+                            <button type="button" class="more-menu-btn" role="menuitem">Settings</button>
+                        </li>
+                        <li class="more-menu-item" role="presentation">
+                            <button type="button" class="more-menu-btn" role="menuitem">Logout</button>
+                        </li>
+                    </ul>
+                </div>
             </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div id="main-content">
+        <!-- Profile Section -->
+        <div class="profile-container">
+            <img src="https://th.bing.com/th/id/OIP.ddo_V6IbnSEbnhL7HaPuJAHaHb?rs=1&pid=ImgDetMain" alt="User Profile" class="profile-image">
+            <h2>{{student.fullname}}</h2>
+            <h4 style="color: #111;">Karma: {{student.get_karma().points}}</h4>   <!--NOTE - CHANGE TO OUR PATTERN-->
+            <!-- <a href="#" class="logout-btn">Logout</a> -->   <!--TO REMOVE: For staff-->
+            <button class="review-btn">Review</button> 
+            <div class="profile-description">
+                <p class="faculty">ID Number: {{student.UniId}}</p>
+                <p class="faculty">Faculty: {{student.faculty}}</p>   <!--TO CHANGE-->
+                <p class="faculty">Degree: {{student.degree}}</p>
+                <p class="faculty">Email: {{student.email}}</p>
+            </div>
+
+        </div>
+        <br><hr>
+
+        <!-- Reviews Section -->
+        <div class="reviews-container">
+            <h3>{{student.fullname}}'s Reviews:</h3>
+
+            {% for review in reviews %}
+
+            <div class="review-card">
+                <div class="review-header">
+                    <img src="https://i.ibb.co/KS9VcFr/profile-pic.jpg" alt="User" class="review-avatar">
+                    <div class="review-details">
+                        <strong>{{review.staff_name}}</strong>
+                        <p>Posted on {{review.dateCreated}} </p>
+                    </div>
+                    <i class="fas fa-external-link-alt"></i>
+                </div>
+                <div class="stars">
+                    {% if review.starRating is not none %}
+                        {% for i in range(review.starRating|int) %}
+                            <i class="fas fa-star"></i>
+                        {% endfor %}
+                        {% for i in range(5 - review.starRating|int) %}
+                            <i class="far fa-star empty"></i>
+                        {% endfor %}
+                    {% else %}
+                        {% for i in range(5) %}
+                            <i class="far fa-star empty"></i>
+                        {% endfor %}  
+                    {% endif %}
+                </div>
+                
+                <div class="review-content">
+                    <h4>Review for {{student.fullname}} ({{student.UniId}})</h4>
+                    <p>{{review.details}}</p>
+                </div>
+                <div class="review-footer">
+                    <div class="likes"><i class="fas fa-thumbs-up"></i> 1.1K</div>
+                    <div class="comments"><i class="fas fa-comment"></i> 24K</div>
+                    <button class="expand-btn">Expand</button>
+                </div>
+            </div>
+
             {% endfor %}
-        </div>
-        <div class="center">
-            <a href="/view-all-badges-staff/{{student.ID}}" class="view-all-badges">
-                <img src="https://github.com/RichardR963/Info3604_Project/blob/main/images/down.png?raw=true" alt="Down Arrow" class="arrow-icon">
-                <p class="content"><strong>View All Badges</strong></p>
-            </a>
-        </div>
-    </div>
-</div>
-  
-  <div class="rcontainer">
 
-<div class="reviews-container2">
-    <div class="reviews-card">
-    <h1>Achievements</h1>
-      <a href="/view-all-student-achievements/{{student.UniId}}" class="view-all-reviews">
-          <img src="https://github.com/RichardR963/Info3604_Project/blob/main/images/down.png?raw=true" alt="Down Arrow" class="arrow-icon">
-          <p class="content"><strong>View All Achievements</strong></p>
-      </a>
-    </div>
-</div>
-
-    <div class="reviews-container">
-
-        <div class="reviews-card">
-        <h1>Reviews</h1>
-          <a href="/view-all-student-reviews/{{student.UniId}}" class="view-all-reviews">
-              <img src="https://github.com/RichardR963/Info3604_Project/blob/main/images/down.png?raw=true" alt="Down Arrow" class="arrow-icon">
-            <p class="content"><strong>View All Reviews</strong></p>
-          </a>
+            {% if reviews|length == 0 %}
+            <h4 style="text-align: center;color: white;margin-top: 30px;">No Reviews</h4>
+            {% endif %}
         </div>
     </div>
 
-<div class="reviews-container3">
-    <div class="reviews-card">
+    <!-- JavaScript -->
+    <script>
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "250px";
+            document.getElementById("main-content").style.marginLeft = "250px";
+        }
 
-    <h1>Incidents</h1>
-      <a href="/view-all-student-incidents/{{student.UniId}}" class="view-all-reviews">
-          <img src="https://github.com/RichardR963/Info3604_Project/blob/main/images/down.png?raw=true" alt="Down Arrow" class="arrow-icon">
-          <p class="content"><strong>View All Incidents</strong></p>
-      </a>
-    </div>
-</div>
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+            document.getElementById("main-content").style.marginLeft = "0";
+        }
 
-  </div>
-<!-- Rest of your content -->
-<script>
-  const studentAvatar = document.getElementById('studentAvatar');
-  const editButton = document.getElementById('editButton');
 
-  editButton.addEventListener('click', () => {
-      const fileInput = document.createElement('input');
-      fileInput.type = 'file';
-      fileInput.accept = 'image/*';
+        var el = document.querySelector('.more');
+        var btn = el.querySelector('.more-btn');
+        var menu = el.querySelector('.more-menu');
+        var visible = false;
+        
+        function showMenu(e) {
+            e.preventDefault();
+            if (!visible) {
+                visible = true;
+                el.classList.add('show-more-menu');
+                menu.setAttribute('aria-hidden', false);
+                document.addEventListener('mousedown', hideMenu, false);
+            }
+        }
+        
+        function hideMenu(e) {
+            if (btn.contains(e.target)) {
+                return;
+            }
+            if (visible) {
+                visible = false;
+                el.classList.remove('show-more-menu');
+                menu.setAttribute('aria-hidden', true);
+                document.removeEventListener('mousedown', hideMenu);
+            }
+        }
+        
+        btn.addEventListener('click', showMenu, false);
+    </script>
 
-      fileInput.addEventListener('change', (event) => {
-          const file = event.target.files[0];
-          const reader = new FileReader();
-
-          reader.onload = () => {
-              studentAvatar.src = reader.result;
-          };
-
-          reader.readAsDataURL(file);
-      });
-
-      fileInput.click();
-  });
-</script>
 </body>
-  
 </html>
