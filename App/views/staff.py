@@ -5,7 +5,7 @@ from flask_login import login_required, current_user
 from sqlalchemy import or_
 from datetime import datetime
 
-from App.models import Student, Staff, User, IncidentReport
+from App.models import Student, Staff, User, IncidentReport, Comment, Reply
 from App.controllers import (
     jwt_authenticate, create_incident_report, get_student_by_UniId,
     get_accomplishment, get_student_by_id, get_recommendations_staff,
@@ -15,7 +15,10 @@ from App.controllers import (
     analyze_sentiment, get_requested_accomplishments_count,
     get_recommendations_staff_count, calculate_ranks, update_total_points,
     calculate_academic_points, calculate_accomplishment_points,
-    calculate_review_points, get_all_verified, get_reviews)            #added get_reviews
+    calculate_review_points, get_all_verified, 
+    get_reviews, get_review, 
+    create_comment, get_comment,
+    get_reply, create_reply)            #added get_reviews
 
 staff_views = Blueprint('staff_views',
                         __name__,
@@ -75,6 +78,31 @@ def review_search_page():
 @staff_views.route('/mainReviewPage', methods=['GET'])
 def mainReviewPage():
   return render_template('CreateReview.html')
+
+
+@staff_views.route('/createComment', methods=['POST'])
+def createComment():
+  staffID = current_user.get_id()
+  staff = get_staff_by_id(staff_id) 
+
+  data = request.form #Depening on how the create comment form is made/designed this si subject to change, along with attribute names.
+
+  if staff:
+    reviewID = data['reviewID']
+    details = data['selected-details']
+
+    review = get_review(reviewID)
+
+    if review:
+      newComment = create_comment(reviewID=reviewID, staffID=staffID, details=details)
+      message = f"You have posted a comment on Review: {reviewID}" #Keeping review ID in flash message for testign purpose, remove later.
+    else:
+      message = f"Review is not found!"
+  else:
+    message = f"You are not logged in as staff and cannot post a Comment!"
+
+
+  return render_template('')#Put the appropriate template here
   
 @staff_views.route('/createReview', methods=['POST'])
 def createReview():
