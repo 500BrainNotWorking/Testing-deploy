@@ -128,7 +128,20 @@ def edit_comment(comment_id):
 
   details = data['selected-details']
 
-  edit_comment(details=details, comment_id=comment_id, staff_id=staff_id):
+  edit_comment(details=details, comment_id=comment_id, staff_id=staff_id)
+
+  return render_template('',current_user=current_user)# Put the appropriate template here, and current_user if needed.
+
+@staff_views.route('/deleteComment/<int:comment_id>', methods=['GET'])
+@login_required
+def delete_comment(comment_id):
+  comment = get_comment(comment_id)
+  #user = User.query.filter_by(ID=current_user.ID).first()
+
+  staff_id = current_user.get_id()
+  staff = get_staff_by_id(staff_id) 
+
+  delete_comment(comment_id=comment_id, staff_id=staff_id)
 
   return render_template('',current_user=current_user)# Put the appropriate template here, and current_user if needed.
   
