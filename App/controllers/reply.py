@@ -50,21 +50,26 @@ def create_reply(commentID, staffID, details, parentReplyID=None):
         return None
 
 
-def delete_reply(reply_id):
+def delete_reply(reply_id, staff_id):
     reply = get_reply(reply_id)
     if reply:
-        db.session.delete(reply)
-        db.session.commit()
+        if reply.createdByStaffID == staff_id:
+            db.session.delete(reply)
+            db.session.commit()
+        else:
+            return None
     else:
         return None
 
-def edit_reply(details, reply_id):
+def edit_reply(details, reply_id, staff_id):
     
     existing_reply = get_reply(reply_id)
     if existing_reply:
-        
-        existing_reply.details = details
-        db.session.add(existing_reply)
-        db.session.commit()
+        if existing_reply.createdByStaffID == staff_id:
+            existing_reply.details = details
+            db.session.add(existing_reply)
+            db.session.commit()
+        else:
+            return None
     else:
         return None
