@@ -89,9 +89,8 @@ class Student(User, StudentInterface):
     }
 
   def get_karma(self):
-      # Retrieve the karma record for this student via the karmaID
-      karma = Karma.query.get(self.karmaID)
-      return karma
+      if (len(list(self.karma_history)) != 0):
+        return self.karma_history[-1]
 
   def update(self, rank):
       """Update the karma rank for the student"""

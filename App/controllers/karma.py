@@ -7,14 +7,14 @@ from .transcript import (calculate_academic_score)
 
 
 def get_karma(studentID):
-  karma = Karma.query.filter_by(studentID=studentID).first()
+  karma = Karma.query.filter_by(studentID=studentID).order_by(Karma.timestamp.desc()).first()
   if karma:
     return karma
   else:
     return None
 
 def get_karma_student(student):
-  karma = Karma.query.filter_by(studentID=student.ID).first()
+  karma = Karma.query.filter_by(studentID=student.ID).order_by(Karma.timestamp.desc()).first()
   if karma:
     return karma
   else:
