@@ -81,6 +81,7 @@ def mainReviewPage():
 
 
 @staff_views.route('/createComment', methods=['POST'])
+@login_required
 def createComment():
   staffID = current_user.get_id()
   staff = get_staff_by_id(staff_id) 
@@ -103,8 +104,19 @@ def createComment():
 
 
   return render_template('')#Put the appropriate template here
+
+@staff_views.route('/viewComments/<int:review_id>', methods=['GET'])
+@login_required
+def view_all_comments(review_id):
+  review = get_review(review_id)
+  #user = User.query.filter_by(ID=current_user.ID).first()
+
+  comments = get_all_comments()
+
+  return render_template('', comments=comments, review=review)# Put the appropriate template here, and current_user if needed.
   
 @staff_views.route('/createReview', methods=['POST'])
+@login_required
 def createReview():
   staff_id = current_user.get_id()
   staff = get_staff_by_id(staff_id)
