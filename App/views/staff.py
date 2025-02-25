@@ -5,7 +5,7 @@ from flask_login import login_required, current_user
 from sqlalchemy import or_
 from datetime import datetime
 
-from App.models import Student, Staff, User, IncidentReport
+from App.models import Student, Staff, User, IncidentReport, Review
 from App.controllers import (
     jwt_authenticate, create_incident_report, get_student_by_UniId,
     get_accomplishment, get_student_by_id, get_recommendations_staff,
@@ -448,3 +448,20 @@ def view_all_badges(studentID):
   student = get_student_by_id(studentID)
   user = User.query.filter_by(ID=current_user.ID).first()
   return render_template('AllBadges.html',student=student,user=user)
+
+
+
+@staff_views.route('/staff-profile', methods=['GET'])
+@login_required
+def staff_profile():
+    staff_id = current_user.get_id()  # Get logged-in staff ID
+    staff = get_staff_by_id(staff_id)  # Fetch staff details
+
+    if not staff:
+        flash("Staff not found.", "error")
+        return redirect(url_for('staff_views.get_StaffHome_page'))
+
+    # Fetch reviews written by this staff member
+    reviews = Review.query.filter_by(createdByStaffID=staff_id).all()
+
+    return render_template('StaffProfile.html', staff=staff, reviews=reviews)
