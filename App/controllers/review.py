@@ -115,3 +115,9 @@ def get_unique_reviewers_count(studentID):
 
     # Return the count of unique reviewers
     return len(unique_reviewers)
+
+
+
+def get_all_reviews():
+  reviews = Review.query.all()
+  return reviews

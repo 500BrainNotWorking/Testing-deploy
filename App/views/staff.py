@@ -15,7 +15,7 @@ from App.controllers import (
     analyze_sentiment, get_requested_accomplishments_count,
     get_recommendations_staff_count, calculate_ranks, update_total_points,
     calculate_academic_points, calculate_accomplishment_points,
-    calculate_review_points, get_all_verified, get_reviews)            #added get_reviews
+    calculate_review_points, get_all_verified, get_reviews, get_all_reviews)            #added get_reviews
 
 staff_views = Blueprint('staff_views',
                         __name__,
@@ -487,3 +487,27 @@ def view_all_badges(studentID):
   student = get_student_by_id(studentID)
   user = User.query.filter_by(ID=current_user.ID).first()
   return render_template('AllBadges.html',student=student,user=user)
+
+
+
+
+
+
+@staff_views.route('/getMainPage', methods=['GET'])
+@login_required
+def getAllReviews():
+    
+    reviews = get_all_reviews()
+
+    # Attach staff name dynamically
+    for review in reviews:
+        staff = get_staff_by_id(review.createdByStaffID)  # Get Staff object
+        review.staff_name = staff.firstname + " " + staff.lastname if staff else "Unknown Staff"  # Attach fullname
+
+    for review in reviews:
+        student = get_student_by_id(review.studentID)
+        review.student_name = student.fullname if student else "Unknown Student"  # Attach fullname
+        review.student_id = student.UniId if student else "Unknown ID"
+
+    return render_template('MainPage.html',
+                           reviews=reviews)
