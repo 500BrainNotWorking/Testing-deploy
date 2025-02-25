@@ -79,6 +79,28 @@ def review_search_page():
 def mainReviewPage():
   return render_template('CreateReview.html')
 
+@staff_views.route('/createReply', methods=['POST'])
+@login_required
+def createReply():
+  staffID = current_user.get_id()
+  staff = get_staff_by_id(staff_id) 
+
+  data = request.form #Depening on how the create comment form is made/designed this si subject to change, along with attribute names.
+
+  if staff:
+    commentID = data['reviewID']
+    details = data['selected-details']
+
+    comment = get_comment(commentID)
+
+    if comment:
+      newReply = create_reply(commentID=commentID, staffID=staffID, details=details, parentReplyID=None)
+      message = f"You have posted a reply to the Comment: {commentID}" #Keeping review ID in flash message for testign purpose, remove later.
+    else:
+      message = f"Comment is not found!"
+  else:
+    message = f"You are not logged in as staff and cannot post a Reply!"
+
 
 @staff_views.route('/createComment', methods=['POST'])
 @login_required

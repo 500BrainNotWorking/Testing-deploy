@@ -29,21 +29,6 @@ def get_root_parent_reply(reply_id):
 def get_reply(id):
     return Reply.query.filter_by(ID=id).first()
 
-def create_reply(reviewID, staffID, details):
-    new_comment= Comment(reviewID=reviewID, staffID=staffID, details=details) 
-
-    if new_comment:
-        existing_review = Review.query.get(reviewID)
-
-        if existing_review:
-            existing_review.comments.append(new_comment)
-            db.session.add(new_comment)
-            db.session.commit()
-            return new_comment
-        else:
-            return None
-    else:
-        return None
 
 
 def create_reply(commentID, staffID, details, parentReplyID=None):
