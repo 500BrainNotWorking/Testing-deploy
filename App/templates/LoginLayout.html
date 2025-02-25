@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+  </head>
+
+  <body>
+    
+    <nav style="background-color: #0A2463;">
+      <div class="nav-wrapper">
+        <a style="font-family: copperplate; padding-left: 30px;" href="/" class="brand-logo left">{% block page %}{% endblock %}</a>
+        <!-- <div class="nav-wrapper">
+            <ul id="nav-mobile" class="right" style="font-family: lucida bright;">
+              {% if current_user.is_authenticated %}
+                <li><a href="/logout">Log Out</a></li>
+                <li><a href="/profile">Profile</a></li>
+              {% else %}
+                <li><a href="/signup">Sign Up</a></li>
+                <li><a href="/login">Log In</a></li>
+              {% endif %}
+            </ul>
+        </div> -->
+      </div>
+    </nav>
+
+    <div class="login-container">
+      {% block content %}{% endblock %}
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+  </body>
+</html>
