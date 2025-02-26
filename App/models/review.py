@@ -25,6 +25,7 @@ class Review(db.Model):
     self.details = details
     self.dateCreated = datetime.now()
     self.studentSeen = studentSeen
+    adjustKarma(starRating, studentID)
 
   def get_id(self):
     return self.ID
@@ -49,3 +50,16 @@ class Review(db.Model):
         "details": self.details,
         "studentSeen": self.studentSeen
     }
+
+def adjustKarma(self, starRating, studentID):
+  if starRating == 5:
+    points = 5
+  elif starRating == 4:
+    points = 3
+  elif starRating == 3:
+    points = 1
+  elif starRating == 2:
+    points = -1
+  else:
+    points = -3
+  Karma(points,StudentID)
