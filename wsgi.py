@@ -115,9 +115,9 @@ def initialize():
       "I am seeking a recommnedation for a position at a company", "WebTech",
       "Web Developer", "webtech@gmail.com")
   create_accomplishment(2, False, "Permanand Mohan", "Runtime",
-                        "I placed first at runtime.", 0, "None Yet")
+                        "I placed first at runtime.", 1, "None Yet")
   create_accomplishment(2, False, "Vijayanandh Rajamanickam", "Runtime",
-                        "I placed first at runtime.", 0, "None Yet")
+                        "I placed first at runtime.", 1, "None Yet")
 
 
   staff = get_staff_by_id(7)
