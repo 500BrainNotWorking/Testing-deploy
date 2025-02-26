@@ -1,4 +1,4 @@
-from App.models import Karma
+from App.models import Karma, Student
 from App.database import db
 from .review import (get_total_positive_review_starRating, get_total_negative_review_starRating, get_unique_reviewers_count)
 from .accomplishment import (get_total_accomplishment_points)
@@ -138,22 +138,24 @@ def update_review_points(studentID):
     return False
 
 
-#calculating ranks based on points
 def calculate_ranks():
-  karma = Karma.query.all()
-  if karma:
-    karma.sort(key=lambda x: x.points, reverse=True)
-    print("calcing ranks")
-    for i in range(len(karma)):
-      karma[i].rank = i + 1
-    try:
-      db.session.commit()
-      return True
-    except Exception as e:
-      print("[karma.calculate_rank] Error occurred while updating ranks:",
-            str(e))
-      db.session.rollback()
-      return False
-  else:
-    print("Karma score not found")
-    return False
+    students = Student.query.all()
+    
+    # Create a list of (karma points, student ID) pairs
+    karma_list = []
+    
+    for student in students:
+        karma = student.get_karma()
+        if karma:
+            karma_list.append((karma.points, student))
+        else:
+            karma_list.append((0, student))  # Default to 0 if no karma
+    
+    # Sort students by karma points in descending order (higher karma = better rank)
+    karma_list.sort(reverse=True, key=lambda x: x[0])
+
+    # Assign ranks
+    for rank, (karma_points, student) in enumerate(karma_list, start=1):
+        student.rank = rank  # Store rank in student model
+        db.session.commit()  # Save changes
+

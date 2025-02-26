@@ -11,6 +11,7 @@ class Student(User, StudentInterface):
   fullname = db.Column(db.String(255), nullable=True)
   degree = db.Column(db.String(120), nullable=False)
   admittedTerm = db.Column(db.String(120), nullable=False)
+  rank = db.Column(db.Integer, nullable=True)
   #yearOfStudy = db.Column(db.Integer, nullable=False)
   gpa = db.Column(db.String(120), nullable=True)
 
@@ -89,11 +90,12 @@ class Student(User, StudentInterface):
     }
 
   def get_karma(self):
-      if (len(list(self.karma_history)) != 0):
-        return self.karma_history[-1]
+      if self.karma_history:
+          return max(self.karma_history, key=lambda k: k.timestamp)  # Get latest karma entry
+      return None
+
 
   def update(self, rank):
       """Update the karma rank for the student"""
-      karma = self.get_karma()
-      return karma.updateKarmaLevel(rank)
+      self.rank = rank
       

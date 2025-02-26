@@ -528,22 +528,22 @@
                 <tr>
                     <th>Rank</th>
                     <th>Name</th>
-                    <th>Totak Karma</th>
+                    <th>Total Karma</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                {% for student in students_json | sort(attribute='karmaRank') %}
+                {% for student in students_json %}
                 <tr>
-                    <td>{{ student.karmaRank }}</td>
+                    <td>{{ student.rank if student.rank is not none else "-" }}</td>
                     <td>{{ student.firstname }} {{ student.lastname }}</td>
-                    <td>{{ student.karmaScore }}</td>
+                    <td>{{ student.karma_history[-1] if student.karma_history else 0 }}</td>
                     <td>
-                        {% if student.karmaRank == 1 %}
+                        {% if student.rank == 1 %}
                             <img src="https://github.com/RichardR963/Info3604_Project/blob/main/images/1st.png?raw=true" alt="1st Place">
-                        {% elif student.karmaRank == 2 %}
+                        {% elif student.rank == 2 %}
                             <img src="https://github.com/RichardR963/Info3604_Project/blob/main/images/2nd.png?raw=true" alt="2nd Place">
-                        {% elif student.karmaRank == 3 %}
+                        {% elif student.rank == 3 %}
                             <img src="https://github.com/RichardR963/Info3604_Project/blob/main/images/3rd.png?raw=true" alt="3rd Place">
                         {% else %}
                             -
@@ -552,6 +552,7 @@
                 </tr>
                 {% endfor %}
             </tbody>
+            
         </table>
     </div>
 
