@@ -53,8 +53,8 @@
             font-weight: bold;
             font-family: 'Times New Roman', Times, serif;
         }
-/* Navbar */
-.navbar {
+        /* Navbar */
+        .navbar {
             background-color: #25283D;
             color: #FFFAFF;
             display: flex;
@@ -462,15 +462,18 @@
         }
         /* Search Bar */
         #myInput {
-            background-image: url('/css/searchicon.png');
-            background-position: 10px 12px;
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Magnifying_glass_icon.svg/1024px-Magnifying_glass_icon.svg.png');
+            background-position: 10px center;
             background-repeat: no-repeat;
+            background-size: 22px;
             width: 100%;
             font-size: 16px;
-            padding: 12px 20px 12px 40px;
+            padding: 12px 20px 12px 40px; /* Adjust left padding to make room for the icon */
             border: 1px solid #ddd;
             margin-bottom: 12px;
+            border-radius: 5px;
         }
+
 
         #myUL {
             list-style-type: none;
@@ -556,7 +559,7 @@
     <div class="reviews-container">
         <h3>Latest Reviews:</h3>
 
-        <input type="text" id="myInput" onkeyup="filterReviews()" placeholder="Search for names.." title="Type in a name" style="margin: auto;">
+        <input type="text" id="myInput" onkeyup="filterReviews()" placeholder="Search for reviews by name or ID.." title="Type in a name" style="width: 700px;">
 
         
         <div id="reviewsList" style="margin-top: 30px;">
