@@ -550,60 +550,50 @@
 
 
     <!-- Search Section -->
-    <section class="search-container"> 
-        <button class="random" 
-          onclick="random()" 
-          title="Random">⍰</button>
-      
-        <input type="text" 
-          id="userInp" 
-          placeholder="Search recipe..."
-          onkeypress="handleKeyPress(event)">
-      
-        <button class="search" 
-          onclick="search()" 
-          title="Search">🔎︎</button>
-    </section>
+    
 
     <!-- Reviews Section -->
     <div class="reviews-container">
         <h3>Latest Reviews:</h3>
 
-        {% for review in reviews %}
+        <input type="text" id="myInput" onkeyup="filterReviews()" placeholder="Search for names.." title="Type in a name" style="margin: auto;">
 
-        <div class="review-card">
-            <div class="review-header">
-                <img src="https://i.ibb.co/KS9VcFr/profile-pic.jpg" alt="User" class="review-avatar">
-                <div class="review-details">
-                    <strong>{{review.staff_name}}</strong>
-                    <p>Posted on {{review.dateCreated}} </p>
+        
+        <div id="reviewsList" style="margin-top: 30px;">
+           {% for review in reviews %} 
+           <div class="review-card">
+                <div class="review-header">
+                    <img src="https://i.ibb.co/KS9VcFr/profile-pic.jpg" alt="User" class="review-avatar">
+                    <div class="review-details">
+                        <strong>{{review.staff_name}}</strong>
+                        <p>Posted on {{review.dateCreated}} </p>
+                    </div>
+                    <i class="fas fa-external-link-alt"></i>
                 </div>
-                <i class="fas fa-external-link-alt"></i>
-            </div>
-            <div class="stars">
-                {% if review.starRating is not none %}
-                    {% for i in range(review.starRating|int) %}
-                        <i class="fas fa-star"></i>
-                    {% endfor %}
-                    {% for i in range(5 - review.starRating|int) %}
-                        <i class="far fa-star empty"></i>
-                    {% endfor %}
-                {% else %}
-                    {% for i in range(5) %}
-                        <i class="far fa-star empty"></i>
-                    {% endfor %}  
-                {% endif %}
-            </div>
-            
-            <div class="review-content">
-                <h4>Review for {{review.student_name}} ({{review.student_id}})</h4>
-                <p>{{review.details}}</p>
-            </div>
-            <div class="review-footer">
-                <div class="likes"><i class="fas fa-thumbs-up"></i> 1.1K</div>
-                <div class="comments"><i class="fas fa-comment"></i> 24K</div>
-                <button class="expand-btn">Expand</button>
-            </div>
+                <div class="stars">
+                    {% if review.starRating is not none %}
+                        {% for i in range(review.starRating|int) %}
+                            <i class="fas fa-star"></i>
+                        {% endfor %}
+                        {% for i in range(5 - review.starRating|int) %}
+                            <i class="far fa-star empty"></i>
+                        {% endfor %}
+                    {% else %}
+                        {% for i in range(5) %}
+                            <i class="far fa-star empty"></i>
+                        {% endfor %}  
+                    {% endif %}
+                </div>
+                
+                <div class="review-content">
+                    <h4>Review for {{review.student_name}} ({{review.student_id}})</h4>
+                    <p>{{review.details}}</p>
+                </div>
+                <div class="review-footer">
+                    <div class="likes"><i class="fas fa-thumbs-up"></i> 1.1K</div>
+                    <div class="comments"><i class="fas fa-comment"></i> 24K</div>
+                    <button class="expand-btn">Expand</button>
+                </div>
         </div>
 
         {% endfor %}
@@ -611,11 +601,8 @@
         {% if reviews|length == 0 %}
         <h4 style="text-align: center;color: white;margin-top: 30px;">No Reviews</h4>
         {% endif %}
+        </div>
     </div>
-
-
-    <!-- No Students Found Message -->
-    <h4 id="no-students">No Students Found</h4>
 
     <script>
         function searchStudents() {
@@ -693,7 +680,29 @@
                 document.removeEventListener('mousedown', hideMenu);
             }
         }
-        
+
+        function filterReviews() {
+            let input, filter, reviews, reviewCard, studentName, i, txtValue;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            reviews = document.getElementById("reviewsList").getElementsByClassName("review-card");
+
+            for (i = 0; i < reviews.length; i++) {
+                // Select the h4 element inside each review card
+                studentName = reviews[i].querySelector("h4");
+                
+                if (studentName) { // Ensure the element exists
+                    txtValue = studentName.textContent || studentName.innerText;
+
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        reviews[i].style.display = "";
+                    } else {
+                        reviews[i].style.display = "none";
+                    }
+                }
+            }
+        }
+
         btn.addEventListener('click', showMenu, false);
     </script>
 </body>
