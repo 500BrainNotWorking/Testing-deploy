@@ -142,14 +142,14 @@ def initialize():
 
   students = Student.query.all()
 
-  for student in students:
+  # for student in students:
     
-    if student:
-      print(student.ID)
-      create_karma(student.ID)
-      student.karmaID = get_karma(student.ID).karmaID
-      print(get_karma(student.ID).karmaID)
-      db.session.commit()
+  #   if student:
+  #     print(student.ID)
+  #     create_karma(student.ID)
+  #     student.karmaID = get_karma(student.ID).karmaID     
+  #     print(get_karma(student.ID).karmaID)
+  #     db.session.commit()
 
 
 @app.cli.command("nltk_test", help="Tests nltk")
