@@ -80,6 +80,69 @@ def review_search_page():
 def mainReviewPage():
   return render_template('CreateReview.html')
 
+@staff_views.route('/createReply', methods=['POST'])
+@login_required
+def createReply():
+  staffID = current_user.get_id()
+  staff = get_staff_by_id(staff_id) 
+
+  data = request.form #Depening on how the create comment form is made/designed this si subject to change, along with attribute names.
+
+  if staff:
+    commentID = data['reviewID']
+    details = data['selected-details']
+
+    comment = get_comment(commentID)
+
+    if comment:
+      newReply = create_reply(commentID=commentID, staffID=staffID, details=details, parentReplyID=None)
+      message = f"You have posted a reply to the Comment: {commentID}" #Keeping review ID in flash message for testign purpose, remove later.
+    else:
+      message = f"Comment is not found!"
+  else:
+    message = f"You are not logged in as staff and cannot post a Reply!"
+
+@staff_views.route('/viewReplies/<int:comment_id>', methods=['GET'])
+@login_required
+def view_all_replies(comment_id):
+  comment = get_comment(comment_id)
+  #user = User.query.filter_by(ID=current_user.ID).first()
+
+  replies = get_all_replies()
+
+  return render_template('', comments=comments, review=review)# Put the appropriate template here, and current_user if needed.
+
+
+@staff_views.route('/editReply/<int:reply_id>', methods=['GET'])
+@login_required
+def edit_reply(reply_id):
+  reply = get_reply(reply_id)
+  #user = User.query.filter_by(ID=current_user.ID).first()
+
+  staff_id = current_user.get_id()
+  staff = get_staff_by_id(staff_id) 
+
+  data = request.form #Depening on how the create comment form is made/designed this si subject to change, along with attribute names.
+
+  details = data['selected-details']
+
+  edit_reply(details=details, reply_id=reply_id, staff_id=staff_id)
+
+  return render_template('',current_user=current_user)# Put the appropriate template here, and current_user if needed.
+
+@staff_views.route('/deleteReply/<int:reply_id>', methods=['GET'])
+@login_required
+def delete_reply(reply_id):
+  reply = get_reply(reply_id)
+  #user = User.query.filter_by(ID=current_user.ID).first()
+
+  staff_id = current_user.get_id()
+  staff = get_staff_by_id(staff_id) 
+
+  delete_reply(reply_id=reply_id, staff_id=staff_id)
+
+  return render_template('',current_user=current_user)# Put the appropriate template here, and current_user if needed.
+
 
 @staff_views.route('/createComment', methods=['POST'])
 @login_required
