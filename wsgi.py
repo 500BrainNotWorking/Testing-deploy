@@ -115,9 +115,9 @@ def initialize():
       "I am seeking a recommnedation for a position at a company", "WebTech",
       "Web Developer", "webtech@gmail.com")
   create_accomplishment(2, False, "Permanand Mohan", "Runtime",
-                        "I placed first at runtime.", 0, "None Yet")
+                        "I placed first at runtime.", 1, "None Yet")
   create_accomplishment(2, False, "Vijayanandh Rajamanickam", "Runtime",
-                        "I placed first at runtime.", 0, "None Yet")
+                        "I placed first at runtime.", 1, "None Yet")
 
 
   staff = get_staff_by_id(7)
@@ -130,7 +130,7 @@ def initialize():
   student2 = get_student_by_UniId(816016480)
   create_review(staff, student2, 5, "Behaves very well in class!")
   student3 = get_student_by_UniId(816026834)
-  create_review(staff, student3, 5, "Behaves very well in class!")
+  create_review(staff, student3, 3, "Behaves very well in class!")
   student4 = get_student_by_UniId(816030847)
   create_review(staff, student4, 5, "Behaves very well in class!")
   create_admin(username="admin",
@@ -142,14 +142,14 @@ def initialize():
 
   students = Student.query.all()
 
-  for student in students:
+  # for student in students:
     
-    if student:
-      print(student.ID)
-      create_karma(student.ID)
-      student.karmaID = get_karma(student.ID).karmaID
-      print(get_karma(student.ID).karmaID)
-      db.session.commit()
+  #   if student:
+  #     print(student.ID)
+  #     create_karma(student.ID)
+  #     student.karmaID = get_karma(student.ID).karmaID     
+  #     print(get_karma(student.ID).karmaID)
+  #     db.session.commit()
 
 
 @app.cli.command("nltk_test", help="Tests nltk")
