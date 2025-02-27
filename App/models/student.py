@@ -98,4 +98,5 @@ class Student(User, StudentInterface):
   def update(self, rank):
       """Update the karma rank for the student"""
       self.rank = rank
+      db.session.commit()
       

@@ -448,26 +448,37 @@ def propose_achievement_post_jwt():
 def leaderboard_api():
     # Retrieve all students
     students = Student.query.all()
-    
+
     # Ensure students exist before proceeding
     if not students:
         return render_template('Leaderboard.html', students_json=[])
 
-    # Recalculate ranks based on latest karma
+    # Recalculate karma points (ignoring rank)
     calculate_ranks()
 
-    # Create a list of student JSON objects, ensuring karma data is included
+    # Convert to JSON and get karma scores
     students_json = [
         stu.to_json(stu.get_karma()) for stu in students
     ]
 
-    # Sort students by rank before sending to template
-    students_json.sort(key=lambda x: x.get('rank', float('inf')))
+    # Sort students by karma score (descending order)
+    sorted_students = sorted(students, key=lambda s: s.get_karma().points if s.get_karma() else 0, reverse=True)
 
+    # Generate ranks dynamically (1-based index)
+    ranks = list(range(1, len(sorted_students) + 1))
+
+    # Zip students and ranks together
+    students_with_ranks = list(zip(sorted_students, ranks))
+
+    # Pass it to the template
     return render_template(
         'Leaderboard.html',
-        students_json=students_json,
+        students_with_ranks=students_with_ranks
     )
+
+
+
+
 
 
 

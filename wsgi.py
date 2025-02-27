@@ -130,7 +130,7 @@ def initialize():
   student2 = get_student_by_UniId(816016480)
   create_review(staff, student2, 5, "Behaves very well in class!")
   student3 = get_student_by_UniId(816026834)
-  create_review(staff, student3, 5, "Behaves very well in class!")
+  create_review(staff, student3, 3, "Behaves very well in class!")
   student4 = get_student_by_UniId(816030847)
   create_review(staff, student4, 5, "Behaves very well in class!")
   create_admin(username="admin",
