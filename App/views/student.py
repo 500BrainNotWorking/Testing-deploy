@@ -462,7 +462,11 @@ def leaderboard_api():
     ]
 
     # Sort students by karma score (descending order)
-    sorted_students = sorted(students, key=lambda s: s.get_karma().points if s.get_karma() else 0, reverse=True)
+    sorted_students = sorted(
+        students_json,
+        key=lambda x: x['karma_history'][-1]['score'] if x['karma_history'] else 0,
+        reverse=True  # Highest karma first
+    )
 
     # Generate ranks dynamically (1-based index)
     ranks = list(range(1, len(sorted_students) + 1))
