@@ -20,19 +20,15 @@ def get_karma_student(student):
   else:
     return None
 
-
-def create_karma(studentID):
-  newKarma = Karma(points=0.0,
-                   studentID=studentID)
+def create_karma(studentID, points):
+  newKarma = Karma(points=points, studentID=studentID)
   db.session.add(newKarma)
   try:
     db.session.commit()
     return True
   except Exception as e:
-    print("[karma.create_karma] Error occurred while creating new karma: ",
-          str(e))
+    print("[karma.create_karma] Error occurred while creating new karma: ", str(e))
     return False
-
 
 def calculate_review_points(studentID):
   

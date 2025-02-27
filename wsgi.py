@@ -146,10 +146,11 @@ def initialize():
     
     if student:
       print(student.ID)
-      create_karma(student.ID)
-      student.karmaID = get_karma(student.ID).karmaID
-      print(get_karma(student.ID).karmaID)
-      db.session.commit()
+      # create_karma(student.ID)
+      # student.karmaID = get_karma(student.ID).karmaID
+      # print(get_karma(student.ID).karmaID)
+
+  db.session.commit()
 
 
 @app.cli.command("nltk_test", help="Tests nltk")
