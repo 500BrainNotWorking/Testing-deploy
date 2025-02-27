@@ -139,23 +139,25 @@ def update_review_points(studentID):
 
 
 def calculate_ranks():
+    """Assign ranks to students based on their karma points."""
     students = Student.query.all()
-    
-    # Create a list of (karma points, student ID) pairs
-    karma_list = []
-    
+    karma_data = []
+
+    # Collect student karma points
     for student in students:
-        karma = student.get_karma()
-        if karma:
-            karma_list.append((karma.points, student))
-        else:
-            karma_list.append((0, student))  # Default to 0 if no karma
-    
-    # Sort students by karma points in descending order (higher karma = better rank)
-    karma_list.sort(reverse=True, key=lambda x: x[0])
+        latest_karma = student.get_karma()
+        karma_score = latest_karma.points if latest_karma else 0.0
+        karma_data.append((student, karma_score))
+
+    # Sort students by karma points (higher points = better rank)
+    karma_data.sort(key=lambda x: x[1], reverse=True)
 
     # Assign ranks
-    for rank, (karma_points, student) in enumerate(karma_list, start=1):
-        student.rank = rank  # Store rank in student model
-        db.session.commit()  # Save changes
+    for rank, (student, points) in enumerate(karma_data, start=1):
+        student.rank = rank
+        db.session.add(student)  # Ensure rank is saved
+
+    db.session.commit()  # Save all updates at once
+    print("Ranks updated successfully!")
+
 

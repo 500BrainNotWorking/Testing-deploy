@@ -537,7 +537,7 @@
                 <tr>
                     <td>{{ student.rank if student.rank is not none else "-" }}</td>
                     <td>{{ student.firstname }} {{ student.lastname }}</td>
-                    <td>{{ student.karma_history[-1] if student.karma_history else 0 }}</td>
+                    <td>{{ student.karma_history[-1]['score'] if student.karma_history else 0 }}</td>
                     <td>
                         {% if student.rank == 1 %}
                             <img src="https://github.com/RichardR963/Info3604_Project/blob/main/images/1st.png?raw=true" alt="1st Place">
