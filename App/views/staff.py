@@ -5,7 +5,8 @@ from flask_login import login_required, current_user
 from sqlalchemy import or_
 from datetime import datetime
 
-from App.models import Student, Staff, User, IncidentReport
+from App.models import Student, Staff, User, IncidentReport, Review, Comment, Reply
+
 from App.controllers import (
     jwt_authenticate, create_incident_report, get_student_by_UniId,
     get_accomplishment, get_student_by_id, get_recommendations_staff,
@@ -15,7 +16,11 @@ from App.controllers import (
     analyze_sentiment, get_requested_accomplishments_count,
     get_recommendations_staff_count, calculate_ranks, update_total_points,
     calculate_academic_points, calculate_accomplishment_points,
-    calculate_review_points, get_all_verified, get_reviews, get_all_reviews)            #added get_reviews
+    calculate_review_points, get_all_verified, 
+    get_reviews, get_review, 
+    create_comment, get_comment, get_comment_staff,
+    get_reply, create_reply)            #added get_reviews
+
 
 staff_views = Blueprint('staff_views',
                         __name__,
@@ -75,8 +80,138 @@ def review_search_page():
 @staff_views.route('/mainReviewPage', methods=['GET'])
 def mainReviewPage():
   return render_template('CreateReview.html')
+
+@staff_views.route('/createReply', methods=['POST'])
+@login_required
+def createReply():
+  staffID = current_user.get_id()
+  staff = get_staff_by_id(staff_id) 
+
+  data = request.form #Depening on how the create comment form is made/designed this si subject to change, along with attribute names.
+
+  if staff:
+    commentID = data['reviewID']
+    details = data['selected-details']
+
+    comment = get_comment(commentID)
+
+    if comment:
+      newReply = create_reply(commentID=commentID, staffID=staffID, details=details, parentReplyID=None)
+      message = f"You have posted a reply to the Comment: {commentID}" #Keeping review ID in flash message for testign purpose, remove later.
+    else:
+      message = f"Comment is not found!"
+  else:
+    message = f"You are not logged in as staff and cannot post a Reply!"
+
+@staff_views.route('/viewReplies/<int:comment_id>', methods=['GET'])
+@login_required
+def view_all_replies(comment_id):
+  comment = get_comment(comment_id)
+  #user = User.query.filter_by(ID=current_user.ID).first()
+
+  replies = get_all_replies()
+
+  return render_template('', comments=comments, review=review)# Put the appropriate template here, and current_user if needed.
+
+
+@staff_views.route('/editReply/<int:reply_id>', methods=['GET'])
+@login_required
+def edit_reply(reply_id):
+  reply = get_reply(reply_id)
+  #user = User.query.filter_by(ID=current_user.ID).first()
+
+  staff_id = current_user.get_id()
+  staff = get_staff_by_id(staff_id) 
+
+  data = request.form #Depening on how the create comment form is made/designed this si subject to change, along with attribute names.
+
+  details = data['selected-details']
+
+  edit_reply(details=details, reply_id=reply_id, staff_id=staff_id)
+
+  return render_template('',current_user=current_user)# Put the appropriate template here, and current_user if needed.
+
+@staff_views.route('/deleteReply/<int:reply_id>', methods=['GET'])
+@login_required
+def delete_reply(reply_id):
+  reply = get_reply(reply_id)
+  #user = User.query.filter_by(ID=current_user.ID).first()
+
+  staff_id = current_user.get_id()
+  staff = get_staff_by_id(staff_id) 
+
+  delete_reply(reply_id=reply_id, staff_id=staff_id)
+
+  return render_template('',current_user=current_user)# Put the appropriate template here, and current_user if needed.
+
+
+@staff_views.route('/createComment', methods=['POST'])
+@login_required
+def createComment():
+  staffID = current_user.get_id()
+  staff = get_staff_by_id(staff_id) 
+
+  data = request.form #Depening on how the create comment form is made/designed this si subject to change, along with attribute names.
+
+  if staff:
+    reviewID = data['reviewID']
+    details = data['selected-details']
+
+    review = get_review(reviewID)
+
+    if review:
+      newComment = create_comment(reviewID=reviewID, staffID=staffID, details=details)
+      message = f"You have posted a comment on Review: {reviewID}" #Keeping review ID in flash message for testign purpose, remove later.
+    else:
+      message = f"Review is not found!"
+  else:
+    message = f"You are not logged in as staff and cannot post a Comment!"
+
+
+  return render_template('')#Put the appropriate template here
+
+@staff_views.route('/viewComments/<int:review_id>', methods=['GET'])
+@login_required
+def view_all_comments(review_id):
+  review = get_review(review_id)
+  #user = User.query.filter_by(ID=current_user.ID).first()
+
+  comments = get_all_comments()
+
+  return render_template('', comments=comments, review=review)# Put the appropriate template here, and current_user if needed.
+
+@staff_views.route('/editComment/<int:comment_id>', methods=['GET'])
+@login_required
+def edit_comment(comment_id):
+  comment = get_comment(comment_id)
+  #user = User.query.filter_by(ID=current_user.ID).first()
+
+  staff_id = current_user.get_id()
+  staff = get_staff_by_id(staff_id) 
+
+  data = request.form #Depening on how the create comment form is made/designed this si subject to change, along with attribute names.
+
+  details = data['selected-details']
+
+  edit_comment(details=details, comment_id=comment_id, staff_id=staff_id)
+
+  return render_template('',current_user=current_user)# Put the appropriate template here, and current_user if needed.
+
+@staff_views.route('/deleteComment/<int:comment_id>', methods=['GET'])
+@login_required
+def delete_comment(comment_id):
+  comment = get_comment(comment_id)
+  #user = User.query.filter_by(ID=current_user.ID).first()
+
+  staff_id = current_user.get_id()
+  staff = get_staff_by_id(staff_id) 
+
+  delete_comment(comment_id=comment_id, staff_id=staff_id)
+
+  return render_template('',current_user=current_user)# Put the appropriate template here, and current_user if needed.
   
 @staff_views.route('/createReview', methods=['POST'])
+@login_required
 def createReview():
   staff_id = current_user.get_id()
   staff = get_staff_by_id(staff_id)
@@ -493,6 +628,7 @@ def view_all_badges(studentID):
 
 
 
+
 @staff_views.route('/getMainPage', methods=['GET'])
 @login_required
 def getAllReviews():
@@ -511,3 +647,27 @@ def getAllReviews():
 
     return render_template('MainPage.html',
                            reviews=reviews)
+
+@staff_views.route('/staff-profile', methods=['GET'])
+@login_required
+def staff_profile():
+    staff_id = current_user.get_id()  # Get logged-in staff ID
+    staff = get_staff_by_id(staff_id)  # Fetch staff details
+
+    if not staff:
+        flash("Staff not found.", "error")
+        return redirect(url_for('staff_views.get_StaffHome_page'))
+
+    # Fetch reviews written by this staff member
+    reviews = Review.query.filter_by(createdByStaffID=staff_id).all()
+
+    # Create a list of student names corresponding to each review
+    student_names = []
+    for review in reviews:
+        student = get_student_by_id(review.studentID)
+        student_names.append(student.fullname if student else "Unknown Student")
+
+    return render_template('StaffProfile.html', staff=staff, reviews=reviews, student_names=student_names)
+
+
+
