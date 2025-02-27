@@ -21,6 +21,7 @@ from App.controllers import (
     create_comment, get_comment, get_comment_staff,
     get_reply, create_reply)            #added get_reviews
 
+
 staff_views = Blueprint('staff_views',
                         __name__,
                         template_folder='../templates')
@@ -624,6 +625,29 @@ def view_all_badges(studentID):
 
 
 
+
+
+
+
+@staff_views.route('/getMainPage', methods=['GET'])
+@login_required
+def getAllReviews():
+    
+    reviews = get_all_reviews()
+
+    # Attach staff name dynamically
+    for review in reviews:
+        staff = get_staff_by_id(review.createdByStaffID)  # Get Staff object
+        review.staff_name = staff.firstname + " " + staff.lastname if staff else "Unknown Staff"  # Attach fullname
+
+    for review in reviews:
+        student = get_student_by_id(review.studentID)
+        review.student_name = student.fullname if student else "Unknown Student"  # Attach fullname
+        review.student_id = student.UniId if student else "Unknown ID"
+
+    return render_template('MainPage.html',
+                           reviews=reviews)
+
 @staff_views.route('/staff-profile', methods=['GET'])
 @login_required
 def staff_profile():
@@ -644,5 +668,6 @@ def staff_profile():
         student_names.append(student.fullname if student else "Unknown Student")
 
     return render_template('StaffProfile.html', staff=staff, reviews=reviews, student_names=student_names)
+
 
 
