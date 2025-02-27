@@ -6,13 +6,10 @@ def create_review(staff, student, starRating, details):
   if starRating is None:
         return False
   
-  isPositive = True if starRating >= 3 else False  # 3-5 = positive, 0-2 = negative
   newReview = Review(staff=staff,
                      student=student,
-                     isPositive=isPositive,
                      starRating=starRating,
-                     details=details,
-                     studentSeen=False)
+                     details=details)
   db.session.add(newReview)
   try:
     db.session.commit()
@@ -89,6 +86,10 @@ def get_total_negative_review_starRating(studentID):
     total_negative = sum(review.starRating for review in reviews)
     return total_negative
 
+def get_reviews(studentID):
+  reviews = Review.query.filter_by(studentID=studentID).all()                   #added this function for staff views (by A.M.)
+  return reviews
+
 def get_review(id):
   review = Review.query.filter_by(ID=id).first()
   if review:
@@ -111,3 +112,9 @@ def get_unique_reviewers_count(studentID):
 
     # Return the count of unique reviewers
     return len(unique_reviewers)
+
+
+
+def get_all_reviews():
+  reviews = Review.query.all()
+  return reviews

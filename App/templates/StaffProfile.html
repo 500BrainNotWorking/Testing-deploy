@@ -488,15 +488,12 @@
         <!-- Profile Section -->
         <div class="profile-container">
             <img src="https://th.bing.com/th/id/OIP.ddo_V6IbnSEbnhL7HaPuJAHaHb?rs=1&pid=ImgDetMain" alt="User Profile" class="profile-image">
-            <h2>{{student.fullname}}</h2>
-            <h4 style="color: #111;">Karma: {{student.get_karma().points}}</h4>   <!--NOTE - CHANGE TO OUR PATTERN-->
-            <!-- <a href="#" class="logout-btn">Logout</a> -->   <!--TO REMOVE: For staff-->
-            <button class="review-btn">Review</button> 
+            <h2>{{staff.firstname}} {{staff.lastname}}</h2>
+            <a href="#" class="logout-btn">Logout</a>   <!--TO REMOVE: For staff-->
+            <!--<button class="review-btn">Review</button> -->
             <div class="profile-description">
-                <p class="faculty">ID Number: {{student.UniId}}</p>
-                <p class="faculty">Faculty: {{student.faculty}}</p>   <!--TO CHANGE-->
-                <p class="faculty">Degree: {{student.degree}}</p>
-                <p class="faculty">Email: {{student.email}}</p>
+                <p class="faculty">Faculty: {{staff.faculty}}</p>   <!--TO CHANGE-->
+                <p class="faculty">Email: {{staff.email}}</p>
             </div>
 
         </div>
@@ -504,37 +501,36 @@
 
         <!-- Reviews Section -->
         <div class="reviews-container">
-            <h3>{{student.fullname}}'s Reviews:</h3>
+            <h3>Reviews Made:</h3>
 
-            {% for review in reviews %}
-
+            {% for i in range(reviews|length) %}
             <div class="review-card">
                 <div class="review-header">
                     <img src="https://i.ibb.co/KS9VcFr/profile-pic.jpg" alt="User" class="review-avatar">
                     <div class="review-details">
-                        <strong>{{review.staff_name}}</strong>
-                        <p>Posted on {{review.dateCreated}} </p>
+                        <strong>{{ staff.firstname }} {{ staff.lastname }}</strong>
+                        <p>Posted on {{ reviews[i].dateCreated }} </p>
                     </div>
                     <i class="fas fa-external-link-alt"></i>
                 </div>
                 <div class="stars">
-                    {% if review.starRating is not none %}
-                        {% for i in range(review.starRating|int) %}
+                    {% if reviews[i].starRating is not none %}
+                        {% for _ in range(reviews[i].starRating|int) %}
                             <i class="fas fa-star"></i>
                         {% endfor %}
-                        {% for i in range(5 - review.starRating|int) %}
+                        {% for _ in range(5 - reviews[i].starRating|int) %}
                             <i class="far fa-star empty"></i>
                         {% endfor %}
                     {% else %}
-                        {% for i in range(5) %}
+                        {% for _ in range(5) %}
                             <i class="far fa-star empty"></i>
                         {% endfor %}  
                     {% endif %}
                 </div>
                 
                 <div class="review-content">
-                    <h4>Review for {{student.fullname}} ({{student.UniId}})</h4>
-                    <p>{{review.details}}</p>
+                    <h4>Review for {{ student_names[i] }}</h4>  <!-- Corrected to use indexed student name -->
+                    <p>{{ reviews[i].details }}</p>
                 </div>
                 <div class="review-footer">
                     <div class="likes"><i class="fas fa-thumbs-up"></i> 1.1K</div>
@@ -542,14 +538,14 @@
                     <button class="expand-btn">Expand</button>
                 </div>
             </div>
-
             {% endfor %}
 
             {% if reviews|length == 0 %}
             <h4 style="text-align: center;color: white;margin-top: 30px;">No Reviews</h4>
             {% endif %}
         </div>
-    </div>
+
+
 
     <!-- JavaScript -->
     <script>

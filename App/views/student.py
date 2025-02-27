@@ -543,7 +543,7 @@ def view_all_reviews():
   student = get_student_by_UniId(current_user.UniId)
   user = User.query.filter_by(ID=current_user.ID).first()
   if student:
-    for review in student.reviews:
+    for review in student.reviews: #Do my eyes deceive me? or are they adding the review to the database in the view??
       review.studentSeen = True
       print(review.studentSeen)
       db.session.add(review)
@@ -559,7 +559,7 @@ def view_all_badges():
   student = get_student_by_UniId(current_user.UniId)
 
   if student:
-    for badge in student.badges:
+    for badge in student.badges: #Change this as well/ delete it.
       badge.studentSeen = True
       db.session.add(badge)
       db.session.commit()

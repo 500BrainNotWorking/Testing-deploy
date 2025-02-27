@@ -6,6 +6,9 @@ from App.database import db
 def get_all_comments():
     return Comment.query.all()
 
+def get_comment_staff(createdByStaffID):
+    return Comment.query.filter_by(createdByStaffID=createdByStaffID).first()
+
 def get_comment(id):
     return Comment.query.filter_by(ID=id).first()
 
@@ -26,21 +29,28 @@ def create_comment(reviewID, staffID, details):
         return None
 
 
-def delete_comment(comment_id):
+def delete_comment(comment_id, staff_id):
     comment = get_comment(comment_id)
     if comment:
-        db.session.delete(comment)
-        db.session.commit()
+        if comment.createdByStaffID == staff_id:
+            db.session.delete(comment)
+            db.session.commit()
+        else:
+            return None
     else:
         return None
 
-def edit_comment(details, comment_id):
+def edit_comment(details, comment_id, staff_id):
     
     existing_comment = get_comment(comment_id)
     if existing_comment:
-        
-        existing_comment.details = details
-        db.session.add(existing_comment)
-        db.session.commit()
+
+        if existing_comment.createdByStaffID == staff_id:
+
+            existing_comment.details = details
+            db.session.add(existing_comment)
+            db.session.commit()
+        else:
+            return None
     else:
         return None

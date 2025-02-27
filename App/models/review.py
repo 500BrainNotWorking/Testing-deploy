@@ -71,3 +71,4 @@ class Review(db.Model):
             db.session.add(new_karma)
 
         db.session.commit()  # Save changes
+

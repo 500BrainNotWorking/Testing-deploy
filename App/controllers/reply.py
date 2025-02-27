@@ -29,21 +29,6 @@ def get_root_parent_reply(reply_id):
 def get_reply(id):
     return Reply.query.filter_by(ID=id).first()
 
-def create_reply(reviewID, staffID, details):
-    new_comment= Comment(reviewID=reviewID, staffID=staffID, details=details) 
-
-    if new_comment:
-        existing_review = Review.query.get(reviewID)
-
-        if existing_review:
-            existing_review.comments.append(new_comment)
-            db.session.add(new_comment)
-            db.session.commit()
-            return new_comment
-        else:
-            return None
-    else:
-        return None
 
 
 def create_reply(commentID, staffID, details, parentReplyID=None):
@@ -65,21 +50,26 @@ def create_reply(commentID, staffID, details, parentReplyID=None):
         return None
 
 
-def delete_reply(reply_id):
+def delete_reply(reply_id, staff_id):
     reply = get_reply(reply_id)
     if reply:
-        db.session.delete(reply)
-        db.session.commit()
+        if reply.createdByStaffID == staff_id:
+            db.session.delete(reply)
+            db.session.commit()
+        else:
+            return None
     else:
         return None
 
-def edit_reply(details, reply_id):
+def edit_reply(details, reply_id, staff_id):
     
     existing_reply = get_reply(reply_id)
     if existing_reply:
-        
-        existing_reply.details = details
-        db.session.add(existing_reply)
-        db.session.commit()
+        if existing_reply.createdByStaffID == staff_id:
+            existing_reply.details = details
+            db.session.add(existing_reply)
+            db.session.commit()
+        else:
+            return None
     else:
         return None
