@@ -5,7 +5,7 @@ from flask_login import login_required, current_user
 from sqlalchemy import or_
 from datetime import datetime
 
-from App.models import Student, Staff, User, IncidentReport, Comment, Reply
+from App.models import Student, Staff, User, IncidentReport, Review, Comment, Reply
 from App.controllers import (
     jwt_authenticate, create_incident_report, get_student_by_UniId,
     get_accomplishment, get_student_by_id, get_recommendations_staff,
