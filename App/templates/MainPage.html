@@ -502,9 +502,8 @@
     <!-- Sidenav -->
     <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="#">Home</a>
-        <a href="#">Students</a>
-        <a href="#">Staff</a>
+        <a href="/getMainPage">Home</a>
+        <a href="/leaderboard">Students</a>
         <a href="#">Create Review</a>
     </div>
 
@@ -589,7 +588,10 @@
                 </div>
                 
                 <div class="review-content">
-                    <h4>Review for {{review.student_name}} ({{review.student_id}})</h4>
+                    <a href="/getStudentProfile/{{review.student_id}}">
+                        <h4>Review for {{review.student_name}} ({{review.student_id}})</h4>
+                    </a>
+                    
                     <p>{{review.details}}</p>
                 </div>
                 <div class="review-footer">
@@ -756,6 +758,17 @@
             //  Attach Filter Function to Input Field
             document.getElementById("myInput").addEventListener("keyup", filterReviews);
         });
+
+        //for navbar
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "250px";
+            document.getElementById("main-content").style.marginLeft = "250px";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+            document.getElementById("main-content").style.marginLeft = "0";
+        }
     </script>
 </body>
 </html>
