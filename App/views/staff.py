@@ -669,7 +669,7 @@ def staff_profile():
 
     return render_template('StaffProfile.html', staff=staff, reviews=reviews, student_names=student_names)
 
-# ✅ Fix: Use a Different Function Name for the Route with an ID
+
 @staff_views.route('/staff-profile/<int:ID>', methods=['GET', 'POST'])
 @login_required
 def staff_profile_by_id(ID):

@@ -540,10 +540,7 @@
                             <a href="/staff-profile" class="more-menu-btn" role="menuitem">Profile</a>
                         </li>
                         <li class="more-menu-item" role="presentation">
-                            <button type="button" class="more-menu-btn" role="menuitem">Settings</button>
-                        </li>
-                        <li class="more-menu-item" role="presentation">
-                            <button type="button" class="more-menu-btn" role="menuitem">Logout</button>
+                            <a href="/logout" class="more-menu-btn" role="menuitem">Logout</a>
                         </li>
                     </ul>
                 </div>
@@ -568,7 +565,7 @@
                 <div class="review-header">
                     <img src="https://i.ibb.co/KS9VcFr/profile-pic.jpg" alt="User" class="review-avatar">
                     <div class="review-details">
-                        <a href="/staff-profile">
+                        <a href="/staff-profile/{{review.createdByStaffID}}">
                             <strong>{{review.staff_name}}</strong>
                         </a>
                         
