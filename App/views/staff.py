@@ -506,8 +506,8 @@ def getStudentProfile(uniID):
         calculate_review_points(student.ID)
         update_total_points(karma.karmaID)
         calculate_ranks()
-        student.update(karma.rank)
-        karma.notify()
+        # student.update(karma.rank)
+        # karma.notify()
 
     transcripts = get_transcript(student.UniId)
     numAs = get_total_As(student.UniId)
