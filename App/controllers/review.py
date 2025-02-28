@@ -2,23 +2,23 @@ from App.models import Review
 from App.database import db
 
 
-def create_review(staff, student, starRating, details):
-  if starRating is None:
-        return False
-  
-  newReview = Review(staff=staff,
-                     student=student,
-                     starRating=starRating,
-                     details=details)
-  db.session.add(newReview)
-  try:
+def create_review(staff, student, points, details):
+    # Determine if the review is positive based on points
+    isPositive = points > 0  
+
+    newReview = Review(
+        staff=staff,
+        student=student,
+        isPositive=isPositive,  # Required field
+        starRating=points,  # Assuming starRating is points
+        details=details,
+        studentSeen=False  # Defaulting to False since student hasn't seen it yet
+    )
+
+    db.session.add(newReview)
     db.session.commit()
-    return True #Will have to change this to return the actual review created, and not just true and false
-  except Exception as e:
-    print("[review.create_review] Error occurred while creating new review: ",
-          str(e))
-    db.session.rollback()
-    return False
+    return newReview
+
 
 
 def delete_review(reviewID):

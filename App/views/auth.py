@@ -37,7 +37,7 @@ def login_action():
     print("User type:", user_type)
     login_user(user)
     if (user.user_type == "staff"):
-      return redirect("/StaffHome")  # Redirect to student dashboard
+      return redirect("/getMainPage")  # Redirect to student dashboard
     elif (user.user_type == "student"):
       return redirect("/StudentHome")  # Redirect to staff dashboard
     elif (user.user_type == "admin"):
