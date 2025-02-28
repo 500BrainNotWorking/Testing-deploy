@@ -506,7 +506,9 @@
                 <div class="review-header">
                     <img src="https://i.ibb.co/KS9VcFr/profile-pic.jpg" alt="User" class="review-avatar">
                     <div class="review-details">
-                        <strong>{{ staff.firstname }} {{ staff.lastname }}</strong>
+                        <a href="/staff-profile/{{reviews[i].createdByStaffID}}">
+                            <strong>{{ staff.firstname }} {{ staff.lastname }}</strong>
+                        </a>
                         <p>Posted on {{ reviews[i].dateCreated }} </p>
                     </div>
                     <i class="fas fa-external-link-alt"></i>
@@ -527,7 +529,9 @@
                 </div>
                 
                 <div class="review-content">
-                    <h4>Review for {{ student_names[i] }}</h4>  <!-- Corrected to use indexed student name -->
+                    <a href="/getStudentProfile/{{ student_names[i].split('(')[-1][:-1] }}">
+                        <h4>Review for {{ student_names[i] }}</h4>
+                    </a>                    
                     <p>{{ reviews[i].details }}</p>
                 </div>
                 <div class="review-footer">
