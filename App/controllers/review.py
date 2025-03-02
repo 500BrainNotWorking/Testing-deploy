@@ -6,13 +6,10 @@ def create_review(staff, student, starRating, details):
   if starRating is None:
         return False
   
-  isPositive = True if starRating >= 3 else False  # 3-5 = positive, 0-2 = negative
   newReview = Review(staff=staff,
                      student=student,
-                     isPositive=isPositive,
                      starRating=starRating,
-                     details=details,
-                     studentSeen=False)
+                     details=details)
   db.session.add(newReview)
   current_karma = student.get_karma()
   if current_karma:
@@ -168,3 +165,9 @@ def get_unique_reviewers_count(studentID):
 
     # Return the count of unique reviewers
     return len(unique_reviewers)
+
+
+
+def get_all_reviews():
+  reviews = Review.query.all()
+  return reviews

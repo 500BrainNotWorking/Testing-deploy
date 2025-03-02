@@ -446,95 +446,95 @@ def propose_achievement_post_jwt():
 @student_views.route('/leaderboard', methods=['GET'])
 @login_required
 def leaderboard_api():
-  # Getting students' details from controller
-  students = get_all_students_json()
-  students = Student.query.all()
+    # Retrieve all students
+    students = Student.query.all()
 
-  #Recalculating points for each student and ranks
-  for student in students:
-    karma = get_karma(student.ID)
-    if karma:
+    # Ensure students exist before proceeding
+    if not students:
+        return render_template('Leaderboard.html', students_json=[])
 
-      calculate_academic_points(student.ID)
-      calculate_accomplishment_points(student.ID)
-      calculate_review_points(student.ID)
-      calculate_incident_points(student.ID)
-      #print("review points:" + str(karma.reviewsPoints))
-      #Points: academic (0.4),accomplishment (0,3 shared)
-      #missing points: incident , reivew
-      update_total_points(karma.karmaID)
-      #print('total karma points', karma.points)
-      #print(karma.to_json())
+    # Recalculate karma points (ignoring rank)
+    calculate_ranks()
 
-  students_json = []  # Initialize students_json list
+    # Convert to JSON and get karma scores
+    students_json = [
+        stu.to_json(stu.get_karma()) for stu in students
+    ]
 
-  # Return the students' details in JSON format
-  calculate_ranks()
-  for stu in students:
-    #print('gathering students and their karma info using student json')
-    student_info = stu.to_json(get_karma(stu.ID))
-    students_json.append(
-        student_info)  # Append each student's info to the students_json list
-    #print(students_json)
+    # Sort students by karma score (descending order)
+    sorted_students = sorted(
+        students_json,
+        key=lambda x: x['karma_history'][-1]['score'] if x['karma_history'] else 0,
+        reverse=True  # Highest karma first
+    )
 
-  # Traverse students, invoke calculate ranking for all
-  # Order object based on ranking
-  return render_template(
-      'Leaderboard.html',
-      students_json=students_json,
-  )
-  #return jsonify({'students': students_data}), 200
+    # Generate ranks dynamically (1-based index)
+    ranks = list(range(1, len(sorted_students) + 1))
+
+    # Zip students and ranks together
+    students_with_ranks = list(zip(sorted_students, ranks))
+
+    # Pass it to the template
+    return render_template(
+        'Leaderboard.html',
+        students_with_ranks=students_with_ranks
+    )
 
 
-@student_views.route('/api/leaderboard', methods=['GET'])
-@jwt_required()
-def jwt_leaderboard_api():
-  # Getting students' details from controller
-  students = get_all_students_json()
-  students = Student.query.all()
 
-  #Recalculating points for each student and ranks
-  for student in students:
-    karma = get_karma(student.ID)
-    if karma:
 
-      calculate_academic_points(student.ID)
-      calculate_accomplishment_points(student.ID)
-      calculate_review_points(student.ID)
-      calculate_incident_points(student.ID)
-      print("review points:" + str(karma.reviewsPoints))
-      #Points: academic (0.4),accomplishment (0,3 shared)
-      #missing points: incident , reivew
-      #calculate the accomplishment - incident for 0.3 shared
-      #assign review based on 1 time reivew max 5pts for 0.3
-      update_total_points(karma.karmaID)
-      print('total karma points', karma.points)
-      print(karma.to_json())
 
-  students_json = []  # Initialize students_json list
 
-  # Return the students' details in JSON format
-  calculate_ranks()
-  for stu in students:
-    print('gathering students and their karma info using student json')
-    student_info = stu.to_json(get_karma(stu.ID))
-    students_json.append(
-        student_info)  # Append each student's info to the students_json list
-    print(students_json)
 
-  # Traverse students, invoke calculate ranking for all
-  # Order object based on ranking
-  sorted_students = sorted(students_json, key=lambda x: x['karmaRank'])
-  sorted_students_json = []
+# @student_views.route('/api/leaderboard', methods=['GET'])
+# @jwt_required()
+# def jwt_leaderboard_api():
+#   # Getting students' details from controller
+#   students = get_all_students_json()
+#   students = Student.query.all()
 
-  for student in sorted_students:
-    sorted_students_json.append({
-        'name': student['username'],
-        'score': student['karmaScore'],
-        'rank': student['karmaRank']
-    })
-  return (sorted_students_json)
-  #return jsonify({'students': students_data}), 200
+#   #Recalculating points for each student and ranks
+#   for student in students:
+#     karma = get_karma(student.ID)
+#     if karma:
+
+#       calculate_academic_points(student.ID)
+#       calculate_accomplishment_points(student.ID)
+#       calculate_review_points(student.ID)
+#       calculate_incident_points(student.ID)
+#       print("review points:" + str(karma.reviewsPoints))
+#       #Points: academic (0.4),accomplishment (0,3 shared)
+#       #missing points: incident , reivew
+#       #calculate the accomplishment - incident for 0.3 shared
+#       #assign review based on 1 time reivew max 5pts for 0.3
+#       update_total_points(karma.karmaID)
+#       print('total karma points', karma.points)
+#       print(karma.to_json())
+
+#   students_json = []  # Initialize students_json list
+
+#   # Return the students' details in JSON format
+#   calculate_ranks()
+#   for stu in students:
+#     print('gathering students and their karma info using student json')
+#     student_info = stu.to_json(get_karma(stu.ID))
+#     students_json.append(
+#         student_info)  # Append each student's info to the students_json list
+#     print(students_json)
+
+#   # Traverse students, invoke calculate ranking for all
+#   # Order object based on ranking
+#   sorted_students = sorted(students_json, key=lambda x: x['karmaRank'])
+#   sorted_students_json = []
+
+#   for student in sorted_students:
+#     sorted_students_json.append({
+#         'name': student['username'],
+#         'score': student['karmaScore'],
+#         'rank': student['karmaRank']
+#     })
+#   return (sorted_students_json)
+#   #return jsonify({'students': students_data}), 200
 
 
 @student_views.route('/view-all-reviews', methods=['GET'])
@@ -543,7 +543,7 @@ def view_all_reviews():
   student = get_student_by_UniId(current_user.UniId)
   user = User.query.filter_by(ID=current_user.ID).first()
   if student:
-    for review in student.reviews:
+    for review in student.reviews: #Do my eyes deceive me? or are they adding the review to the database in the view??
       review.studentSeen = True
       print(review.studentSeen)
       db.session.add(review)
@@ -559,7 +559,7 @@ def view_all_badges():
   student = get_student_by_UniId(current_user.UniId)
 
   if student:
-    for badge in student.badges:
+    for badge in student.badges: #Change this as well/ delete it.
       badge.studentSeen = True
       db.session.add(badge)
       db.session.commit()

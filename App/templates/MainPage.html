@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Conduct Tracker - Leaderboard</title>
+    <title>Student Conduct Tracker - Student Search</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
@@ -20,15 +20,39 @@
             transition: margin-left 0.5s;
         }
 
-        /* General Styling */
-        body {
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #7C90A0;
-            transition: margin-left 0.5s;
+        /* Navbar */
+        .navbar {
+            background-color: #25283D;
+            color: #FFFAFF;
+            display: flex;
+            justify-content: left;
+            align-items: left;
+            padding: 20px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
         }
 
+        .menu-icon {
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .logo img {
+            width: 50px;
+            height: 50px;
+            margin-top: 0px;
+            margin-left: 10px;
+        }
+
+        .navbar-title {
+            padding-left: 15px;
+            padding-top: 10px;
+            font-size: 30px;
+            font-weight: bold;
+            font-family: 'Times New Roman', Times, serif;
+        }
         /* Navbar */
         .navbar {
             background-color: #25283D;
@@ -170,7 +194,7 @@
         h3 {
             color: white;
             font-size: 24px;
-            margin-bottom: 15px;
+            margin-top: 100px;
         }
 
         /* Reviews should be stacked (like mobile) */
@@ -436,33 +460,40 @@
             transform-origin: left center;
             transform: translateY(-100%);
         }
-
-
-        /* Leaderboard Table */
-        table {
-            width: 80%;
-            margin: auto;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        /* Search Bar */
+        #myInput {
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Magnifying_glass_icon.svg/1024px-Magnifying_glass_icon.svg.png');
+            background-position: 10px center;
+            background-repeat: no-repeat;
+            background-size: 22px;
+            width: 100%;
+            font-size: 16px;
+            padding: 12px 20px 12px 40px; /* Adjust left padding to make room for the icon */
+            border: 1px solid #ddd;
+            margin-bottom: 12px;
+            border-radius: 5px;
         }
 
-        th, td {
-            padding: 15px;
-            border-bottom: 1px solid #ddd;
-            text-align: center;
+
+        #myUL {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            }
+
+        #myUL li a {
+            border: 1px solid #ddd;
+            margin-top: -1px; /* Prevent double borders */
+            background-color: #f6f6f6;
+            padding: 12px;
+            text-decoration: none;
+            font-size: 18px;
+            color: black;
+            display: block
         }
 
-        th {
-            background-color: #25283D;
-            color: white;
-        }
-
-        td img {
-            width: 50px;
-            height: 50px;
+        #myUL li a:hover:not(.header) {
+             background-color: #eee;
         }
     </style>
 </head>
@@ -521,45 +552,97 @@
     </nav>
 
 
-    <!-- Main Content -->
-    <div id="main-content">
-        <table>
-            <thead>
-                <tr>
-                    <th>Rank</th>
-                    <th>Name</th>
-                    <th>Total Karma</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for student, rank in students_with_ranks %}
-                <tr>
-                    <td>{{ rank }}</td> 
-                    <td>{{ student.firstname }} {{ student.lastname }}</td>
-                    <td>{{ student.karma_history[-1]['score'] if student.karma_history else 0 }}</td>
-                    <td>
-                        {% if rank == 1 %}
-                            <img src="https://github.com/RichardR963/Info3604_Project/blob/main/images/1st.png?raw=true" alt="1st Place">
-                        {% elif rank == 2 %}
-                            <img src="https://github.com/RichardR963/Info3604_Project/blob/main/images/2nd.png?raw=true" alt="2nd Place">
-                        {% elif rank == 3 %}
-                            <img src="https://github.com/RichardR963/Info3604_Project/blob/main/images/3rd.png?raw=true" alt="3rd Place">
-                        {% else %}
-                            -
-                        {% endif %}
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-            
-            
-            
-        </table>
+    <!-- Search Section -->
+    
+
+    <!-- Reviews Section -->
+    <div class="reviews-container">
+        <h3>Latest Reviews:</h3>
+
+        <input type="text" id="myInput" onkeyup="filterReviews()" placeholder="Search for reviews by name or ID.." title="Type in a name" style="width: 700px;">
+
+        
+        <div id="reviewsList" style="margin-top: 30px;">
+           {% for review in reviews %} 
+           <div class="review-card">
+                <div class="review-header">
+                    <img src="https://i.ibb.co/KS9VcFr/profile-pic.jpg" alt="User" class="review-avatar">
+                    <div class="review-details">
+                        <strong>{{review.staff_name}}</strong>
+                        <p>Posted on {{review.dateCreated}} </p>
+                    </div>
+                    <i class="fas fa-external-link-alt"></i>
+                </div>
+                <div class="stars">
+                    {% if review.starRating is not none %}
+                        {% for i in range(review.starRating|int) %}
+                            <i class="fas fa-star"></i>
+                        {% endfor %}
+                        {% for i in range(5 - review.starRating|int) %}
+                            <i class="far fa-star empty"></i>
+                        {% endfor %}
+                    {% else %}
+                        {% for i in range(5) %}
+                            <i class="far fa-star empty"></i>
+                        {% endfor %}  
+                    {% endif %}
+                </div>
+                
+                <div class="review-content">
+                    <h4>Review for {{review.student_name}} ({{review.student_id}})</h4>
+                    <p>{{review.details}}</p>
+                </div>
+                <div class="review-footer">
+                    <div class="likes"><i class="fas fa-thumbs-up"></i> 1.1K</div>
+                    <div class="comments"><i class="fas fa-comment"></i> 24K</div>
+                    <button class="expand-btn">Expand</button>
+                </div>
+        </div>
+
+        {% endfor %}
+
+        {% if reviews|length == 0 %}
+        <h4 style="text-align: center;color: white;margin-top: 30px;">No Reviews</h4>
+        {% endif %}
+        </div>
     </div>
 
+    <script>
+        function searchStudents() {
+            const query = document.getElementById("searchQuery").value;
 
-   
+            fetch(`/searchStudent?query=${query}`)
+            .then(response => response.json())
+            .then(data => {
+                const studentList = document.getElementById("student-list");
+                const noStudentsMsg = document.getElementById("no-students");
+
+                studentList.innerHTML = ""; // Clear existing students
+
+                if (data.students.length > 0) {
+                    noStudentsMsg.style.display = "none";
+
+                    data.students.forEach(student => {
+                        const card = document.createElement("div");
+                        card.classList.add("student-card");
+                        card.innerHTML = `
+                            <h3>${student.firstname} ${student.lastname}</h3>
+                            <p><strong>Student ID:</strong> ${student.UniId}</p>
+                            <p><strong>Degree:</strong> ${student.degree ? student.degree : "Not assigned"}</p>
+                            <a href="/getStudentProfile/${student.UniId}">
+                                <button class="profile-button">View Profile</button>
+                            </a>
+                        `;
+                        studentList.appendChild(card);
+                    });
+                } else {
+                    noStudentsMsg.style.display = "block";
+                }
+            })
+            .catch(error => console.error("Error fetching students:", error));
+        }
+    </script>
+
 
     <!-- JavaScript -->
     <script>
@@ -600,9 +683,30 @@
                 document.removeEventListener('mousedown', hideMenu);
             }
         }
-        
+
+        function filterReviews() {
+            let input, filter, reviews, reviewCard, studentName, i, txtValue;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            reviews = document.getElementById("reviewsList").getElementsByClassName("review-card");
+
+            for (i = 0; i < reviews.length; i++) {
+                // Select the h4 element inside each review card
+                studentName = reviews[i].querySelector("h4");
+                
+                if (studentName) { // Ensure the element exists
+                    txtValue = studentName.textContent || studentName.innerText;
+
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        reviews[i].style.display = "";
+                    } else {
+                        reviews[i].style.display = "none";
+                    }
+                }
+            }
+        }
+
         btn.addEventListener('click', showMenu, false);
     </script>
-
 </body>
 </html>
