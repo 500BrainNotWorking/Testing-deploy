@@ -19,7 +19,7 @@ from App.controllers import (
     calculate_review_points, get_all_verified, 
     get_reviews, get_review, 
     create_comment, get_comment, get_comment_staff,
-    get_reply, create_reply)            #added get_reviews
+    get_reply, create_reply, get_all_reviews)            #added get_reviews
 
 
 staff_views = Blueprint('staff_views',
@@ -506,8 +506,8 @@ def getStudentProfile(uniID):
         calculate_review_points(student.ID)
         update_total_points(karma.karmaID)
         calculate_ranks()
-        student.update(karma.rank)
-        karma.notify()
+        # student.update(karma.rank)
+        # karma.notify()
 
     transcripts = get_transcript(student.UniId)
     numAs = get_total_As(student.UniId)
@@ -661,11 +661,39 @@ def staff_profile():
     # Fetch reviews written by this staff member
     reviews = Review.query.filter_by(createdByStaffID=staff_id).all()
 
-    # Create a list of student names corresponding to each review
+    # Create a list of formatted student names corresponding to each review
     student_names = []
     for review in reviews:
         student = get_student_by_id(review.studentID)
-        student_names.append(student.fullname if student else "Unknown Student")
+        if student:
+            student_names.append(f"{student.fullname} ({student.UniId})")
+        else:
+            student_names.append("Unknown Student")
+
+    return render_template('StaffProfile.html', staff=staff, reviews=reviews, student_names=student_names)
+
+
+
+@staff_views.route('/staff-profile/<int:ID>', methods=['GET', 'POST'])
+@login_required
+def staff_profile_by_id(ID):
+    staff = get_staff_by_id(ID)  # Fetch staff details
+
+    if not staff:
+        flash("Staff not found.", "error")
+        return redirect(url_for('staff_views.get_StaffHome_page'))
+
+    # Fetch reviews written by this staff member
+    reviews = Review.query.filter_by(createdByStaffID=ID).all()
+
+    # Create a list of formatted student names corresponding to each review
+    student_names = []
+    for review in reviews:
+        student = get_student_by_id(review.studentID)
+        if student:
+            student_names.append(f"{student.fullname} ({student.UniId})")
+        else:
+            student_names.append("Unknown Student")
 
     return render_template('StaffProfile.html', staff=staff, reviews=reviews, student_names=student_names)
 
