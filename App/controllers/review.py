@@ -20,12 +20,8 @@ def create_review(staff, student, starRating, details):
   db.session.add(newKarma)
   try:
     db.session.commit()
-    return True #Will have to change this to return the actual review created, and not just true and false
-  except Exception as e:
-    print("[review.create_review] Error occurred while creating new review: ",
-          str(e))
-    db.session.rollback()
-    return False
+    return newReview
+
 
 
 def delete_review(reviewID):
