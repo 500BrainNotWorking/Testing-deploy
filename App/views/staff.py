@@ -210,42 +210,50 @@ def delete_comment(comment_id):
 
   return render_template('',current_user=current_user)# Put the appropriate template here, and current_user if needed.
   
+from flask import flash, redirect, url_for, render_template
+
 @staff_views.route('/createReview', methods=['POST'])
 @login_required
 def createReview():
-  staff_id = current_user.get_id()
-  staff = get_staff_by_id(staff_id)
+    staff_id = current_user.get_id()
+    staff = get_staff_by_id(staff_id)
 
-  data = request.form
-  studentID = data['studentID']
-  studentName = data['name']
-  points = int(data['points'])
-  print("Start points:", points)
-  num = data['num']
-  personalReview = data['manual-review']
-  details = data['selected-details']
-  firstname, lastname = studentName.split(' ')
-  student = get_student_by_UniId(studentID)
+    data = request.form
+    studentID = data['studentID']
+    studentName = data['name']
+    points = int(data['points'])
+    num = data['num']
+    personalReview = data['manual-review']
+    details = data['selected-details']
 
-  if personalReview:
-    details += f"{personalReview}"
-    # nltk_points = analyze_sentiment(personalReview)
-    # rounded_nltk_points = round(float(nltk_points))
-    points += int(data['starRating'])
-    print("Final points:", points)
+    # Ensure studentName is valid before splitting
+    if ' ' in studentName:
+        firstname, lastname = studentName.split(' ', 1)
+    else:
+        firstname, lastname = studentName, ""
 
-  if points > 0:
-    positive = True
-  else:
-    positive = False
+    student = get_student_by_UniId(studentID)
 
-  if student:
-    review = create_review(staff, student, points, details)
-    message = f"You have created a review on Student: {studentName}"
-    return render_template('Stafflandingpage.html', message=message)
-  else:
-    message = f"Error creating review on Student: {studentName}"
-    return render_template('Stafflandingpage.html', message=message)
+    if personalReview:
+        details += f"{personalReview}"
+        points += int(data.get('starRating', 0))  # Ensure default value if missing
+
+    positive = points > 0  # Determine review positivity
+
+    if student:
+        review = create_review(staff, student, points, details)
+        flash(f"Successfully created a review for {studentName}!", "success")
+    else:
+        flash(f"Error creating review for {studentName}. Please check student details.", "error")
+
+    return redirect(url_for('staff_views.create_review_page'))  # Redirect to the create review page
+
+
+@staff_views.route('/createReviewPage', methods=['GET'])
+@login_required
+def create_review_page():
+    return render_template('CreateReview.html')
+
 
 
 @staff_views.route('/newIncidentReport', methods=['POST'])
