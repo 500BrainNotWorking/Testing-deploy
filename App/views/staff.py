@@ -19,7 +19,7 @@ from App.controllers import (
     calculate_review_points, get_all_verified, 
     get_reviews, get_review, 
     create_comment, get_comment, get_comment_staff,
-    get_reply, create_reply, get_all_reviews)            #added get_reviews
+    get_reply, create_reply, get_all_reviews, create_staff)            #added get_reviews
 
 
 staff_views = Blueprint('staff_views',
@@ -699,3 +699,28 @@ def staff_profile_by_id(ID):
 
 
 
+
+@staff_views.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        firstname = request.form['firstname']
+        lastname = request.form['lastname']
+        faculty = request.form['faculty']
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+        confirm_password = request.form['confirm_password']
+
+        if password != confirm_password:
+            return render_template('SignUp.html', message="Passwords do not match!")
+
+        # Save user to the database
+        create_staff(
+            firstname=firstname, lastname=lastname,
+            faculty=faculty, username=username,
+            email=email, password=password
+        )
+
+        return render_template('login.html') # Redirect to login after signup
+
+    return render_template('SignUp.html')
