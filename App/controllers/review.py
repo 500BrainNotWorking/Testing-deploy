@@ -1,21 +1,24 @@
-from App.models import Review
+from App.models import Review, Karma
 from App.database import db
+from .student import get_student_by_id
 
-
-def create_review(staff, student, points, details):
-    # Determine if the review is positive based on points
-    isPositive = points > 0  
-
-    newReview = Review(
-        staff=staff,
-        student=student,
-        isPositive=isPositive,  # Required field
-        starRating=points,  # Assuming starRating is points
-        details=details,
-        studentSeen=False  # Defaulting to False since student hasn't seen it yet
-    )
-
-    db.session.add(newReview)
+def create_review(staff, student, starRating, details):
+  if starRating is None:
+        return False
+  
+  newReview = Review(staff=staff,
+                     student=student,
+                     starRating=starRating,
+                     details=details)
+  db.session.add(newReview)
+  current_karma = student.get_karma()
+  if current_karma:
+    new_karma_points = current_karma.points + starRating
+  else:
+     new_karma_points = starRating
+  newKarma = Karma(new_karma_points, student.ID)
+  db.session.add(newKarma)
+  try:
     db.session.commit()
     return newReview
 
@@ -35,8 +38,54 @@ def delete_review(reviewID):
       return False
   else:
     return False
+  
+def edit_review(reviewID, starRating, details):
+  review = get_review(reviewID)
+  if review:
+    review.details = details
+    review.starRating = starRating
+    try:
+      db.session.commit()
+    except Exception as e:
+      print("Could not edit review", str(e))
+      db.session.rollback()
 
+def get_reviews_for_student(student_id):
+  student = get_student_by_id(student_id)
+  if student:
+    return student.reviews
+  return None
 
+def get_recent_reviews(top):
+  reviews = Review.query.order_by(Review.dateCreated.desc()).limit(top).all()
+  return reviews
+
+def vote(review_id):
+  review = get_review(review_id)
+  if review:
+    student = get_student_by_id(review.studentID)
+    current_karma = student.get_karma()
+    new_karma_points = current_karma + review.starRating * ((review.likes - review.dislikes) / (4 * (review.likes + review.dislikes)))
+    newKarma = Karma(new_karma_points, student.ID)
+  db.session.add(newKarma)
+  try:
+    db.session.commit()
+  except Exception as e:
+    print("[review.create_review] Error occurred while creating new review: ", str(e))
+    db.session.rollback()
+
+def like(review_id):
+  review = get_review(review_id)
+  if review:
+    review.likes += 1
+    vote(review_id)
+
+def dislike(review_id):
+  review = get_review(review_id)
+  if review:
+    review.dislikes += 1
+    vote(review_id)
+  
 def calculate_points_upvote(review):
   review.starRating *= 1.1  # multiplier can be changed accordingly
 

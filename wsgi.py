@@ -144,6 +144,7 @@ def initialize():
 
   # for student in students:
     
+
   #   if student:
   #     print(student.ID)
   #     create_karma(student.ID)
