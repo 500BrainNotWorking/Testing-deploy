@@ -228,10 +228,10 @@ def createReview():
   student = get_student_by_UniId(studentID)
 
   if personalReview:
-    details += f"{num}. {personalReview}"
-    nltk_points = analyze_sentiment(personalReview)
-    rounded_nltk_points = round(float(nltk_points))
-    points += int(rounded_nltk_points)
+    details += f"{personalReview}"
+    # nltk_points = analyze_sentiment(personalReview)
+    # rounded_nltk_points = round(float(nltk_points))
+    points += int(data['starRating'])
     print("Final points:", points)
 
   if points > 0:
