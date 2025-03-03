@@ -182,19 +182,546 @@
           margin-left: 140px;
       }
     </style>
+    <style>
+        /* General Styling */
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #7C90A0;
+            transition: margin-left 0.5s;
+        }
+
+        a {
+            text-decoration: none;
+            color: black;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: #25283D;
+            color: #FFFAFF;
+            display: flex;
+            justify-content: left;
+            align-items: left;
+            padding: 20px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .menu-icon {
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .logo img {
+            width: 50px;
+            height: 50px;
+            margin-top: 0px;
+            margin-left: 10px;
+        }
+
+        .navbar-title {
+            padding-left: 15px;
+            padding-top: 10px;
+            font-size: 30px;
+            font-weight: bold;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        /* Navbar */
+        .navbar {
+            background-color: #25283D;
+            color: #FFFAFF;
+            display: flex;
+            justify-content: left;
+            align-items: left;
+            padding: 20px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .menu-icon {
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .logo img {
+            width: 50px;
+            height: 50px;
+            margin-top: 0px;
+            margin-left: 10px;
+        }
+
+        .navbar-title {
+            padding-left: 15px;
+            padding-top: 10px;
+            font-size: 30px;
+            font-weight: bold;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        .profile-pic img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        /* Sidenav Styles */
+        .sidenav {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1001;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+
+        .sidenav a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 20px;
+            color: #f1f1f1;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .sidenav a:hover {
+            color: #f1f1f1;
+        }
+
+        .sidenav .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+            cursor: pointer;
+        }
+
+        #main-content {
+            margin-top: 80px;
+            transition: margin-left 0.5s;
+            padding: 16px;
+        }
+
+        /* Profile Section */
+        .profile-container {
+            color: black;
+            text-align: center;
+            background-color: #FFFAFF;
+            padding: 30px;
+            border-radius: 10px;
+            width: 60%;
+            margin: 5px auto;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-description {
+            text-align: left;
+            background-color: #FFFAFF;
+            padding: 0px;
+            border-radius: 10px;
+            width: 100%;
+            margin-top: 30px;
+        }
+
+        .profile-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+        }
+
+        .logout-btn {
+            display: block;
+            margin-top: 10px;
+            color: red;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .review-btn {
+            background-color: #355834;
+            border: none;
+            padding: 10px 15px;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            color: white;
+        }
+
+        .faculty {
+            font-style: italic;
+            margin-top: 10px;
+        }
+
+        /* Reviews Section */
+        .reviews-container {
+            width: 50%;
+            margin: 20px auto;
+        }
+
+        h3 {
+            color: white;
+            font-size: 24px;
+            margin-top: 100px;
+        }
+
+        /* Reviews should be stacked (like mobile) */
+        .review-card {
+            background-color: #FFFAFF;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+            color: black;
+            margin-bottom: 20px;
+        }
+
+        /* Review Header */
+        .review-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .review-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .review-details {
+            flex-grow: 1;
+        }
+
+        .review-details p {
+            margin: 2px 0;
+            font-size: 14px;
+        }
+
+        /* Review Content */
+        .review-content h4 {
+            margin: 10px 0 5px;
+        }
+
+        .review-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .likes, .comments {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .expand-btn {
+            background-color: transparent;
+            border: 1px solid white;
+            color: white;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        /* Hide scrollbar for Webkit browsers */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+
+        /* Dropdown Menu for Profile */
+        .cd__main{
+            position: relative;
+            min-height: 640px;
+        }
+        .container {
+            position:fixed;
+            top: 6%;                            /* adjust the distance from top */
+            left: 96%;                          /* adjusted to have at the right! */
+            margin-right: -50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        
+        .more-menu {
+            width: 100px;
+        }
+        
+        /* More Button / Dropdown Menu */
+        
+        .more-btn,
+        .more-menu-btn {
+            background: none;
+            border: 0 none;
+            line-height: normal;
+            overflow: visible;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            width: 100%;
+            text-align: left;
+            outline: none;
+            cursor: pointer;
+        }
+        
+        .more-dot {
+            background-color: #aab8c2;
+            margin: 0 auto;
+            display: inline-block;
+            width: 7px;
+            height: 7px;
+            margin-right: 1px;
+            border-radius: 50%;
+            transition: background-color 0.3s;
+        }
+        
+        .more-menu {
+            position: absolute;
+            top: 100%;
+            z-index: 900;
+            float: left;
+            padding: 10px 0;
+            margin-top: 9px;
+            background-color: #fff;
+            border: 1px solid #ccd8e0;
+            border-radius: 4px;
+            box-shadow: 1px 1px 3px rgba(0,0,0,0.25);
+            opacity: 0;
+            transform: translate(0, 15px) scale(.95);
+            transition: transform 0.1s ease-out, opacity 0.1s ease-out;
+            pointer-events: none;
+        }
+        
+        .more-menu-caret {
+            position: absolute;
+            top: -10px;
+            left: 12px;
+            width: 18px;
+            height: 10px;
+            float: left;
+            overflow: hidden;
+        }
+        
+        .more-menu-caret-outer,
+        .more-menu-caret-inner {
+            position: absolute;
+            display: inline-block;
+            margin-left: -1px;
+            font-size: 0;
+            line-height: 1;
+        }
+        
+        .more-menu-caret-outer {
+            border-bottom: 10px solid #c1d0da;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            height: auto;
+            left: 0;
+            top: 0;
+            width: auto;    
+        }
+        
+        .more-menu-caret-inner {
+            top: 1px;
+            left: 1px;
+            border-left: 9px solid transparent;
+            border-right: 9px solid transparent;
+            border-bottom: 9px solid #fff;
+        }
+        
+        .more-menu-items {
+            margin: 0;
+            list-style: none;
+            padding: 0;
+        }
+        
+        .more-menu-item {
+            display: block;
+        }
+        
+        .more-menu-btn {
+            min-width: 100%;
+            color: #66757f;
+            cursor: pointer;
+            display: block;
+            font-size: 13px;
+            line-height: 18px;
+            padding: 5px 20px;
+            position: relative;
+            white-space: nowrap;
+        }
+        
+        .more-menu-item:hover {
+            background-color: #489fe5;
+        }
+        
+        .more-menu-item:hover .more-menu-btn {
+            color: #fff;
+        }
+        
+        .more-btn:hover .more-dot,
+        .show-more-menu .more-dot {
+            background-color: #516471;
+        }
+        
+        .show-more-menu .more-menu {
+            opacity: 1;
+            transform: translate(0, 0) scale(1);
+            pointer-events: auto;
+        }
+
+        /*For star rating */
+        .stars {
+            font-size: 24px;
+            color: gold;
+        }
+        .empty {
+            color: lightgray;
+        }
+
+        /*For hamburger Menu*/
+        .slide{
+            margin-top: 13px;
+        }
+        .burger {
+            position: relative;
+            width: 40px;
+            height: 30px;
+            background: transparent;
+            cursor: pointer;
+            display: block;
+            padding-right: 5px;
+        }
+
+        .burger input {
+            display: none;
+        }
+
+        .burger span {
+            display: block;
+            position: absolute;
+            height: 4px;
+            width: 100%;
+            background: #FFFAFF;
+            border-radius: 9px;
+            opacity: 1;
+            left: 0;
+            transform: rotate(0deg);
+            transition: .25s ease-in-out;
+        }
+
+        .burger span:nth-of-type(1) {
+            top: 0px;
+            transform-origin: left center;
+        }
+
+        .burger span:nth-of-type(2) {
+            top: 50%;
+            transform: translateY(-50%);
+            transform-origin: left center;
+        }
+
+        .burger span:nth-of-type(3) {
+            top: 100%;
+            transform-origin: left center;
+            transform: translateY(-100%);
+        }
+        /* Search Bar */
+        #myInput {
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Magnifying_glass_icon.svg/1024px-Magnifying_glass_icon.svg.png');
+            background-position: 10px center;
+            background-repeat: no-repeat;
+            background-size: 22px;
+            width: 100%;
+            font-size: 16px;
+            padding: 12px 20px 12px 40px; /* Adjust left padding to make room for the icon */
+            border: 1px solid #ddd;
+            margin-bottom: 12px;
+            border-radius: 5px;
+        }
+
+
+        #myUL {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            }
+
+        #myUL li a {
+            border: 1px solid #ddd;
+            margin-top: -1px; /* Prevent double borders */
+            background-color: #f6f6f6;
+            padding: 12px;
+            text-decoration: none;
+            font-size: 18px;
+            color: black;
+            display: block
+        }
+
+        #myUL li a:hover:not(.header) {
+             background-color: #eee;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <h1>UWI</h1>
+        <!-- Sidenav -->
+        <div id="mySidenav" class="sidenav">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <a href="/getMainPage">Home</a>
+            <a href="/leaderboard">Students</a>
+            <a href="#">Create Review</a>
         </div>
-        <div class="logo2"><h2>Student Conduct Tracker</h2></div>
-        <ul class="nav-bar">
-            <li><a href="/staffhome">Home</a></li>
-            <li><a href="/logout">Logout</a></li>
-        </ul>
-    </header>
-
+    
+        <!-- Navbar -->
+        <nav class="navbar">
+            <!-- From Uiverse.io by Cevorob --> 
+            <div class="slide">
+                <label class="burger" onclick="openNav()" for="burger">
+                    <input type="checkbox" id="burger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </label>
+            </div>
+            <div class="logo">
+                <img src="/static/logo.png" alt="Profile">
+            </div>
+            <div class="navbar-title">Student Conduct Tracker</div>
+            <!-- Profile Options -->
+            <div class="container">
+                <div class="more">
+                    <div class="profile-pic more-btn">
+                        <img src="https://i.ibb.co/KS9VcFr/profile-pic.jpg" alt="Profile">
+                    </div>
+                    
+                    <div class="more-menu">
+                        <div class="more-menu-caret">
+                            <div class="more-menu-caret-outer"></div>
+                            <div class="more-menu-caret-inner"></div>
+                        </div>
+                        <ul class="more-menu-items" tabindex="-1" role="menu" aria-labelledby="more-btn" aria-hidden="true">
+                            <li class="more-menu-item" role="presentation">
+                                <a href="/staff-profile" class="more-menu-btn" role="menuitem">Profile</a>
+                            </li>
+                            <li class="more-menu-item" role="presentation">
+                                <a href="/logout" class="more-menu-btn" role="menuitem">Logout</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
     <div class="recommendation-form">
       <img src=" https://github.com/RichardR963/Info3604_Project/blob/main/images/CR.png?raw=true" alt="Create Review">
         <h2>Student Review Survey</h2>
@@ -202,119 +729,17 @@
         <form id="review-form" action="/createReview" method="post">
             <input type="text" id="studentID" name="studentID" placeholder="Student ID" required oninput="fetchStudentName()">
           <input type="text" id="name" name="name" placeholder="Student Name" required>
-            <div class="reviewStuff">
-            <div class="positive">
-              <h3 class="heads">Positive</h3>
-            <div class="dropdown">
-                <span>Leadership</span>
-                <div class="dropdown-content">
-                    <a href="#" data-value="4">Demonstrating leadership skills </a>
-                    <a href="#" data-value="4">Being a positive role model for peers </a>
-                    <a href="#" data-value="3">Demonstrating resilience in the face of challenges </a>
-                </div>
-            </div>
-
-            <div class="dropdown">
-                <span>Respect</span>
-                <div class="dropdown-content">
-                    <a href="#" data-value="3">Respecting diverse viewpoints </a>
-                    <a href="#" data-value="3">Showing appreciation for others' efforts </a>
-                    <a href="#" data-value="3"> Demonstrating empathy towards peers  </a>
-                    <a href="#" data-value="3">Demonstrating self-discipline and self-control </a>
-                    <a href="#" data-value="5">Demonstrating a growth mindset towards learning and improvement</a>
-                    <a href="#" data-value="1">Demonstrating good sportsmanship</a>
-                </div>
-            </div>
-
-            <div class="dropdown">
-                <span>Punctuality</span>
-                <div class="dropdown-content">
-                    <a href="#" data-value="3">Consistently meeting deadlines </a>
-                    <a href="#" data-value="3">Being consistently late or frequently absent </a>
-                    <a href="#" data-value="5">Showing initiative in seeking additional learning opportunities </a>
-                    <a href="#" data-value="4">Showing enthusiasm for learning </a>
-                </div>
-            </div>
-
-            <div class="dropdown">
-                <span>Participation</span>
-                <div class="dropdown-content">
-                    <a href="#" data-value="3">Active participation in class discussions</a>
-                    <a href="#" data-value="2">Actively engaging in extracurricular activities</a>
-                    <a href="#" data-value="4">Actively listening to classmates and teachers</a>
-                    <a href="#" data-value="2">Showing curiosity and asking questions</a>
-                    <a href="#" data-value="2">Seeking help when needed</a>
-                </div>
-            </div>
-
-            <div class="dropdown">
-                <span>Teamwork</span>
-                <div class="dropdown-content">
-                    <a href="#" data-value="3">Contribution to group projects and activities</a>
-                    <a href="#" data-value="3">Willingness to help classmates</a>
-                </div>
-            </div>
-            </div>
-            <div class="negative">
-              <h3 class="heads">Negative</h3>
-              <div class="dropdown">
-                  <span>Disruption</span>
-                  <div class="dropdown-content">
-                      <a href="#" data-value="-3">Disrupting class by talking out of turn </a>
-                      <a href="#" data-value="-3">Making disruptive noises during class </a>
-                      <a href="#" data-value="-2">Creating distractions during class </a>
-                  </div>
-              </div>
-
-              <div class="dropdown">
-                  <span>Attendance and Preparedness</span>
-                  <div class="dropdown-content">
-                      <a href="#" data-value="-3">Being consistently late or frequently absent</a>
-                      <a href="#" data-value="-1">Being unprepared for class or failing to bring necessary materials</a>
-                  </div>
-              </div>
-
-              <div class="dropdown">
-                  <span>Respect for Authority and Rules</span>
-                  <div class="dropdown-content">
-                      <a href="#" data-value="-3">Using electronic devices inappropriately during class </a>
-                      <a href="#" data-value="-3">Displaying defiance towards authority figures </a>
-                      <a href="#" data-value="-3">Refusing to follow instructions or complete assignments </a>
-                      <a href="#" data-value="-3">Showing disrespect towards school property </a>
-                      <a href="#" data-value="-4">Using inappropriate language or gestures </a>
-                      <a href="#" data-value="-2">Engaging in gossip or spreading rumors </a>
-                      <a href="#" data-value="-2">Exhibiting a lack of remorse for negative behavior</a>
-                      <a href="#" data-value="-3">Being uncooperative during group activities or projects</a>
-                  </div>
-              </div>
-
-              <div class="dropdown">
-                  <span>Interpersonal Behavior</span>
-                  <div class="dropdown-content">
-                      <a href="#" data-value="-5">Engaging in disrespectful behavior towards peers or teachers</a>
-                      <a href="#" data-value="-5">Exhibiting bullying behavior towards peers</a>
-                      <a href="#" data-value="-5">Engaging in cheating or dishonest behavior</a>
-                      <a href="#" data-value="-4">Exhibiting aggressive behavior towards peers </a>
-                      <a href="#" data-value="-3">Engaging in behavior that poses a safety risk to oneself or others </a>
-                      <a href="#" data-value="-3">Exhibiting a lack of empathy towards others</a>
-                      <a href="#" data-value="-4">Exhibiting a negative attitude towards learning or assignments </a>
-                  </div>
-              </div>
-            </div>
-              </div>
+            
           <input type="hidden" id="num" name="num" value="0">
             <input type="hidden" id="points" name="points" value="0">
             <input type="hidden" id="details" name="details" value="">
 
-          <button id="create-review-btn" type="button">Create Personal Review</button>
-
 
             <h3 id="pr" style="display: none;">Personal Review</h3>
-            <textarea name="manual-review" id="manual-review" placeholder="Personal Review" style="display: none;"></textarea>
+            <textarea name="manual-review" id="manual-review" placeholder="Personal Review"></textarea>
 
-          <h3 class="sr">Selected Reviews</h3>
           
-            <textarea name="selected-details" id="selected-details" placeholder="Selected Reviews"></textarea>
+            <textarea name="selected-details" id="selected-details" placeholder="Selected Reviews" style="display: none;"></textarea>
 
             <button type="submit">Submit</button>
         </form>
@@ -407,5 +832,130 @@
           pr.style.display = 'block';
       });
     </script>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var el = document.querySelector('.more');
+        var btn = el.querySelector('.more-btn');
+        var menu = el.querySelector('.more-menu');
+        var visible = false;
+
+        //  Function to Show Menu
+        function showMenu(e) {
+            e.preventDefault();
+            if (!visible) {
+                visible = true;
+                el.classList.add('show-more-menu');
+                menu.setAttribute('aria-hidden', false);
+                document.addEventListener('mousedown', hideMenu, false);
+            }
+        }
+
+        //  Function to Hide Menu When Clicking Outside
+        function hideMenu(e) {
+            if (btn.contains(e.target) || menu.contains(e.target)) {
+                return; // Don't close if clicking inside the menu
+            }
+            if (visible) {
+                visible = false;
+                el.classList.remove('show-more-menu');
+                menu.setAttribute('aria-hidden', true);
+                document.removeEventListener('mousedown', hideMenu);
+            }
+        }
+
+        // Ensure Click Works for Profile Link
+        document.querySelector(".more-menu a").addEventListener("click", function () {
+            console.log("Profile link clicked! Navigating...");
+            document.querySelector('.more-menu').classList.remove('show-more-menu');
+            window.location.href = "/staff-profile";
+        });
+
+        btn.addEventListener('click', showMenu, false);
+
+        //  Function to Open Sidebar Menu
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "250px";
+            document.getElementById("main-content").style.marginLeft = "250px";
+        }
+
+        //  Function to Close Sidebar Menu
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+            document.getElementById("main-content").style.marginLeft = "0";
+        }
+
+        // Function to Filter Reviews in Search Bar
+        function filterReviews() {
+            let input, filter, reviews, studentName, i, txtValue;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            reviews = document.getElementById("reviewsList").getElementsByClassName("review-card");
+
+            for (i = 0; i < reviews.length; i++) {
+                studentName = reviews[i].querySelector("h4");
+                
+                if (studentName) {
+                    txtValue = studentName.textContent || studentName.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        reviews[i].style.display = "";
+                    } else {
+                        reviews[i].style.display = "none";
+                    }
+                }
+            }
+        }
+
+        //  Function to Search for Students
+        function searchStudents() {
+            const query = document.getElementById("searchQuery").value;
+
+            fetch(`/searchStudent?query=${query}`)
+            .then(response => response.json())
+            .then(data => {
+                const studentList = document.getElementById("student-list");
+                const noStudentsMsg = document.getElementById("no-students");
+
+                studentList.innerHTML = ""; // Clear existing students
+
+                if (data.students.length > 0) {
+                    noStudentsMsg.style.display = "none";
+
+                    data.students.forEach(student => {
+                        const card = document.createElement("div");
+                        card.classList.add("student-card");
+                        card.innerHTML = `
+                            <h3>${student.firstname} ${student.lastname}</h3>
+                            <p><strong>Student ID:</strong> ${student.UniId}</p>
+                            <p><strong>Degree:</strong> ${student.degree ? student.degree : "Not assigned"}</p>
+                            <a href="/getStudentProfile/${student.UniId}">
+                                <button class="profile-button">View Profile</button>
+                            </a>
+                        `;
+                        studentList.appendChild(card);
+                    });
+                } else {
+                    noStudentsMsg.style.display = "block";
+                }
+            })
+            .catch(error => console.error("Error fetching students:", error));
+        }
+
+        //  Attach Filter Function to Input Field
+        document.getElementById("myInput").addEventListener("keyup", filterReviews);
+    });
+
+    //for navbar
+    function openNav() {
+        document.getElementById("mySidenav").style.width = "250px";
+        document.getElementById("main-content").style.marginLeft = "250px";
+    }
+
+    function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+        document.getElementById("main-content").style.marginLeft = "0";
+    }
+</script>
 </body>
 </html>
