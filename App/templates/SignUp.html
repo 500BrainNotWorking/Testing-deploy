@@ -16,20 +16,22 @@
     }
 
     .signup-card {
-        position:fixed;
+        position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
         width: 450px;
-        height: auto; /* Allow dynamic height based on content */
+        height:600px;
+        max-height: calc(100vh); /* Ensure it does not exceed the screen height */
+        overflow-y: auto; /* Allows scrolling if necessary */
         background-color: #FFFAFF;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         padding: 25px;
         animation: borderAnimation 3s infinite;
-        margin-top: 60px;
-        margin-bottom: 20px;
+        bottom: 20px; /* Ensures the card does not go lower than 20px from the bottom */
     }
+
 
     @keyframes borderAnimation {
         0% { box-shadow: 0 0 0 0px #051d3c; }
@@ -128,6 +130,7 @@
     .nav-bar {
         list-style: none;
         display: flex;
+        position: fixed;
         padding: 10px 20px;
         background-color: #25283D;
         border-bottom-left-radius: 40px;
@@ -265,8 +268,8 @@
 }
 </style>
 <div class="loginpage">
-    <img src="https://github.com/RichardR963/Info3604_Project/blob/main/images/LoginPage.png?raw=true" alt="Description" class="loginpage-img">
-    <img src="https://github.com/RichardR963/Info3604_Project/blob/main/images/LoginPage.png?raw=true" alt="Description" class="loginpage-img2">
+    <img src="https://github.com/RichardR963/Info3604_Project/blob/main/images/LoginPage.png?raw=true" alt="Description" class="loginpage-img" style="position: fixed;">
+    <img src="https://github.com/RichardR963/Info3604_Project/blob/main/images/LoginPage.png?raw=true" alt="Description" class="loginpage-img2" style="position: fixed;">
 <div class="signup-card">
     <div class="signup-header">
         <h4>Sign Up</h4>
@@ -294,7 +297,8 @@
         <p>Confirm Password</p>
         <input name="confirm_password" id="confirm_password" type="password" placeholder="Confirm Password" required>
     
-        <input type="submit" class="btn" value="Sign Up">
+
+        <input type="submit" class="btn" style="background-color: #3E92CC;text-align: center;padding:0;" value="Sign Up">
     </form>
     
 
