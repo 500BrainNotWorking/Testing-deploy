@@ -1,11 +1,97 @@
 {% extends "LoginLayout.html" %}
-{% block title %}Login Page{% endblock %}
+{% block title %}Signup Page{% endblock %}
 {% block page %}Student Conduct Tracker{% endblock %}
 
 {{ super() }}
 
 {% block content %}
 <style>
+    body {
+        font-family: 'Roboto', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #7C90A0;
+        transition: margin-left 0.5s;
+        overflow: scroll;
+    }
+
+    .signup-card {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 450px;
+        height:600px;
+        max-height: calc(100vh); /* Ensure it does not exceed the screen height */
+        overflow-y: auto; /* Allows scrolling if necessary */
+        background-color: #FFFAFF;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 25px;
+        animation: borderAnimation 3s infinite;
+        bottom: 20px; /* Ensures the card does not go lower than 20px from the bottom */
+    }
+
+
+    @keyframes borderAnimation {
+        0% { box-shadow: 0 0 0 0px #051d3c; }
+        50% { box-shadow: 0 0 0 3px #051d3c; }
+        100% { box-shadow: 0 0 0 0px #051d3c; }
+    }
+
+    .signup-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .signup-header h2 {
+        margin-bottom: 10px;
+        color: #051d3c;
+    }
+
+    .signup-form input[type="text"],
+    .signup-form input[type="email"],
+    .signup-form input[type="password"],
+    .signup-form select {
+        width: 100%; /* Ensure it fits inside the card */
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px; /* Adjusted for better look */
+        box-sizing: border-box; /* Ensure padding doesn't exceed width */
+    }
+
+    .signup-form input[type="submit"] {
+        width: 100%;
+        padding: 10px;
+        background-color: #051d3c;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .signup-form input[type="submit"]:hover {
+        background-color: #032741;
+    }
+
+    .message-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    .message {
+        color: red;
+        border: 2px solid #051d3c;
+        padding: 10px;
+        border-radius: 8px;
+        text-align: center;
+    }
+
+
+/*old styles*/
     body {
             font-family: 'Roboto', sans-serif;
             margin: 0;
@@ -44,6 +130,7 @@
     .nav-bar {
         list-style: none;
         display: flex;
+        position: fixed;
         padding: 10px 20px;
         background-color: #25283D;
         border-bottom-left-radius: 40px;
@@ -113,8 +200,8 @@
         width: 95%;
         padding: 10px;
         margin-bottom: 10px;
-        border: 1px solid #fffaff00;
-        border-radius: 5px;
+        border: 1px solid #fffaff9d;
+        border-radius: 250px;
         align-items: center;
     }
 
@@ -179,47 +266,74 @@
         text-align: center;
     }
 }
+
+.message-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    top: 12%;
+}
+
+.message {
+    color: white;
+    background-color: #ff4d4d; /* Red background for error */
+    border: 2px solid #ff0000;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    width: 80%; /* Makes sure it fits within the signup card */
+    font-weight: bold;
+    top: 10%;
+}
+
 </style>
-
-
-<!-- <header>
-    <div class="logo">
-        <h1>UWI</h1> 
-    </div>
-    <div class="logo2"><h2>Student Conduct Tracker</h2></div>
-</header> -->
 <div class="loginpage">
-<img src="https://github.com/RichardR963/Info3604_Project/blob/main/images/LoginPage.png?raw=true" alt="Description" class="loginpage-img">
-<img src="https://github.com/RichardR963/Info3604_Project/blob/main/images/LoginPage.png?raw=true" alt="Description" class="loginpage-img2">
-<!-- Rest of your content -->
-<!-- Login card -->
-<div class="login-card">
-    <!-- Image and text header -->
-    <div class="login-header">
-        <!-- <img src="https://github.com/RichardR963/Info3604_Project/blob/main/images/AV2.png?raw=true"" alt="Student Conduct Tracker"> -->
-        <h2>Student Conduct Tracker</h2>
+    <img src="https://github.com/RichardR963/Info3604_Project/blob/main/images/LoginPage.png?raw=true" alt="Description" class="loginpage-img" style="position: fixed;">
+    <img src="https://github.com/RichardR963/Info3604_Project/blob/main/images/LoginPage.png?raw=true" alt="Description" class="loginpage-img2" style="position: fixed;">
+<div class="signup-card">
+    <div class="signup-header">
+        <h4>Sign Up</h4>
     </div>
-    <!-- Login form -->
-  <form class="login-form" action="/login" href="/login" method="POST">
-      <p>Username</p>
-      <input name="username" id="username" type="text" placeholder="Username">
-      <p> Password</p>
-      <input name="password" id="password" type="password" placeholder="Password">
-      <input type="submit" class="btn" style="background-color: #3E92CC;text-align: center;padding:0;" value="Login">
-      
-    <!-- {% if message %}
+
+    <form class="signup-form" action="/signup" method="POST">
+        <p>First Name</p>
+        <input name="firstname" id="firstname" type="text" placeholder="Enter First Name" required>
+    
+        <p>Last Name</p>
+        <input name="lastname" id="lastname" type="text" placeholder="Enter Last Name" required>
+    
+        <p>Faculty</p>
+        <input name="faculty" id="faculty" type="text" placeholder="Enter Faculty" required>
+    
+        <p>Username</p>
+        <input name="username" id="username" type="text" placeholder="Enter Username" required>
+    
+        <p>Email</p>
+        <input name="email" id="email" type="email" placeholder="Enter Email" required>
+    
+        <p>Password</p>
+        <input name="password" id="password" type="password" placeholder="Enter Password" required>
+    
+        <p>Confirm Password</p>
+        <input name="confirm_password" id="confirm_password" type="password" placeholder="Confirm Password" required>
+    
+
+        <input type="submit" class="btn" style="background-color: #3E92CC;text-align: center;padding:0;" value="Sign Up">
+    </form>
+    
+
+    <div style="color: black; margin: 25px; text-align: center;">
+        Already have an account? <a style="color: black; text-decoration: underline;" href="/logout">Login</a>
+    </div>
+
+    {% if message %}
     <div class="message-container">
         <div class="message">
             <p>{{ message }}</p>
         </div>
     </div>
-    {% endif %} -->
-  </form>
-  <div style="color: black; margin: 25px; text-align: center;" class="signup_link" >
-    Not a user? <a style="color: black; text-decoration: underline;" href="/signup" class="signup-link">Sign Up</a>
-  </div>
+    {% endif %}
 </div>
 </div>
-
-
 {% endblock %}
