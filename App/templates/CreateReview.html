@@ -627,6 +627,41 @@
         #myUL li a:hover:not(.header) {
              background-color: #eee;
         }
+
+
+                /* Star Rating */
+        .star-rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: center;
+            font-size: 2rem;
+            position: relative;
+            margin: 10px 0;
+        }
+
+        .star-rating input {
+            display: none;
+        }
+
+        .star-rating label {
+            cursor: pointer;
+            color: lightgray;
+            transition: color 0.3s;
+        }
+
+        .star-rating label:before {
+            content: "★";
+        }
+
+        .star-rating input:checked ~ label {
+            color: gold;
+        }
+
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            color: gold;
+        }
+
     </style>
 </head>
 <body>
@@ -635,7 +670,7 @@
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
             <a href="/getMainPage">Home</a>
             <a href="/leaderboard">Students</a>
-            <a href="#">Create Review</a>
+            <a href="/mainReviewPage">Create Review</a>
         </div>
     
         <!-- Navbar -->
@@ -688,6 +723,24 @@
           <input type="hidden" id="num" name="num" value="0">
             <input type="hidden" id="points" name="points" value="0">
             <input type="hidden" id="details" name="details" value="">
+
+                    <!-- Star Rating Section -->
+            <p>Rate Student Conduct:<p>
+            <div class="star-rating">
+                <input type="radio" id="star5" name="starRating" value="5">
+                <label for="star5"></label>
+                <input type="radio" id="star4" name="starRating" value="4">
+                <label for="star4"></label>
+                <input type="radio" id="star3" name="starRating" value="3">
+                <label for="star3"></label>
+                <input type="radio" id="star2" name="starRating" value="2">
+                <label for="star2"></label>
+                <input type="radio" id="star1" name="starRating" value="1">
+                <label for="star1"></label>
+            </div>
+
+            <input type="hidden" id="selectedRating" name="selectedRating">
+
 
 
             <h3 id="pr" style="display: none;">Personal Review</h3>
@@ -912,5 +965,20 @@
         document.getElementById("main-content").style.marginLeft = "0";
     }
 </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const stars = document.querySelectorAll(".star-rating input");
+        const selectedRating = document.getElementById("selectedRating");
+
+        stars.forEach(star => {
+            star.addEventListener("change", function () {
+                selectedRating.value = this.value;
+                console.log("Selected Rating:", selectedRating.value);
+            });
+        });
+    });
+</script>
+
 </body>
 </html>

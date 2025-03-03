@@ -441,7 +441,7 @@
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
             <a href="/getMainPage">Home</a>
             <a href="/leaderboard">Students</a>
-            <a href="#">Create Review</a>
+            <a href="/mainReviewPage">Create Review</a>
         </div>
     
         <!-- Navbar -->
@@ -491,8 +491,11 @@
             <img src="https://th.bing.com/th/id/OIP.ddo_V6IbnSEbnhL7HaPuJAHaHb?rs=1&pid=ImgDetMain" alt="User Profile" class="profile-image">
             <h2>{{student.fullname}}</h2>
             <h4 style="color: #111;">Karma: {{student.get_karma().points}}</h4>   <!--NOTE - CHANGE TO OUR PATTERN-->
-            <!-- <a href="#" class="logout-btn">Logout</a> -->   <!--TO REMOVE: For staff-->
-            <button class="review-btn">Review</button> 
+
+            <!-- <a href="/mainReviewPage">
+                <button class="review-btn">Review</button>
+            </a> -->
+            
             <div class="profile-description">
                 <p class="faculty">ID Number: {{student.UniId}}</p>
                 <p class="faculty">Faculty: {{student.faculty}}</p>   <!--TO CHANGE-->
