@@ -8,10 +8,8 @@ from App.controllers import (
     create_user, get_recommendations_student, login, get_transcript,
     get_student_by_UniId, get_recommendations_student_count,
     create_accomplishment, get_all_students_json, get_total_As, get_karma,
-    calculate_academic_points, calculate_accomplishment_points,
-    get_staff_by_name, calculate_ranks, calculate_review_points,
-    create_job_recommendation, create_school_recommendation,
-    update_total_points, calculate_incident_points, sortBadges)
+    get_staff_by_name, calculate_ranks,
+    create_job_recommendation, create_school_recommendation, sortBadges)
 
 student_views = Blueprint('student_views',
                           __name__,

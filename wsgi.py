@@ -14,7 +14,7 @@ from App.controllers import (
     calculate_academic_score, create_review, create_incident_report,
     create_accomplishment, get_staff_by_id, get_student_by_id,
     create_job_recommendation, create_karma, get_karma, create_badge, 
-    calculate_review_points, calculate_accomplishment_points, calculate_incident_points,calculate_academic_points, calculate_ranks, update_total_points,
+    calculate_ranks,
     get_accomplishments_by_studentID, get_staff_by_name, create_comment)
 
 # This commands file allow you to create convenient CLI commands for testing controllers

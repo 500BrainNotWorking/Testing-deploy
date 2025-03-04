@@ -85,7 +85,7 @@ def vote(review_id):
   try:
     db.session.commit()
   except Exception as e:
-    print("[review.create_review] Error occurred while creating new review: ", str(e))
+    print(str(e))
     db.session.rollback()
 
 def like(review_id):
@@ -99,34 +99,6 @@ def dislike(review_id):
   if review:
     review.dislikes += 1
     vote(review_id)
-  
-def calculate_points_upvote(review):
-  review.starRating *= 1.1  # multiplier can be changed accordingly
-
-  try:
-    db.session.commit()
-    return True
-  except Exception as e:
-    print(
-        "[review.calculate_points_upvote] Error occurred while updating review points:",
-        str(e))
-    db.session.rollback()
-    return False
-
-
-def calculate_points_downvote(review):
-  review.starRating *= 0.9
-
-  try:
-    db.session.commit()
-    return True
-  except Exception as e:
-    print(
-        "[review.calculate_points_downvote] Error occurred while updating review points:",
-        str(e))
-    db.session.rollback()
-    return False
-
 
 # def get_total_review_points(studentID):
 #   reviews = Review.query.filter_by(studentID=studentID).all()
@@ -136,18 +108,6 @@ def calculate_points_downvote(review):
 #       sum += review.points
 #     return sum
 #   return 0
-
-# Get the total starRating for positive reviews
-def get_total_positive_review_starRating(studentID):
-    reviews = Review.query.filter_by(studentID=studentID, isPositive=True).all()
-    total_positive = sum(review.starRating for review in reviews)
-    return total_positive
-
-# Get the total starRating for negative reviews
-def get_total_negative_review_starRating(studentID):
-    reviews = Review.query.filter_by(studentID=studentID, isPositive=False).all()
-    total_negative = sum(review.starRating for review in reviews)
-    return total_negative
 
 def get_reviews(studentID):
   reviews = Review.query.filter_by(studentID=studentID).all()                   #added this function for staff views (by A.M.)
@@ -159,24 +119,6 @@ def get_review(id):
     return review
   else:
     return None
-  
-# Get the count of unique reviewers (e.g., distinct staff or lecturers)
-def get_unique_reviewers_count(studentID):
-    # Query to get all reviews for the given student
-    reviews = db.session.query(Review).filter(Review.studentID == studentID).all()
-
-    # Use a set to store unique reviewers (staff or lecturer)
-    unique_reviewers = set()
-
-    # Loop through all reviews and add each unique staff/lecturer to the set
-    for review in reviews:
-        # Assuming each review has a 'staff' or 'lecturerID' field representing the reviewer
-        unique_reviewers.add(review.createdByStaffID)  # 'staff' or 'lecturerID' should be the reviewer identifier
-
-    # Return the count of unique reviewers
-    return len(unique_reviewers)
-
-
 
 def get_all_reviews():
   reviews = Review.query.all()
