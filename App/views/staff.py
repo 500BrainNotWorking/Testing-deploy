@@ -14,9 +14,7 @@ from App.controllers import (
     get_staff_by_id, get_requested_accomplishments, get_transcript,
     get_total_As, get_student_for_ir, create_review, get_karma,
     analyze_sentiment, get_requested_accomplishments_count,
-    get_recommendations_staff_count, calculate_ranks, update_total_points,
-    calculate_academic_points, calculate_accomplishment_points,
-    calculate_review_points, get_all_verified, 
+    get_recommendations_staff_count, calculate_ranks, get_all_verified, 
     get_reviews, get_review, 
     create_comment, get_comment, get_comment_staff,
     get_reply, create_reply, get_all_reviews, create_staff)            #added get_reviews
@@ -509,10 +507,6 @@ def getStudentProfile(uniID):
     karma = get_karma(student.ID)
 
     if karma:
-        calculate_academic_points(student.ID)
-        calculate_accomplishment_points(student.ID)
-        calculate_review_points(student.ID)
-        update_total_points(karma.karmaID)
         calculate_ranks()
         # student.update(karma.rank)
         # karma.notify()
