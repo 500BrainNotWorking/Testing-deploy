@@ -262,6 +262,26 @@ def delete_review(review_id):
 
 
 
+@staff_views.route('/editReview/<int:review_id>', methods=['POST'])
+@login_required
+def edit_comment(review_id):
+  review = get_review(review_id)
+  #user = User.query.filter_by(ID=current_user.ID).first()
+
+  staff_id = current_user.get_id()
+  staff = get_staff_by_id(staff_id) 
+
+  data = request.form #Depening on how the create comment form is made/designed this si subject to change, along with attribute names.
+
+  details = data['selected-details']
+
+  #edit_review(details=details, review_id=review_id, staff_id=staff_id) Changes Need to be made to the review controller so it checks
+                                                                      #That the correct staff is attempting to edit the review.
+                                                                      # There needs to be an extra parameter passed, which is the staff_id.
+
+  return render_template('',current_user=current_user)# Put the appropriate template here, and current_user if needed.
+
+
 @staff_views.route('/createReviewPage', methods=['GET'])
 @login_required
 def create_review_page():
