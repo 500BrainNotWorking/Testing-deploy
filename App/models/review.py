@@ -8,38 +8,30 @@ class Review(db.Model):
     ID = db.Column(db.Integer, primary_key=True)
     studentID = db.Column(db.Integer, db.ForeignKey('student.ID'))
     createdByStaffID = db.Column(db.Integer, db.ForeignKey('staff.ID'))
-    isPositive = db.Column(db.Boolean, nullable=False)
     dateCreated = db.Column(db.DateTime, default=datetime.utcnow)
     starRating = db.Column(db.Integer, nullable=False)
     details = db.Column(db.String(400), nullable=False)
-    studentSeen = db.Column(db.Boolean, nullable=False, default=False)
-
     comments = db.relationship('Comment', backref='review', lazy=True)
 
-    def __init__(self, staff, student, isPositive, starRating, details, studentSeen):
+    def __init__(self, staff, student, starRating, details):
         self.createdByStaffID = staff.ID
         self.studentID = student.ID
-        self.isPositive = isPositive
         self.starRating = starRating
         self.details = details
         self.dateCreated = datetime.now()
-        self.studentSeen = studentSeen
         self.adjustKarma()  # Call adjustKarma when a review is created
 
     def get_id(self):
         return self.ID
 
-    def to_json(self, student, staff):
+    def to_json(self):
         return {
             "reviewID": self.ID,
-            "reviewer": staff.firstname + " " + staff.lastname,
-            "studentID": student.ID,
-            "studentName": student.firstname + " " + student.lastname,
-            "created": self.dateCreated.strftime("%d-%m-%Y %H:%M"),  # Format the date/time
-            "isPositive": self.isPositive,
+            "studentID": self.studentID,
+            "createdByStaffID": self.createdByStaffID,
+            "dateCreated": self.dateCreated.strftime("%d-%m-%Y %H:%M"),  # Format the date/time
             "starRating": self.starRating,
-            "details": self.details,
-            "studentSeen": self.studentSeen
+            "details": self.details
         }
 
     def adjustKarma(self):

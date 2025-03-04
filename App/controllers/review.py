@@ -11,16 +11,30 @@ def create_review(staff, student, starRating, details):
                      starRating=starRating,
                      details=details)
   db.session.add(newReview)
+  """Adjust the student's karma based on the star rating of the review."""
+  if newReview.starRating == 5:
+    points = 5
+  elif newReview.starRating == 4:
+    points = 3
+  elif newReview.starRating == 3:
+    points = 1
+  elif newReview.starRating == 2:
+    points = -1
+  else:
+    points = -3
   current_karma = student.get_karma()
   if current_karma:
-    new_karma_points = current_karma.points + starRating
+    new_karma_points = current_karma.points + points
   else:
-     new_karma_points = starRating
+     new_karma_points = points
   newKarma = Karma(new_karma_points, student.ID)
   db.session.add(newKarma)
   try:
     db.session.commit()
     return newReview
+  except Exception as e:
+      print(str(e))
+      db.session.rollback()
 
 
 
