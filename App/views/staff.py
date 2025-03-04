@@ -507,10 +507,6 @@ def getStudentProfile(uniID):
     karma = get_karma(student.ID)
 
     if karma:
-        calculate_academic_points(student.ID)
-        calculate_accomplishment_points(student.ID)
-        calculate_review_points(student.ID)
-        update_total_points(karma.karmaID)
         calculate_ranks()
         # student.update(karma.rank)
         # karma.notify()
