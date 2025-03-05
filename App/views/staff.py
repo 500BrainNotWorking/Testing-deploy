@@ -264,7 +264,7 @@ def delete_review(review_id):
 
 @staff_views.route('/editReview/<int:review_id>', methods=['POST'])
 @login_required
-def edit_comment(review_id):
+def edit_review(review_id):
   review = get_review(review_id)
   #user = User.query.filter_by(ID=current_user.ID).first()
 
