@@ -112,7 +112,7 @@ def view_all_replies(comment_id):
   return render_template('', comments=comments, review=review)# Put the appropriate template here, and current_user if needed.
 
 
-@staff_views.route('/editReply/<int:reply_id>', methods=['GET'])
+@staff_views.route('/editReply/<int:reply_id>', methods=['POST'])
 @login_required
 def edit_reply(reply_id):
   reply = get_reply(reply_id)
@@ -178,7 +178,7 @@ def view_all_comments(review_id):
 
   return render_template('', comments=comments, review=review)# Put the appropriate template here, and current_user if needed.
 
-@staff_views.route('/editComment/<int:comment_id>', methods=['GET'])
+@staff_views.route('/editComment/<int:comment_id>', methods=['POST'])
 @login_required
 def edit_comment(comment_id):
   comment = get_comment(comment_id)
@@ -208,7 +208,7 @@ def delete_comment(comment_id):
 
   return render_template('',current_user=current_user)# Put the appropriate template here, and current_user if needed.
   
-from flask import flash, redirect, url_for, render_template
+#from flask import flash, redirect, url_for, render_template
 
 @staff_views.route('/createReview', methods=['POST'])
 @login_required
@@ -245,6 +245,41 @@ def createReview():
         flash(f"Error creating review for {studentName}. Please check student details.", "error")
 
     return redirect(url_for('staff_views.create_review_page'))  # Redirect to the create review page
+
+@staff_views.route('/deleteReview/<int:review_id>', methods=['GET'])
+@login_required
+def delete_review(review_id):
+  review = get_review(review_id)
+  #user = User.query.filter_by(ID=current_user.ID).first()
+
+  staff_id = current_user.get_id()
+  staff = get_staff_by_id(staff_id) 
+
+  #delete_review(review_id=review_id, staff_id=staff_id) Changes need to be made to the controller for delete_review so it checks
+                                                        #That the staff deleting the review is the staff which made the review.
+
+  return render_template('',current_user=current_user)# Put the appropriate template here, and current_user if needed.
+
+
+
+@staff_views.route('/editReview/<int:review_id>', methods=['POST'])
+@login_required
+def edit_review(review_id):
+  review = get_review(review_id)
+  #user = User.query.filter_by(ID=current_user.ID).first()
+
+  staff_id = current_user.get_id()
+  staff = get_staff_by_id(staff_id) 
+
+  data = request.form #Depening on how the create comment form is made/designed this si subject to change, along with attribute names.
+
+  details = data['selected-details']
+
+  #edit_review(details=details, review_id=review_id, staff_id=staff_id) Changes Need to be made to the review controller so it checks
+                                                                      #That the correct staff is attempting to edit the review.
+                                                                      # There needs to be an extra parameter passed, which is the staff_id.
+
+  return render_template('',current_user=current_user)# Put the appropriate template here, and current_user if needed.
 
 
 @staff_views.route('/createReviewPage', methods=['GET'])
