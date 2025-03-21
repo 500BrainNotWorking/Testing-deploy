@@ -15,7 +15,7 @@ from App.controllers import (
     get_total_As, get_student_for_ir, create_review, get_karma,
     analyze_sentiment, get_requested_accomplishments_count,
     get_recommendations_staff_count, calculate_ranks, get_all_verified, 
-    get_reviews, get_review, edit_review, edit_review_work,
+    get_reviews, get_review, edit_review, edit_review_work, delete_review_work,
     create_comment, get_comment, get_comment_staff,
     get_reply, create_reply, get_all_reviews, create_staff)            #added get_reviews
 
@@ -255,10 +255,18 @@ def delete_review(review_id):
   staff_id = current_user.get_id()
   staff = get_staff_by_id(staff_id) 
 
-  #delete_review(review_id=review_id, staff_id=staff_id) Changes need to be made to the controller for delete_review so it checks
-                                                        #That the staff deleting the review is the staff which made the review.
+  # if review:
+  #   delete_review_work(review_id=review_id, staff_id=staff_id) 
+  #   flash(f"Successfully deleted a review!", "success")
 
-  return render_template('',current_user=current_user)# Put the appropriate template here, and current_user if needed.
+  if review:
+    delete_review_work(review_id=review_id, staff_id=staff_id) 
+    flash(f"Successfully deleted review!", "success")
+  else:
+    flash(f"Error deleting review.", "error")
+
+  return redirect(url_for('staff_views.getAllReviews'))# Put the appropriate template here, and current_user if needed.
+
 
 
 
@@ -302,7 +310,7 @@ def edit_review(review_id):
                                                                       #That the correct staff is attempting to edit the review.
                                                                       # There needs to be an extra parameter passed, which is the staff_id.
 
-  return redirect(url_for('staff_views.edit_review_page', id=review_id))# Put the appropriate template here, and current_user if needed.
+  return redirect(url_for('staff_views.getAllReviews'))# Put the appropriate template here, and current_user if needed.
 
 
 @staff_views.route('/createReviewPage', methods=['GET'])
