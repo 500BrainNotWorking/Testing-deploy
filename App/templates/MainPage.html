@@ -603,6 +603,10 @@
                     <div class="likes"><i class="fas fa-thumbs-up"></i> 1.1K</div>
                     <div class="comments"><i class="fas fa-comment"></i> 24K</div>
                     <button class="expand-btn">Expand</button>
+
+                    {%if review.createdByStaffID == current_user.ID%}
+                        <a href="/editReviewPage/{{review.ID}}">Edit Review</a>
+                    {%endif%}
                 </div>
         </div>
 

@@ -52,6 +52,24 @@ def delete_review(reviewID):
       return False
   else:
     return False
+
+
+def edit_review_work(details, review_id, staff_id, starRating):
+    
+    existing_review = get_review(review_id)
+    if existing_review:
+
+        if existing_review.createdByStaffID == staff_id:
+
+            existing_review.details = details
+            existing_review.starRating = starRating
+            db.session.add(existing_review)
+            db.session.commit()
+        else:
+            return None
+    else:
+        return None
+
   
 def edit_review(reviewID, starRating, details):
   review = get_review(reviewID)

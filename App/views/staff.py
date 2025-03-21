@@ -15,7 +15,7 @@ from App.controllers import (
     get_total_As, get_student_for_ir, create_review, get_karma,
     analyze_sentiment, get_requested_accomplishments_count,
     get_recommendations_staff_count, calculate_ranks, get_all_verified, 
-    get_reviews, get_review, 
+    get_reviews, get_review, edit_review, edit_review_work,
     create_comment, get_comment, get_comment_staff,
     get_reply, create_reply, get_all_reviews, create_staff)            #added get_reviews
 
@@ -262,7 +262,7 @@ def delete_review(review_id):
 
 
 
-@staff_views.route('/editReview/<int:review_id>', methods=['POST'])
+@staff_views.route('/editReview/<review_id>', methods=['POST'])
 @login_required
 def edit_review(review_id):
   review = get_review(review_id)
@@ -271,21 +271,55 @@ def edit_review(review_id):
   staff_id = current_user.get_id()
   staff = get_staff_by_id(staff_id) 
 
-  data = request.form #Depening on how the create comment form is made/designed this si subject to change, along with attribute names.
-
+  data = request.form
+  #studentID = data['studentID']
+  #studentName = data['name']
+  points = int(data['points'])
+  num = data['num']
+  personalReview = data['manual-review']
   details = data['selected-details']
 
-  #edit_review(details=details, review_id=review_id, staff_id=staff_id) Changes Need to be made to the review controller so it checks
+  starRating = data['selectedRating']
+
+  if personalReview:
+        details += f"{personalReview}"
+        points += int(data.get('starRating', 0))  # Ensure default value if missing
+
+  #data = request.form #Depening on how the create comment form is made/designed this si subject to change, along with attribute names.
+
+  #details = data['selected-details']
+
+  if review:
+    edit_review_work(details=details, review_id=review_id, staff_id=staff_id, starRating=starRating)
+    print("work")
+    flash(f"Successfully edited review for {review_id}!", "success")
+  else:
+    flash(f"Error editing review for {review_id}. Please check student details.", "error")
+  
+  #if review:
+
+    #edit_review(details=details, review_id=review_id, staff_id=staff_id) Changes Need to be made to the review controller so it checks
                                                                       #That the correct staff is attempting to edit the review.
                                                                       # There needs to be an extra parameter passed, which is the staff_id.
 
-  return render_template('',current_user=current_user)# Put the appropriate template here, and current_user if needed.
+  return redirect(url_for('staff_views.edit_review_page', id=review_id))# Put the appropriate template here, and current_user if needed.
 
 
 @staff_views.route('/createReviewPage', methods=['GET'])
 @login_required
 def create_review_page():
     return render_template('CreateReview.html')
+
+
+@staff_views.route('/editReviewPage/<id>', methods=['GET'])
+@login_required
+def edit_review_page(id):
+
+  sel_review = get_review(id)
+
+  sel_student = get_student_by_id(sel_review.studentID)
+
+  return render_template('EditReview.html', sel_review= sel_review, sel_student=sel_student)
 
 
 
@@ -683,7 +717,7 @@ def getAllReviews():
         review.student_id = student.UniId if student else "Unknown ID"
 
     return render_template('MainPage.html',
-                           reviews=reviews)
+                           reviews=reviews, current_user=current_user)
 
 @staff_views.route('/staff-profile', methods=['GET'])
 @login_required
