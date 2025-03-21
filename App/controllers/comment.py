@@ -1,6 +1,7 @@
 from App.models import Comment
 from App.models import Review
 from App.database import db
+from datetime import datetime
 
 
 def get_all_comments():
@@ -48,6 +49,7 @@ def edit_comment(details, comment_id, staff_id):
         if existing_comment.createdByStaffID == staff_id:
 
             existing_comment.details = details
+            existing_comment.dateCreated = datetime.now()
             db.session.add(existing_comment)
             db.session.commit()
         else:

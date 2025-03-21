@@ -1,6 +1,7 @@
 from App.models import Reply
 from App.models import Comment
 from App.database import db
+from datetime import datetime
 
 
 def get_all_replies():
@@ -67,6 +68,7 @@ def edit_reply(details, reply_id, staff_id):
     if existing_reply:
         if existing_reply.createdByStaffID == staff_id:
             existing_reply.details = details
+            existing_reply.dateCreated = datetime.now()
             db.session.add(existing_reply)
             db.session.commit()
         else:
