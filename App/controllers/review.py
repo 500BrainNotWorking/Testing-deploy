@@ -1,6 +1,7 @@
 from App.models import Review, Karma
 from App.database import db
 from .student import get_student_by_id
+from datetime import datetime
 
 def create_review(staff, student, starRating, details):
   if starRating is None:
@@ -52,6 +53,37 @@ def delete_review(reviewID):
       return False
   else:
     return False
+
+
+def delete_review_work(review_id, staff_id):
+    review = get_review(review_id)
+    if review:
+        if review.createdByStaffID == staff_id:
+            db.session.delete(review)
+            db.session.commit()
+        else:
+            return None
+    else:
+        return None
+
+
+def edit_review_work(details, review_id, staff_id, starRating):
+    
+    existing_review = get_review(review_id)
+    if existing_review:
+
+        if existing_review.createdByStaffID == staff_id:
+
+            existing_review.details = details
+            existing_review.starRating = starRating
+            existing_review.dateCreated = datetime.now()
+            db.session.add(existing_review)
+            db.session.commit()
+        else:
+            return None
+    else:
+        return None
+
   
 def edit_review(reviewID, starRating, details):
   review = get_review(reviewID)

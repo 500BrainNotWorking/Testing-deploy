@@ -500,6 +500,51 @@
         #myUL li a:hover:not(.header) {
              background-color: #eee;
         }
+
+        /* Flash Messages */
+        .flash-messages {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            z-index: 1000;
+        }
+
+        .flash-message {
+            padding: 12px 18px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+            opacity: 1;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        /* Success Messages */
+        .flash-message.success {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        /* Error Messages */
+        .flash-message.error {
+            background-color: #f44336;
+            color: white;
+        }
+
+        /* Warning Messages */
+        .flash-message.warning {
+            background-color: #ff9800;
+            color: white;
+        }
+
+        /* Info Messages */
+        .flash-message.info {
+            background-color: #2196F3;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -554,6 +599,17 @@
 
 
     <!-- Search Section -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-messages">
+            {% for category, message in messages %}
+            <div class="flash-message {{ category }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    {% endwith %}  
     
 
     <!-- Reviews Section -->
@@ -573,7 +629,7 @@
                             <strong>{{review.staff_name}}</strong>
                         </a>
                         
-                        <p>Posted on {{review.dateCreated}} </p>
+                        <p>Posted on {{review.dateCreated.strftime('%Y-%m-%d %H:%M:%S')}} </p>
                     </div>
                     <i class="fas fa-external-link-alt"></i>
                 </div>
@@ -603,6 +659,14 @@
                     <div class="likes"><i class="fas fa-thumbs-up"></i> 1.1K</div>
                     <div class="comments"><i class="fas fa-comment"></i> 24K</div>
                     <button class="expand-btn">Expand</button>
+
+                    {%if review.createdByStaffID == current_user.ID%}
+                        <a href="/editReviewPage/{{review.ID}}">Edit Review</a>
+                    {%endif%}
+
+                    {%if review.createdByStaffID == current_user.ID%}
+                        <a href="/deleteReview/{{review.ID}}">Delete Review</a>
+                    {%endif%}
                 </div>
         </div>
 

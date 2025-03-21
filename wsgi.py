@@ -70,7 +70,7 @@ def initialize():
                  faculty="FST",
                  admittedTerm="2019/2021",
                  UniId='816030847',
-                 degree="Bachelor of Computer Science (General",
+                 degree="Bachelor of Computer Science (General)",
                  gpa='')
 
   create_student(username="brian",
