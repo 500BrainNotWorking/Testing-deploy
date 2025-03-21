@@ -196,6 +196,15 @@ Test Commands
 
 test = AppGroup('test', help='Testing commands')
 
+@test.command("unit", help="Run all Unit tests")
+def all_tests_command():
+    sys.exit(pytest.main(["-k", "UnitTests"]))
+
+
+@test.command("int", help="Run all Integration tests")
+def all_tests_command():
+    sys.exit(pytest.main(["-k", "IntegrationTests"]))
+
 @test.command("user", help="Run User tests")
 @click.argument("type", default="all")
 def user_tests_command(type):
