@@ -49,7 +49,9 @@ from App.controllers import (
     edit_review_work,
     #get_review
 
-    create_comment, edit_comment, delete_comment, get_all_comments, get_comment, get_comment_staff, get_all_comments_review
+    create_comment, edit_comment, delete_comment, get_all_comments, get_comment, get_comment_staff, get_all_comments_review,
+
+    create_reply, edit_reply, delete_reply, 
 )
 
 
@@ -160,6 +162,11 @@ class CommentUnitTests(unittest.TestCase):
         assert comment.createdByStaffID == 1
 
 
+class ReplyUnitTests(unittest.TestCase):
+
+    def test_new_reply(self):
+        reply = Reply(commentID=1, staffID=10, details="Best review I've read for this student!")
+        assert reply.createdByStaffID == 10
 
 
 '''
