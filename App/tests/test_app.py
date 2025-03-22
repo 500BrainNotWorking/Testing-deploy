@@ -751,7 +751,33 @@ class CommentIntegrationTests(unittest.TestCase):
         assert len(comments) == 3
 
 
-    # def test_get_comment_teachers(self):
+    def test_get_all_comments_review(self):
+        
+        assert create_staff(username="Debbie",firstname="Debbie", lastname="Grayson", email="debbie@example.com", password="debbiepass", faculty="FST") == True
+        assert create_student(username="Nolan",
+                 firstname="Nolan",
+                 lastname="Grayson",
+                 email="nolan@example.com",
+                 password="nolanpass",
+                 faculty="FST",
+                 admittedTerm="",
+                 UniId='816031166',
+                 degree="",
+                 gpa="") == True
+        student = get_student_by_username("Nolan")
+        staff = get_staff_by_username("Debbie")
+        review1 = create_review(staff=staff, student=student, starRating=5, details="THINK MARK, THINK!")
+
+        review = get_review(review1.ID)
+
+        new_comment1 = create_comment(reviewID=review.ID, staffID=staff.ID, details="This is my 1st comment, by debbie")
+        new_comment2 = create_comment(reviewID=review.ID, staffID=staff.ID, details="This is my 2nd comment, by debbie")
+        new_comment3 = create_comment(reviewID=review.ID, staffID=staff.ID, details="This is my 3rd comment, by debbie")
+
+        comment_teacher = get_comment_staff(staff.ID)
+
+        assert len(comment_teacher) == 3
+    
         
 
     def test_delete_comment(self):
