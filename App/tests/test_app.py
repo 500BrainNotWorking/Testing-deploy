@@ -1101,32 +1101,37 @@ class ReplyIntegrationTests(unittest.TestCase):
 
         assert reply.details == "My first reply!"
     
-    # def test_get_all_comments_review(self):
+    def test_get_all_replies_comment(self):
         
-    #     assert create_staff(username="Mark",firstname="Mark", lastname="Grayson", email="mark@example.com", password="markpass", faculty="FST") == True
-    #     assert create_student(username="Nolan",
-    #              firstname="Nolan",
-    #              lastname="Grayson",
-    #              email="nolan@example.com",
-    #              password="nolanpass",
-    #              faculty="FST",
-    #              admittedTerm="",
-    #              UniId='816031166',
-    #              degree="",
-    #              gpa="") == True
-    #     student = get_student_by_username("Nolan")
-    #     staff = get_staff_by_username("Mark")
-    #     review1 = create_review(staff=staff, student=student, starRating=5, details="THINK MARK, THINK!")
+        assert create_staff(username="Mark",firstname="Mark", lastname="Grayson", email="mark@example.com", password="markpass", faculty="FST") == True
+        assert create_student(username="Nolan",
+                 firstname="Nolan",
+                 lastname="Grayson",
+                 email="nolan@example.com",
+                 password="nolanpass",
+                 faculty="FST",
+                 admittedTerm="",
+                 UniId='816031166',
+                 degree="",
+                 gpa="") == True
+        student = get_student_by_username("Nolan")
+        staff = get_staff_by_username("Mark")
+        review1 = create_review(staff=staff, student=student, starRating=5, details="THINK MARK, THINK!")
 
-    #     review = get_review(review1.ID)
+        review = get_review(review1.ID)
 
-    #     new_comment1 = create_comment(reviewID=review.ID, staffID=staff.ID, details="This is my 1st comment")
-    #     new_comment2 = create_comment(reviewID=review.ID, staffID=staff.ID, details="This is my 2nd comment")
-    #     new_comment3 = create_comment(reviewID=review.ID, staffID=staff.ID, details="This is my 3rd comment")
+        new_comment1 = create_comment(reviewID=review.ID, staffID=staff.ID, details="This is my 1st comment")
 
-    #     comments = get_all_comments_review(review.ID)
+        comment = get_comment(new_comment1.ID)
 
-    #     assert len(comments) == 3
+        new_reply1 = create_reply(commentID=comment.ID, staffID=staff.ID, details="My 1st reply!")
+        new_reply2 = create_reply(commentID=comment.ID, staffID=staff.ID, details="My 2nd reply!")
+        new_reply3 = create_reply(commentID=comment.ID, staffID=staff.ID, details="My 3rd reply!")
+        new_reply4 = create_reply(commentID=comment.ID, staffID=staff.ID, details="My 4th reply!")
+
+        replies = get_all_replies_comment(comment.ID)
+
+        assert len(replies) == 4
 
 
     # def test_get_all_comments_staff(self):

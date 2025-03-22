@@ -7,8 +7,8 @@ from datetime import datetime
 def get_all_replies():
     return Reply.query.all()
 
-def get_all_replies_comment(Commentid):
-    return Reply.query.filter_by(CommentID=CommentID).all()
+def get_all_replies_comment(commentID):
+    return Reply.query.filter_by(commentID=commentID).all()
 
 def get_all_replies_staff(createdByStaffID):
     return Reply.query.filter_by(createdByStaffID=createdByStaffID).all()
