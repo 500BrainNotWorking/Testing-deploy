@@ -764,19 +764,35 @@ class CommentIntegrationTests(unittest.TestCase):
                  UniId='816031166',
                  degree="",
                  gpa="") == True
-        student = get_student_by_username("Nolan")
+
+        assert create_student(username="Amber",
+                 firstname="Amber",
+                 lastname="Doe",
+                 email="amber@example.com",
+                 password="amberpass",
+                 faculty="FST",
+                 admittedTerm="",
+                 UniId='816031170',
+                 degree="",
+                 gpa="") == True
+        student1 = get_student_by_username("Nolan")
+        student2 = get_student_by_username("Amber")
         staff = get_staff_by_username("Debbie")
-        review1 = create_review(staff=staff, student=student, starRating=5, details="THINK MARK, THINK!")
+        review1 = create_review(staff=staff, student=student1, starRating=5, details="THINK MARK, THINK!")
+        review2 = create_review(staff=staff, student=student2, starRating=3, details="Just uninteresting")
 
         review = get_review(review1.ID)
+        review2nd = get_review(review2.ID)
 
         new_comment1 = create_comment(reviewID=review.ID, staffID=staff.ID, details="This is my 1st comment, by debbie")
         new_comment2 = create_comment(reviewID=review.ID, staffID=staff.ID, details="This is my 2nd comment, by debbie")
         new_comment3 = create_comment(reviewID=review.ID, staffID=staff.ID, details="This is my 3rd comment, by debbie")
+        new_comment4 = create_comment(reviewID=review2nd.ID, staffID=staff.ID, details="This is my 4th comment, by debbie")
+        new_comment5 = create_comment(reviewID=review2nd.ID, staffID=staff.ID, details="This is my 5th comment, by debbie")
 
         comment_teacher = get_comment_staff(staff.ID)
 
-        assert len(comment_teacher) == 3
+        assert len(comment_teacher) == 5
     
         
 
