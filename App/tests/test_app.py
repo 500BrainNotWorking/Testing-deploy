@@ -725,4 +725,79 @@ class CommentIntegrationTests(unittest.TestCase):
         assert test_comment is None
 
 
+    def test_edit_comment(self):
+        
+        assert create_staff(username="Mark",firstname="Mark", lastname="Grayson", email="mark@example.com", password="markpass", faculty="FST") == True
+        assert create_student(username="Nolan",
+                 firstname="Nolan",
+                 lastname="Grayson",
+                 email="nolan@example.com",
+                 password="nolanpass",
+                 faculty="FST",
+                 admittedTerm="",
+                 UniId='816031166',
+                 degree="",
+                 gpa="") == True
+        student = get_student_by_username("Nolan")
+        staff = get_staff_by_username("Mark")
+        review1 = create_review(staff=staff, student=student, starRating=5, details="THINK MARK, THINK!")
+
+        review = get_review(review1.ID)
+
+        expected_review = {
+                "createdByStaffID":staff.ID, 
+                "studentID":student.ID,
+                "starRating":5, 
+                "details":"THINK MARK, THINK!"
+        }
+
+        self.assertEqual(review.createdByStaffID, expected_review["createdByStaffID"])
+        self.assertEqual(review.studentID, expected_review["studentID"])
+        self.assertEqual(review.starRating, expected_review["starRating"])
+        self.assertEqual(review.details, expected_review["details"])
+
+        assert review is not None
+
+        new_comment = create_comment(reviewID=review.ID, staffID=staff.ID, details="This is a fantastic Review!")
+
+        assert new_comment is not None
+
+        expected_comment = {
+                "createdByStaffID":staff.ID, 
+                "reviewID":review.ID,
+                "details":"This is a fantastic Review!"
+        }
+
+        self.assertEqual(new_comment.createdByStaffID, expected_comment["createdByStaffID"])
+        self.assertEqual(new_comment.reviewID, expected_comment["reviewID"])
+        self.assertEqual(new_comment.details, expected_comment["details"])
+
+        review_comment = get_review(review.ID)
+
+        assert review_comment is not None
+
+        assert len(review_comment.comments) == 1
+
+        assert review_comment.comments[0].details == "This is a fantastic Review!"
+
+        new_details = "This is not longer my favourite comment!"
+
+        status = edit_comment(new_details, new_comment.ID, staff.ID)
+
+        expected_comment_2 = {
+                "createdByStaffID":staff.ID, 
+                "reviewID":review.ID,
+                "details":"This is not longer my favourite comment!"
+        }
+
+        self.assertEqual(new_comment.createdByStaffID, expected_comment_2["createdByStaffID"])
+        self.assertEqual(new_comment.reviewID, expected_comment_2["reviewID"])
+        self.assertEqual(new_comment.details, expected_comment_2["details"])
+
+        assert status is True
+
+        # test_comment = get_comment(new_comment.ID)
+        # assert test_comment is None
+
+
         
