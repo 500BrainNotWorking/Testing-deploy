@@ -36,6 +36,16 @@ from App.controllers import (
     staff_edit_review,
     create_student,
     get_student_by_username,
+    get_review,
+
+    create_student,
+    create_staff,
+    get_staff_by_username,
+    get_staff_by_id,
+    get_student_by_id,
+    get_student_by_username,
+    create_review,
+    delete_review,
     get_review
 )
 
@@ -324,31 +334,83 @@ class StaffIntegrationTests(unittest.TestCase):
     def test_create_staff(self):
         assert create_staff(username="joe",firstname="Joe", lastname="Mama", email="joe@example.com", password="joepass", faculty="FST") == True
 
-    # def test_get_staff_by_id(self):
-    #     staff = get_staff_by_id(1)
-    #     assert staff is not None
+    def test_get_staff_by_id(self):
+        create_staff(username="tyrell",firstname="Tyrell", lastname="John", email="tyrell@example.com", password="tyrellpass", faculty="FST")
+        staff = get_staff_by_id(1)
+        assert staff.ID == 1
 
-    def test_get_staff_by_username(self):
+    def test_get_staff_by_name(self):
         staff = get_staff_by_username("joe")
         assert staff.username == "joe"
 
-    # def test_staff_create_review(self):
-    #     assert create_student(username="billy",
-    #              firstname="Billy",
-    #              lastname="John",
-    #              email="billy@example.com",
-    #              password="billypass",
-    #              faculty="FST",
-    #              admittedTerm="",
-    #              UniId='816031160',
-    #              degree="",
-    #              gpa="") == True
-    #     student = get_student_by_username("billy")
-    #     staff = get_staff_by_id(1)
-    #     assert staff is not None
-    #     assert staff_create_review(staff, student, 3, "Billy is good.") == True
 
-    # def test_staff_edit_review(self):
+
+class ReviewIntegrationTests(unittest.TestCase):
+
+    def test_create_review(self):
+        assert create_staff(username="joe",firstname="Joe", lastname="Mama", email="joe@example.com", password="joepass", faculty="FST") == True
+        assert create_student(username="billy",
+                 firstname="Billy",
+                 lastname="John",
+                 email="billy@example.com",
+                 password="billypass",
+                 faculty="FST",
+                 admittedTerm="",
+                 UniId='816031160',
+                 degree="",
+                 gpa="") == True
+        student = get_student_by_username("billy")
+        staff = get_staff_by_username("joe")
+        review = create_review(staff=staff, student=student, starRating=3, details="Billy is good.")
+
+        expected_review = {
+                "createdByStaffID":staff.ID, 
+                "studentID":student.ID,
+                "starRating":3, 
+                "details":"Billy is good."
+        }
+
+        self.assertEqual(review.createdByStaffID, expected_review["createdByStaffID"])
+        self.assertEqual(review.studentID, expected_review["studentID"])
+        self.assertEqual(review.starRating, expected_review["starRating"])
+        self.assertEqual(review.details, expected_review["details"])
+
+
+    # def test_get_review(self):
+    #     self.test_create_review()
     #     review = get_review(1)
+    #     print(review.to_json(student=get_student_by_id(review.studentID), staff=get_staff_by_id(review.createdByStaffID)))
     #     assert review is not None
-    #     assert staff_edit_review(review.ID, "Billy is very good") == True
+
+    # def test_calc_points_upvote(self):
+    #     self.test_create_review()
+    #     review = get_review(1)
+    #     print(review.to_json(student=get_student_by_id(review.studentID), staff=get_staff_by_id(review.createdByStaffID)))
+    #     assert review is not None
+    #     assert calculate_points_upvote(review) == True
+
+    # def test_calc_points_downvote(self):
+    #     self.test_create_review()
+    #     review = get_review(1)
+    #     print(review.to_json(student=get_student_by_id(review.studentID), staff=get_staff_by_id(review.createdByStaffID)))
+    #     assert review is not None
+    #     assert calculate_points_downvote(review) == True
+
+    # # Test for total starRating of positive reviews
+    # def test_get_total_positive_review_starRating(self):
+    #     self.test_create_review()  # Assuming this creates both positive and negative reviews
+    #     review = get_review(1)
+    #     total_positive = get_total_positive_review_starRating(review.studentID)
+    #     assert total_positive >= 0  # Ensure the total is non-negative
+
+    # # Test for total starRating of negative reviews
+    # def test_get_total_negative_review_starRating(self):
+    #     self.test_create_review()  # Assuming this creates both positive and negative reviews
+    #     review = get_review(1)
+    #     total_negative = get_total_negative_review_starRating(review.studentID)
+    #     assert total_negative >= 0  # Ensure the total is non-negative
+
+    # def test_delete_review(self):
+    #     self.test_create_review()
+    #     review = get_review(2)
+    #     assert delete_review(review.ID) == True
