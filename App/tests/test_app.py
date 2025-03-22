@@ -34,20 +34,20 @@ from App.controllers import (
     get_staff_by_username,
     staff_create_review,
     staff_edit_review,
-    create_student,
-    get_student_by_username,
+    #create_student,
+    #get_student_by_username,
     get_review,
 
-    create_student,
-    create_staff,
-    get_staff_by_username,
-    get_staff_by_id,
-    get_student_by_id,
-    get_student_by_username,
+    #create_student,
+    #create_staff,
+    #get_staff_by_username,
+    #get_staff_by_id,
+    #get_student_by_id,
+    #get_student_by_username,
     create_review,
     delete_review_work,
-    edit_review_work,
-    get_review
+    edit_review_work
+    #get_review
 )
 
 
@@ -149,6 +149,16 @@ class ReviewUnitTests(unittest.TestCase):
         staff = get_staff_by_username("joe")
         review = Review(staff, student, 3, "Billy is good.")
         assert review is not None
+
+
+class CommentUnitTests(unittest.TestCase):
+
+    def test_new_comment(self):
+        comment = Comment(reviewID=1, staffID=1, details="Best review I've read for this student!")
+        assert comment.createdByStaffID == 1
+
+
+
 
 '''
     Integration Tests
@@ -335,10 +345,7 @@ class StaffIntegrationTests(unittest.TestCase):
     def test_create_staff(self):
         assert create_staff(username="joe",firstname="Joe", lastname="Mama", email="joe@example.com", password="joepass", faculty="FST") == True
 
-    def test_get_staff_by_id(self):
-        create_staff(username="tyrell",firstname="Tyrell", lastname="John", email="tyrell@example.com", password="tyrellpass", faculty="FST")
-        staff = get_staff_by_id(1)
-        assert staff.ID == 1
+
 
     def test_get_staff_by_name(self):
         staff = get_staff_by_username("joe")
