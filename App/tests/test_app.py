@@ -452,3 +452,45 @@ class ReviewIntegrationTests(unittest.TestCase):
         deleted_review = get_review(review.ID)
         assert deleted_review is None
 
+    
+    def test_delete_review2(self):
+        # self.test_create_review()
+
+        assert create_staff(username="Mark",firstname="Mark", lastname="Grayson", email="mark@example.com", password="markpass", faculty="FST") == True
+        assert create_student(username="Nolan",
+                 firstname="Nolan",
+                 lastname="Grayson",
+                 email="nolan@example.com",
+                 password="nolanpass",
+                 faculty="FST",
+                 admittedTerm="",
+                 UniId='816031166',
+                 degree="",
+                 gpa="") == True
+        student = get_student_by_username("Nolan")
+        staff = get_staff_by_username("Mark")
+        review1 = create_review(staff=staff, student=student, starRating=5, details="THINK MARK, THINK!")
+
+        review = get_review(review1.ID)
+
+        expected_review = {
+                "createdByStaffID":staff.ID, 
+                "studentID":student.ID,
+                "starRating":5, 
+                "details":"THINK MARK, THINK!"
+        }
+
+        self.assertEqual(review.createdByStaffID, expected_review["createdByStaffID"])
+        self.assertEqual(review.studentID, expected_review["studentID"])
+        self.assertEqual(review.starRating, expected_review["starRating"])
+        self.assertEqual(review.details, expected_review["details"])
+
+        assert review is not None
+
+        wrong_id = staff.ID + 1
+
+        delete_review_work(review.ID, wrong_id)
+
+        deleted_review = get_review(review.ID)
+        assert deleted_review is not None
+
