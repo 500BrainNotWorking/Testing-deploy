@@ -61,6 +61,7 @@ def delete_review_work(review_id, staff_id):
         if review.createdByStaffID == staff_id:
             db.session.delete(review)
             db.session.commit()
+            return True
         else:
             return None
     else:
@@ -79,6 +80,7 @@ def edit_review_work(details, review_id, staff_id, starRating):
             existing_review.dateCreated = datetime.now()
             db.session.add(existing_review)
             db.session.commit()
+            return True
         else:
             return None
     else:
