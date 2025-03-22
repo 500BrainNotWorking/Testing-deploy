@@ -652,4 +652,12 @@ class CommentIntegrationTests(unittest.TestCase):
         self.assertEqual(new_comment.createdByStaffID, expected_comment["createdByStaffID"])
         self.assertEqual(new_comment.reviewID, expected_comment["reviewID"])
         self.assertEqual(new_comment.details, expected_comment["details"])
+
+        review_comment = get_review(review.ID)
+
+        assert review_comment is not None
+
+        assert len(review_comment.comments) == 1
+
+        assert review_comment.comments[0].details == "This is a fantastic Review!"
         
