@@ -7,6 +7,9 @@ from datetime import datetime
 def get_all_comments():
     return Comment.query.all()
 
+def get_all_comments_review(reviewID):
+    return Comment.query.filter_by(reviewID=reviewID).all()
+
 def get_comment_staff(createdByStaffID):
     return Comment.query.filter_by(createdByStaffID=createdByStaffID).first()
 
