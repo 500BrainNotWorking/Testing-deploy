@@ -751,7 +751,7 @@ class CommentIntegrationTests(unittest.TestCase):
         assert len(comments) == 3
 
 
-    def test_get_all_comments_review(self):
+    def test_get_all_comments_staff(self):
         
         assert create_staff(username="Debbie",firstname="Debbie", lastname="Grayson", email="debbie@example.com", password="debbiepass", faculty="FST") == True
         assert create_student(username="Nolan",
