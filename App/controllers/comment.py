@@ -36,6 +36,7 @@ def delete_comment(comment_id, staff_id):
         if comment.createdByStaffID == staff_id:
             db.session.delete(comment)
             db.session.commit()
+            return True
         else:
             return None
     else:
@@ -52,6 +53,7 @@ def edit_comment(details, comment_id, staff_id):
             existing_comment.dateCreated = datetime.now()
             db.session.add(existing_comment)
             db.session.commit()
+            return True
         else:
             return None
     else:
