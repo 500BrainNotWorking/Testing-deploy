@@ -3,7 +3,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from App.main import create_app
 from App.database import db, create_db
-from App.models import User, Student
+from App.models import User, Student, Staff, Review, Comment, Reply, Karma
 from App.controllers import (
     create_user,
     get_all_users_json,
@@ -27,7 +27,16 @@ from App.controllers import (
     update_admittedTerm,
     update_yearofStudy,
     update_degree,
-    create_karma
+    create_karma,
+
+    create_staff,
+    get_staff_by_id,
+    get_staff_by_username,
+    staff_create_review,
+    staff_edit_review,
+    create_student,
+    get_student_by_username,
+    get_review
 )
 
 
@@ -88,6 +97,47 @@ class StudentUnitTests(unittest.TestCase):
     #                                         "transcripts": [],
     #                                         "karmaScore": None,
     #                                         "karmaRank": None})
+
+
+class StaffUnitTests(unittest.TestCase):
+
+    def test_new_staff(self):
+        staff = Staff(username="joe",firstname="Joe", lastname="Mama", email="joe@example.com", password="joepass", faculty="FST")
+        assert staff.username == "joe"
+
+    def test_get_json(self):
+        staff = Staff(username="joe",firstname="Joe", lastname="Mama", email="joe@example.com", password="joepass", faculty="FST")
+        staff_json = staff.to_json()
+        print(staff_json)
+        self.assertDictEqual(staff_json, {"staffID": None,
+            "username": "joe",
+            "firstname": "Joe",
+            "lastname": "Mama",
+            "email": "joe@example.com",
+            "faculty": "FST",
+            "reviews": [],
+            "reports": [],
+            "pendingAccomplishments": []})
+
+
+class ReviewUnitTests(unittest.TestCase):
+
+    def test_new_review(self):
+        assert create_staff(username="joe",firstname="Joe", lastname="Mama", email="joe@example.com", password="joepass", faculty="FST") == True
+        assert create_student(username="billy",
+                 firstname="Billy",
+                 lastname="John",
+                 email="billy@example.com",
+                 password="billypass",
+                 faculty="FST",
+                 admittedTerm="",
+                 UniId='816031160',
+                 degree="",
+                 gpa="") == True
+        student = get_student_by_username("billy")
+        staff = get_staff_by_username("joe")
+        review = Review(staff, student, 3, "Billy is good.")
+        assert review is not None
 
 '''
     Integration Tests
@@ -172,24 +222,84 @@ class StudentIntegrationTests(unittest.TestCase):
         assert create_student(username="billy", firstname="Billy", lastname="John", email="billy@example.com", password="billypass", faculty="FST", admittedTerm="2022/2023", UniId="816000000", degree="BSc Computer Science", gpa="3.5") == True
         
     # def test_get_student_by_id(self):
-    #     create_student(username="willy", firstname="Willy", lastname="Fohn", email="willy@example.com", password="willypass", faculty="FST", admittedTerm="2022/2023", UniId="816000001", degree="BSc Computer Science", gpa="2.5")
-    #     student = get_student_by_id(1)
+    #     #create_student(username="willy", firstname="Willy", lastname="Fohn", email="willy@example.com", password="willypass", faculty="FST", admittedTerm="2022/2023", UniId="816000001", degree="BSc Computer Science", gpa="2.5")
+    #     student = get_student_by_id(5)
 
-    #     print (student.username)
-    #     assert student.username == "willy"
+    #     expected_student = {
+    #             "username":"billy", 
+    #             "firstname":"Billy", 
+    #             "lastname":"John", 
+    #             "email":"billy@example.com", 
+    #             "faculty":"FST", 
+    #             "admittedTerm":"2022/2023", 
+    #             "UniId":"816000000", 
+    #             "degree":"BSc Computer Science", 
+    #             "gpa":"3.5"
+    #     }
+    #     self.assertEqual(student.username, expected_student["username"])
+    #     self.assertEqual(student.firstname, expected_student["firstname"])
+    #     self.assertEqual(student.lastname, expected_student["lastname"])
+    #     self.assertEqual(student.email, expected_student["email"])
+    #     self.assertEqual(student.faculty, expected_student["faculty"])
+    #     self.assertEqual(student.admittedTerm, expected_student["admittedTerm"])
+    #     self.assertEqual(student.UniId, expected_student["UniId"])
+    #     self.assertEqual(student.degree, expected_student["degree"])
+    #     self.assertEqual(student.gpa, expected_student["gpa"])
     
     def test_get_student_by_name(self):
         create_student(username="Jae", firstname="Jae", lastname="Son", email="jae@example.com", password="jaepass", faculty="FST", admittedTerm="2022/2023", UniId="816000002", degree="BSc Computer Science", gpa="2.7")
         student = get_student_by_username("Jae")
-        assert student is not None
+        assert student.username == "Jae"
 
     def test_get_studens_by_degree(self):
-        students = get_students_by_degree("BSc Computer Science")
-        assert students != []
+        create_student(username="Jae", firstname="Jae", lastname="Son", email="jae@example.com", password="jaepass", faculty="FST", admittedTerm="2022/2023", UniId="816000002", degree="BSc Computer Science (Special)", gpa="2.7")
+        students = get_students_by_degree("BSc Computer Science (Special)")
+
+        expected_student = {
+                "username":"Jae", 
+                "firstname":"Jae", 
+                "lastname":"Son", 
+                "email":"jae@example.com", 
+                "faculty":"FST", 
+                "admittedTerm":"2022/2023", 
+                "UniId":"816000002", 
+                "degree":"BSc Computer Science (Special)", 
+                "gpa":"2.7"
+        }
+        self.assertEqual(students[0].username, expected_student["username"])
+        self.assertEqual(students[0].firstname, expected_student["firstname"])
+        self.assertEqual(students[0].lastname, expected_student["lastname"])
+        self.assertEqual(students[0].email, expected_student["email"])
+        self.assertEqual(students[0].faculty, expected_student["faculty"])
+        self.assertEqual(students[0].admittedTerm, expected_student["admittedTerm"])
+        self.assertEqual(students[0].UniId, expected_student["UniId"])
+        self.assertEqual(students[0].degree, expected_student["degree"])
+        self.assertEqual(students[0].gpa, expected_student["gpa"])
 
     def test_get_students_by_faulty(self):
-        students = get_students_by_faculty("FST")
-        assert students != []
+        create_student(username="Ryan", firstname="Ryan", lastname="Aire", email="ryan@example.com", password="ryanpass", faculty="FSS", admittedTerm="2022/2023", UniId="816000005", degree="Psychology", gpa="3.7")
+        students = get_students_by_faculty("FSS")
+        
+        expected_student = {
+                "username":"Ryan", 
+                "firstname":"Ryan", 
+                "lastname":"Aire", 
+                "email":"ryan@example.com", 
+                "faculty":"FSS", 
+                "admittedTerm":"2022/2023", 
+                "UniId":"816000005", 
+                "degree":"Psychology", 
+                "gpa":"3.7"
+        }
+        self.assertEqual(students[0].username, expected_student["username"])
+        self.assertEqual(students[0].firstname, expected_student["firstname"])
+        self.assertEqual(students[0].lastname, expected_student["lastname"])
+        self.assertEqual(students[0].email, expected_student["email"])
+        self.assertEqual(students[0].faculty, expected_student["faculty"])
+        self.assertEqual(students[0].admittedTerm, expected_student["admittedTerm"])
+        self.assertEqual(students[0].UniId, expected_student["UniId"])
+        self.assertEqual(students[0].degree, expected_student["degree"])
+        self.assertEqual(students[0].gpa, expected_student["gpa"])
     
     def test_get_students_json(self):
         students = get_all_students_json()
@@ -207,3 +317,38 @@ class StudentIntegrationTests(unittest.TestCase):
     
     # def test_update_degree(self):
     #     assert update_degree(1, "BSc Computer Science Special") == True
+
+
+class StaffIntegrationTests(unittest.TestCase):
+
+    def test_create_staff(self):
+        assert create_staff(username="joe",firstname="Joe", lastname="Mama", email="joe@example.com", password="joepass", faculty="FST") == True
+
+    # def test_get_staff_by_id(self):
+    #     staff = get_staff_by_id(1)
+    #     assert staff is not None
+
+    def test_get_staff_by_username(self):
+        staff = get_staff_by_username("joe")
+        assert staff.username == "joe"
+
+    # def test_staff_create_review(self):
+    #     assert create_student(username="billy",
+    #              firstname="Billy",
+    #              lastname="John",
+    #              email="billy@example.com",
+    #              password="billypass",
+    #              faculty="FST",
+    #              admittedTerm="",
+    #              UniId='816031160',
+    #              degree="",
+    #              gpa="") == True
+    #     student = get_student_by_username("billy")
+    #     staff = get_staff_by_id(1)
+    #     assert staff is not None
+    #     assert staff_create_review(staff, student, 3, "Billy is good.") == True
+
+    # def test_staff_edit_review(self):
+    #     review = get_review(1)
+    #     assert review is not None
+    #     assert staff_edit_review(review.ID, "Billy is very good") == True

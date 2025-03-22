@@ -218,13 +218,35 @@ def user_tests_command(type):
 
 @test.command("student", help="Run Student tests")
 @click.argument("type", default="all")
-def staff_tests_command(type):
+def student_tests_command(type):
     if type == "unit":
         sys.exit(pytest.main(["-k", "StudentUnitTests"]))
     elif type == "int":
         sys.exit(pytest.main(["-k", "StudentIntegrationTests"]))
     else:
         sys.exit(pytest.main(["-k", "Student"]))
+
+
+@test.command("staff", help="Run Staff tests")
+@click.argument("type", default="all")
+def staff_tests_command(type):
+    if type == "unit":
+        sys.exit(pytest.main(["-k", "StaffUnitTests"]))
+    elif type == "int":
+        sys.exit(pytest.main(["-k", "StaffIntegrationTests"]))
+    else:
+        sys.exit(pytest.main(["-k", "Staff"]))
+
+
+@test.command("review", help="Run Review tests")
+@click.argument("type", default="all")
+def review_tests_command(type):
+    if type == "unit":
+        sys.exit(pytest.main(["-k", "ReviewUnitTests"]))
+    elif type == "int":
+        sys.exit(pytest.main(["-k", "ReviewIntegrationTests"]))
+    else:
+        sys.exit(pytest.main(["-k", "Review"]))
 
 # @test.command("final", help="Runs ALL tests")
 # @click.argument("type", default="all")
