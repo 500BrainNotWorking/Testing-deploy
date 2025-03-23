@@ -90,6 +90,11 @@ def review_detail(student_id, review_index):
           review.student_name = student.fullname if student else "Unknown Student"  # Attach fullname
           review.student_id = student.UniId if student else "Unknown ID"
           return render_template('ReviewDetail.html', review=review)
+        else:
+           flash("Review does not exist", "error")
+   else:
+      flash("Student does not exist", "error")
+   return redirect('/getMainPage')
 
 @staff_views.route('/reviews/<int:review_id>', methods=['POST'])
 @login_required
@@ -98,15 +103,22 @@ def post_comment(review_id):
   review = get_review(review_id)
   if current_user.user_type == 'staff':
     create_comment(review_id, current_user.ID, content['details'])
-  return redirect(f"/reviews/{review.ID}")
+    return redirect(f"/reviews/{review.ID}")
+  else:
+     flash("Must be logged in as staff", "error")
+     return redirect('/login')
 
 @staff_views.route('/reviews/<int:review_id>', methods=['GET'])
 @login_required
 def expand_review(review_id):
   review = get_review(review_id)
-  student = get_student_by_id(review.studentID)
-  review_index = get_student_review_index(student.ID, review.ID)
-  return redirect(f"/students/{student.UniId}/reviews/{review_index}")
+  if review:
+    student = get_student_by_id(review.studentID)
+    review_index = get_student_review_index(student.ID, review.ID)
+    return redirect(f"/students/{student.UniId}/reviews/{review_index}")
+  else:
+     flash("Review does not exist", "error")
+     return redirect('/getMainPage')
 
 @staff_views.route('/comments/<int:comment_id>', methods=['POST'])
 @login_required
@@ -123,10 +135,11 @@ def post_reply(comment_id):
         create_reply(commentID=comment_id, staffID=staff_id, details=details, parentReplyID=None)
         return redirect(f"/reviews/{comment.reviewID}")
     else:
-        message = f"Comment is not found!"
+        error = f"Comment is not found!"
   else:
-    message = f"You are not logged in as staff and cannot post a Reply!"
-  return jsonify(message=message)
+    error = f"You are not logged in as staff and cannot post a Reply!"
+  flash(error, "error")
+  return redirect('/getMainPage')
    
 @staff_views.route('/mainReviewPage', methods=['GET'])
 def mainReviewPage():
