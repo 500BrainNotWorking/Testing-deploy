@@ -637,8 +637,9 @@
             </div>
 
             {% for comment in review.comments %}
-            <div class="comment-card">
+            <div class="comment-card" id="comment-{{comment.ID}}">
                 <p>{{comment.details}}</p>
+                <button onclick='createReply({{comment.ID}})'>Reply</button>
             </div>
             {% endfor %}
         </div>
@@ -767,6 +768,19 @@
         function closeNav() {
             document.getElementById("mySidenav").style.width = "0";
             document.getElementById("main-content").style.marginLeft = "0";
+        }
+
+        // reply
+        function createReply(comment_id) {
+            comment = document.getElementById("comment-" + comment_id)
+            reply = document.createElement("div")
+            reply.className = "comment-card"
+            replyForm = "<form id=\"reply-form\" action='/comments/" + comment_id + "' method=\"POST\">" +
+                "<input type=\"text\" id=\"comment-box\" name=\"details\" placeholder=\"Create a reply\">" +
+                    "<input type=\"submit\">"
+                "</form>"
+            reply.innerHTML = replyForm
+            comment.append(reply)
         }
     </script>
 </body>
