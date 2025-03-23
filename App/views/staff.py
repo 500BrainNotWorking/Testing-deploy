@@ -98,6 +98,14 @@ def post_comment(review_id):
     create_comment(review_id, current_user.ID, content['details'])
   return redirect(f"/students/{student.UniId}/reviews/{review_index}")
 
+@staff_views.route('/reviews/<int:review_id>', methods=['GET'])
+@login_required
+def expand_review(review_id):
+  review = get_review(review_id)
+  student = get_student_by_id(review.studentID)
+  review_index = get_student_review_index(student.ID, review_id)
+  return redirect(f"/students/{student.UniId}/reviews/{review_index}")
+
 @staff_views.route('/mainReviewPage', methods=['GET'])
 def mainReviewPage():
   return render_template('CreateReview.html')
