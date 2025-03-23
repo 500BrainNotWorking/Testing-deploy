@@ -17,7 +17,7 @@ from App.controllers import (
     get_recommendations_staff_count, calculate_ranks, get_all_verified, 
     get_reviews, get_review, edit_review, edit_review_work, delete_review_work,
     create_comment, get_comment, get_comment_staff,
-    get_reply, create_reply, get_all_reviews, create_staff)            #added get_reviews
+    get_reply, create_reply, get_all_reviews, create_staff, get_student_review_index)            #added get_reviews
 
 
 staff_views = Blueprint('staff_views',
@@ -74,7 +74,73 @@ def student_search_page():
 def review_search_page():
   return render_template('ReviewSearch.html')
 
+@staff_views.route('/students/<int:student_id>/reviews/<int:review_index>', methods=['GET'])
+def review_detail(student_id, review_index):
+   student = get_student_by_UniId(student_id)
+   if student:
+      if review_index in range(len(student.reviews)):
+        review_id = student.get_review_id(review_index)
+        review = get_review(review_id)
+        print(review_index)
+        print(review.ID)
+        print()
+        if review:
+          staff = get_staff_by_id(review.createdByStaffID)  # Get Staff object
+          review.staff_name = staff.firstname + " " + staff.lastname if staff else "Unknown Staff"  # Attach fullname
+          review.student_name = student.fullname if student else "Unknown Student"  # Attach fullname
+          review.student_id = student.UniId if student else "Unknown ID"
+          return render_template('ReviewDetail.html', review=review)
+        else:
+           flash("Review does not exist", "error")
+   else:
+      flash("Student does not exist", "error")
+   return redirect('/getMainPage')
 
+@staff_views.route('/reviews/<int:review_id>', methods=['POST'])
+@login_required
+def post_comment(review_id):
+  content = request.form
+  review = get_review(review_id)
+  if current_user.user_type == 'staff':
+    create_comment(review_id, current_user.ID, content['details'])
+    return redirect(f"/reviews/{review.ID}")
+  else:
+     flash("Must be logged in as staff", "error")
+     return redirect('/login')
+
+@staff_views.route('/reviews/<int:review_id>', methods=['GET'])
+@login_required
+def expand_review(review_id):
+  review = get_review(review_id)
+  if review:
+    student = get_student_by_id(review.studentID)
+    review_index = get_student_review_index(student.ID, review.ID)
+    return redirect(f"/students/{student.UniId}/reviews/{review_index}")
+  else:
+     flash("Review does not exist", "error")
+     return redirect('/getMainPage')
+
+@staff_views.route('/comments/<int:comment_id>', methods=['POST'])
+@login_required
+def post_reply(comment_id):
+  staff_id = current_user.get_id()
+  staff = get_staff_by_id(staff_id)
+  if staff:
+    data = request.form
+    details = data['reply-details']
+
+    comment = get_comment(comment_id)
+
+    if comment:
+        create_reply(commentID=comment_id, staffID=staff_id, details=details, parentReplyID=None)
+        return redirect(f"/reviews/{comment.reviewID}")
+    else:
+        error = f"Comment is not found!"
+  else:
+    error = f"You are not logged in as staff and cannot post a Reply!"
+  flash(error, "error")
+  return redirect('/getMainPage')
+   
 @staff_views.route('/mainReviewPage', methods=['GET'])
 def mainReviewPage():
   return render_template('CreateReview.html')

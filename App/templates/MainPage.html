@@ -631,7 +631,7 @@
                         
                         <p>Posted on {{review.dateCreated.strftime('%Y-%m-%d %H:%M:%S')}} </p>
                     </div>
-                    <i class="fas fa-external-link-alt"></i>
+                    <a href="/reviews/{{review.ID}}" class="fas fa-external-link-alt"></a>
                 </div>
                 <div class="stars">
                     {% if review.starRating is not none %}

@@ -41,7 +41,7 @@ def create_reply(commentID, staffID, details, parentReplyID=None):
         existing_comment = Comment.query.get(commentID)
 
         if existing_comment:
-            existing_comment.replies.append(new_comment)
+            existing_comment.replies.append(new_reply)
             db.session.add(new_reply)
             db.session.commit()
             return new_reply

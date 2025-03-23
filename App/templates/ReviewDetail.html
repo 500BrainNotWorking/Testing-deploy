@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Conduct Tracker - Profile</title>
+    <title>Student Conduct Tracker - Review for {{review.student_name}}</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
@@ -23,6 +24,40 @@
         a {
             text-decoration: none;
             color: black;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: #25283D;
+            color: #FFFAFF;
+            display: flex;
+            justify-content: left;
+            align-items: left;
+            padding: 20px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .menu-icon {
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .logo img {
+            width: 50px;
+            height: 50px;
+            margin-top: 0px;
+            margin-left: 10px;
+        }
+
+        .navbar-title {
+            padding-left: 15px;
+            padding-top: 10px;
+            font-size: 30px;
+            font-weight: bold;
+            font-family: 'Times New Roman', Times, serif;
         }
 
         /* Navbar */
@@ -166,7 +201,7 @@
         h3 {
             color: white;
             font-size: 24px;
-            margin-bottom: 15px;
+            margin-top: 100px;
         }
 
         /* Reviews should be stacked (like mobile) */
@@ -214,7 +249,8 @@
             margin-top: 10px;
         }
 
-        .likes, .comments {
+        .likes,
+        .comments {
             display: flex;
             align-items: center;
             gap: 5px;
@@ -236,25 +272,28 @@
 
 
         /* Dropdown Menu for Profile */
-        .cd__main{
+        .cd__main {
             position: relative;
             min-height: 640px;
         }
+
         .container {
-            position:fixed;
-            top: 6%;                            /* adjust the distance from top */
-            left: 96%;                          /* adjusted to have at the right! */
+            position: fixed;
+            top: 6%;
+            /* adjust the distance from top */
+            left: 96%;
+            /* adjusted to have at the right! */
             margin-right: -50%;
             transform: translate(-50%, -50%);
             text-align: center;
         }
-        
+
         .more-menu {
             width: 100px;
         }
-        
+
         /* More Button / Dropdown Menu */
-        
+
         .more-btn,
         .more-menu-btn {
             background: none;
@@ -269,7 +308,7 @@
             outline: none;
             cursor: pointer;
         }
-        
+
         .more-dot {
             background-color: #aab8c2;
             margin: 0 auto;
@@ -280,7 +319,7 @@
             border-radius: 50%;
             transition: background-color 0.3s;
         }
-        
+
         .more-menu {
             position: absolute;
             top: 100%;
@@ -291,13 +330,13 @@
             background-color: #fff;
             border: 1px solid #ccd8e0;
             border-radius: 4px;
-            box-shadow: 1px 1px 3px rgba(0,0,0,0.25);
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.25);
             opacity: 0;
             transform: translate(0, 15px) scale(.95);
             transition: transform 0.1s ease-out, opacity 0.1s ease-out;
             pointer-events: none;
         }
-        
+
         .more-menu-caret {
             position: absolute;
             top: -10px;
@@ -307,7 +346,7 @@
             float: left;
             overflow: hidden;
         }
-        
+
         .more-menu-caret-outer,
         .more-menu-caret-inner {
             position: absolute;
@@ -316,7 +355,7 @@
             font-size: 0;
             line-height: 1;
         }
-        
+
         .more-menu-caret-outer {
             border-bottom: 10px solid #c1d0da;
             border-left: 10px solid transparent;
@@ -324,9 +363,9 @@
             height: auto;
             left: 0;
             top: 0;
-            width: auto;    
+            width: auto;
         }
-        
+
         .more-menu-caret-inner {
             top: 1px;
             left: 1px;
@@ -334,17 +373,17 @@
             border-right: 9px solid transparent;
             border-bottom: 9px solid #fff;
         }
-        
+
         .more-menu-items {
             margin: 0;
             list-style: none;
             padding: 0;
         }
-        
+
         .more-menu-item {
             display: block;
         }
-        
+
         .more-menu-btn {
             min-width: 100%;
             color: #66757f;
@@ -356,20 +395,20 @@
             position: relative;
             white-space: nowrap;
         }
-        
+
         .more-menu-item:hover {
             background-color: #489fe5;
         }
-        
+
         .more-menu-item:hover .more-menu-btn {
             color: #fff;
         }
-        
+
         .more-btn:hover .more-dot,
         .show-more-menu .more-dot {
             background-color: #516471;
         }
-        
+
         .show-more-menu .more-menu {
             opacity: 1;
             transform: translate(0, 0) scale(1);
@@ -381,14 +420,16 @@
             font-size: 24px;
             color: gold;
         }
+
         .empty {
             color: lightgray;
         }
 
         /*For hamburger Menu*/
-        .slide{
+        .slide {
             margin-top: 13px;
         }
+
         .burger {
             position: relative;
             width: 40px;
@@ -432,86 +473,121 @@
             transform-origin: left center;
             transform: translateY(-100%);
         }
+
+        /* Search Bar */
+        #myInput {
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Magnifying_glass_icon.svg/1024px-Magnifying_glass_icon.svg.png');
+            background-position: 10px center;
+            background-repeat: no-repeat;
+            background-size: 22px;
+            width: 100%;
+            font-size: 16px;
+            padding: 12px 20px 12px 40px;
+            /* Adjust left padding to make room for the icon */
+            border: 1px solid #ddd;
+            margin-bottom: 12px;
+            border-radius: 5px;
+        }
+
+
+        #myUL {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #myUL li a {
+            border: 1px solid #ddd;
+            margin-top: -1px;
+            /* Prevent double borders */
+            background-color: #f6f6f6;
+            padding: 12px;
+            text-decoration: none;
+            font-size: 18px;
+            color: black;
+            display: block
+        }
+
+        #myUL li a:hover:not(.header) {
+            background-color: #eee;
+        }
+
+        /* For comments and replies */
+        .comment-card {
+            background-color: #FFFAFF;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .text-input {
+            background-color: #FFFAFF;
+            width: 80%;
+            padding: 15px;
+            border: 0;
+            outline-color: #489fe5;
+            ;
+        }
     </style>
 </head>
+
 <body>
 
-        <!-- Sidenav -->
-        <div id="mySidenav" class="sidenav">
-            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-            <a href="/getMainPage">Home</a>
-            <a href="/leaderboard">Students</a>
-            <a href="/mainReviewPage">Create Review</a>
+    <!-- Sidenav -->
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="/getMainPage">Home</a>
+        <a href="/leaderboard">Students</a>
+        <a href="/mainReviewPage">Create Review</a>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <!-- From Uiverse.io by Cevorob -->
+        <div class="slide">
+            <label class="burger" onclick="openNav()" for="burger">
+                <input type="checkbox" id="burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
         </div>
-    
-        <!-- Navbar -->
-        <nav class="navbar">
-            <!-- From Uiverse.io by Cevorob --> 
-            <div class="slide">
-                <label class="burger" onclick="openNav()" for="burger">
-                    <input type="checkbox" id="burger">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </label>
-            </div>
-            <div class="logo">
-                <img src="/static/logo.png" alt="Profile">
-            </div>
-            <div class="navbar-title">Student Conduct Tracker</div>
-            <!-- Profile Options -->
-            <div class="container">
-                <div class="more">
-                    <div class="profile-pic more-btn">
-                        <img src="https://i.ibb.co/KS9VcFr/profile-pic.jpg" alt="Profile">
+        <div class="logo">
+            <img src="/static/logo.png" alt="Profile">
+        </div>
+        <div class="navbar-title">Student Conduct Tracker</div>
+        <!-- Profile Options -->
+        <div class="container">
+            <div class="more">
+                <div class="profile-pic more-btn">
+                    <img src="https://i.ibb.co/KS9VcFr/profile-pic.jpg" alt="Profile">
+                </div>
+
+                <div class="more-menu">
+                    <div class="more-menu-caret">
+                        <div class="more-menu-caret-outer"></div>
+                        <div class="more-menu-caret-inner"></div>
                     </div>
-                    
-                    <div class="more-menu">
-                        <div class="more-menu-caret">
-                            <div class="more-menu-caret-outer"></div>
-                            <div class="more-menu-caret-inner"></div>
-                        </div>
-                        <ul class="more-menu-items" tabindex="-1" role="menu" aria-labelledby="more-btn" aria-hidden="true">
-                            <li class="more-menu-item" role="presentation">
-                                <a href="/staff-profile" class="more-menu-btn" role="menuitem">Profile</a>
-                            </li>
-                            <li class="more-menu-item" role="presentation">
-                                <a href="/logout" class="more-menu-btn" role="menuitem">Logout</a>
-                            </li>
-                        </ul>
-                    </div>
+                    <ul class="more-menu-items" tabindex="-1" role="menu" aria-labelledby="more-btn" aria-hidden="true">
+                        <li class="more-menu-item" role="presentation">
+                            <a href="/staff-profile" class="more-menu-btn" role="menuitem">Profile</a>
+                        </li>
+                        <li class="more-menu-item" role="presentation">
+                            <a href="/logout" class="more-menu-btn" role="menuitem">Logout</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
-        </nav>
-
-    <!-- Main Content -->
-    <div id="main-content">
-        <!-- Profile Section -->
-        <div class="profile-container">
-            <img src="https://th.bing.com/th/id/OIP.ddo_V6IbnSEbnhL7HaPuJAHaHb?rs=1&pid=ImgDetMain" alt="User Profile" class="profile-image">
-            <h2>{{student.fullname}}</h2>
-            <h4 style="color: #111;">Karma: {{student.get_karma().points}}</h4>   <!--NOTE - CHANGE TO OUR PATTERN-->
-
-            <!-- <a href="/mainReviewPage">
-                <button class="review-btn">Review</button>
-            </a> -->
-            
-            <div class="profile-description">
-                <p class="faculty">ID Number: {{student.UniId}}</p>
-                <p class="faculty">Faculty: {{student.faculty}}</p>   <!--TO CHANGE-->
-                <p class="faculty">Degree: {{student.degree}}</p>
-                <p class="faculty">Email: {{student.email}}</p>
-            </div>
-
         </div>
-        <br><hr>
+    </nav>
 
-        <!-- Reviews Section -->
-        <div class="reviews-container">
-            <h3>{{student.fullname}}'s Reviews:</h3>
 
-            {% for review in reviews %}
+    <!-- Search Section -->
 
+
+    <!-- Reviews Section -->
+    <div class="reviews-container">
+        <div id="reviewsDetail" style="margin-top: 15vh;">
             <div class="review-card">
                 <div class="review-header">
                     <img src="https://i.ibb.co/KS9VcFr/profile-pic.jpg" alt="User" class="review-avatar">
@@ -519,46 +595,62 @@
                         <a href="/staff-profile/{{review.createdByStaffID}}">
                             <strong>{{review.staff_name}}</strong>
                         </a>
+
                         <p>Posted on {{review.dateCreated}} </p>
                     </div>
-                    <a href="/reviews/{{review.ID}}" class="fas fa-external-link-alt"></a>
                 </div>
                 <div class="stars">
                     {% if review.starRating is not none %}
-                        {% for i in range(review.starRating|int) %}
-                            <i class="fas fa-star"></i>
-                        {% endfor %}
-                        {% for i in range(5 - review.starRating|int) %}
-                            <i class="far fa-star empty"></i>
-                        {% endfor %}
+                    {% for i in range(review.starRating|int) %}
+                    <i class="fas fa-star"></i>
+                    {% endfor %}
+                    {% for i in range(5 - review.starRating|int) %}
+                    <i class="far fa-star empty"></i>
+                    {% endfor %}
                     {% else %}
-                        {% for i in range(5) %}
-                            <i class="far fa-star empty"></i>
-                        {% endfor %}  
+                    {% for i in range(5) %}
+                    <i class="far fa-star empty"></i>
+                    {% endfor %}
                     {% endif %}
                 </div>
-                
+
                 <div class="review-content">
-                    <a href="/getStudentProfile/{{student.UniId}}">
-                        <h4>Review for {{student.fullname}} ({{student.UniId}})</h4>
+                    <a href="/getStudentProfile/{{review.student_id}}">
+                        <h4>Review for {{review.student_name}} ({{review.student_id}})</h4>
                     </a>
-                    
+
                     <p>{{review.details}}</p>
                 </div>
                 <div class="review-footer">
-                    <div class="likes"><i class="fas fa-thumbs-up"></i> 1.1K</div>
-                    <div class="comments"><i class="fas fa-comment"></i> 24K</div>
+                    <div class="likes"><i class="fas fa-thumbs-up"></i>{{review.likes}}</div>
+                    <div class="comments"><i class="fas fa-comment"></i>{{review.dislikes}}</div>
                     <button class="expand-btn">Expand</button>
                 </div>
             </div>
 
-            {% endfor %}
+            <div class="comment-card">
+                <form id="comment-form" action='/reviews/{{review.ID}}' method="POST">
+                    <input type="text" class="text-input" name="details" placeholder="Leave a comment">
+                    <input type="submit">
+                </form>
 
-            {% if reviews|length == 0 %}
-            <h4 style="text-align: center;color: white;margin-top: 30px;">No Reviews</h4>
-            {% endif %}
+            </div>
+
+            {% for comment in review.comments %}
+            <div class="comment-card" id="comment-{{comment.ID}}">
+                <p>{{comment.details}}</p>
+                <button onclick='createReply({{comment.ID}})'>Reply</button>
+            </div>
+
+            {% for reply in comment.replies[0:2] %}
+            <div class="comment-card" id="reply-{{reply.ID}}">
+                <p>{{reply.details}}</p>
+            </div>
+            {% endfor %}
+            {% endfor %}
         </div>
     </div>
+
 
     <!-- JavaScript -->
     <script>
@@ -622,7 +714,7 @@
 
                 for (i = 0; i < reviews.length; i++) {
                     studentName = reviews[i].querySelector("h4");
-                    
+
                     if (studentName) {
                         txtValue = studentName.textContent || studentName.innerText;
                         if (txtValue.toUpperCase().indexOf(filter) > -1) {
@@ -639,20 +731,20 @@
                 const query = document.getElementById("searchQuery").value;
 
                 fetch(`/searchStudent?query=${query}`)
-                .then(response => response.json())
-                .then(data => {
-                    const studentList = document.getElementById("student-list");
-                    const noStudentsMsg = document.getElementById("no-students");
+                    .then(response => response.json())
+                    .then(data => {
+                        const studentList = document.getElementById("student-list");
+                        const noStudentsMsg = document.getElementById("no-students");
 
-                    studentList.innerHTML = ""; // Clear existing students
+                        studentList.innerHTML = ""; // Clear existing students
 
-                    if (data.students.length > 0) {
-                        noStudentsMsg.style.display = "none";
+                        if (data.students.length > 0) {
+                            noStudentsMsg.style.display = "none";
 
-                        data.students.forEach(student => {
-                            const card = document.createElement("div");
-                            card.classList.add("student-card");
-                            card.innerHTML = `
+                            data.students.forEach(student => {
+                                const card = document.createElement("div");
+                                card.classList.add("student-card");
+                                card.innerHTML = `
                                 <h3>${student.firstname} ${student.lastname}</h3>
                                 <p><strong>Student ID:</strong> ${student.UniId}</p>
                                 <p><strong>Degree:</strong> ${student.degree ? student.degree : "Not assigned"}</p>
@@ -660,13 +752,13 @@
                                     <button class="profile-button">View Profile</button>
                                 </a>
                             `;
-                            studentList.appendChild(card);
-                        });
-                    } else {
-                        noStudentsMsg.style.display = "block";
-                    }
-                })
-                .catch(error => console.error("Error fetching students:", error));
+                                studentList.appendChild(card);
+                            });
+                        } else {
+                            noStudentsMsg.style.display = "block";
+                        }
+                    })
+                    .catch(error => console.error("Error fetching students:", error));
             }
 
             //  Attach Filter Function to Input Field
@@ -683,7 +775,20 @@
             document.getElementById("mySidenav").style.width = "0";
             document.getElementById("main-content").style.marginLeft = "0";
         }
-    </script>
 
+        // reply
+        function createReply(comment_id) {
+            comment = document.getElementById("comment-" + comment_id)
+            reply = document.createElement("div")
+            reply.className = "comment-card"
+            replyForm = "<form id=\"reply-form\" action='/comments/" + comment_id + "' method=\"POST\">" +
+                "<input type=\"text\" class=\"text-input\" name=\"reply-details\" placeholder=\"Create a reply\">" +
+                    "<input type=\"submit\">"
+                "</form>"
+            reply.innerHTML = replyForm
+            comment.append(reply)
+        }
+    </script>
 </body>
+
 </html>
