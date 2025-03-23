@@ -98,6 +98,10 @@ def get_student_review_index(student_id, review_id):
   student = get_student_by_id(student_id)
   return student.get_review_index(review_id)
 
+def get_student_review_id(student_id, review_index):
+  student = get_student_by_id(student_id)
+  return student.get_review_id(review_index)
+
 def get_student_for_ir(firstname, lastname, UniId):
   student = Student.query.filter_by(firstname=firstname,
                                     lastname=lastname,

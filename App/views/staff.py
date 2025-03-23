@@ -78,8 +78,12 @@ def review_search_page():
 def review_detail(student_id, review_index):
    student = get_student_by_UniId(student_id)
    if student:
-      if review_index in range(len(student.reviews) + 1):
-        review = student.reviews[review_index - 1]
+      if review_index in range(len(student.reviews)):
+        review_id = student.get_review_id(review_index)
+        review = get_review(review_id)
+        print(review_index)
+        print(review.ID)
+        print()
         if review:
           staff = get_staff_by_id(review.createdByStaffID)  # Get Staff object
           review.staff_name = staff.firstname + " " + staff.lastname if staff else "Unknown Staff"  # Attach fullname
@@ -92,18 +96,16 @@ def review_detail(student_id, review_index):
 def post_comment(review_id):
   content = request.form
   review = get_review(review_id)
-  student = get_student_by_id(review.studentID)
-  review_index = get_student_review_index(student.ID, review_id)
   if current_user.user_type == 'staff':
     create_comment(review_id, current_user.ID, content['details'])
-  return redirect(f"/students/{student.UniId}/reviews/{review_index}")
+  return redirect(f"/reviews/{review.ID}")
 
 @staff_views.route('/reviews/<int:review_id>', methods=['GET'])
 @login_required
 def expand_review(review_id):
   review = get_review(review_id)
   student = get_student_by_id(review.studentID)
-  review_index = get_student_review_index(student.ID, review_id)
+  review_index = get_student_review_index(student.ID, review.ID)
   return redirect(f"/students/{student.UniId}/reviews/{review_index}")
 
 @staff_views.route('/mainReviewPage', methods=['GET'])

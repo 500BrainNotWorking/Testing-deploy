@@ -96,12 +96,14 @@ class Student(User, StudentInterface):
 
 
   def get_review_index(self, review_id):
-     for review in self.reviews:
-        if review.ID == review_id:
-           return self.reviews.index(review) + 1
+    self.reviews.sort(key = lambda e: e.ID)
+    for review in self.reviews:
+      if review.ID == review_id:
+        return self.reviews.index(review)
         
   def get_review_id(self, review_index):
-     return self.reviews[review_index].ID
+    self.reviews.sort(key = lambda e: e.ID)
+    return self.reviews[review_index].ID
 
   def update(self, rank):
       """Update the karma rank for the student"""
