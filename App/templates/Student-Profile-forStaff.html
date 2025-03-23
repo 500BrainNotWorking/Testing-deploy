@@ -521,7 +521,7 @@
                         </a>
                         <p>Posted on {{review.dateCreated}} </p>
                     </div>
-                    <i class="fas fa-external-link-alt"></i>
+                    <a href="/reviews/{{review.ID}}" class="fas fa-external-link-alt"></a>
                 </div>
                 <div class="stars">
                     {% if review.starRating is not none %}
