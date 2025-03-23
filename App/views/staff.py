@@ -108,6 +108,26 @@ def expand_review(review_id):
   review_index = get_student_review_index(student.ID, review.ID)
   return redirect(f"/students/{student.UniId}/reviews/{review_index}")
 
+@staff_views.route('/comments/<int:comment_id>', methods=['POST'])
+@login_required
+def post_reply(comment_id):
+  staff_id = current_user.get_id()
+  staff = get_staff_by_id(staff_id)
+  if staff:
+    data = request.form
+    details = data['reply-details']
+
+    comment = get_comment(comment_id)
+
+    if comment:
+        create_reply(commentID=comment_id, staffID=staff_id, details=details, parentReplyID=None)
+        return redirect(f"/reviews/{comment.reviewID}")
+    else:
+        message = f"Comment is not found!"
+  else:
+    message = f"You are not logged in as staff and cannot post a Reply!"
+  return jsonify(message=message)
+   
 @staff_views.route('/mainReviewPage', methods=['GET'])
 def mainReviewPage():
   return render_template('CreateReview.html')

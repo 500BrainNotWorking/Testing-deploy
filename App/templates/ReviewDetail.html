@@ -520,7 +520,7 @@
             margin-bottom: 20px;
         }
 
-        #comment-box {
+        .text-input {
             background-color: #FFFAFF;
             width: 80%;
             padding: 15px;
@@ -630,7 +630,7 @@
 
             <div class="comment-card">
                 <form id="comment-form" action='/reviews/{{review.ID}}' method="POST">
-                    <input type="text" id="comment-box" name="details" placeholder="Leave a comment">
+                    <input type="text" class="text-input" name="details" placeholder="Leave a comment">
                     <input type="submit">
                 </form>
 
@@ -641,6 +641,12 @@
                 <p>{{comment.details}}</p>
                 <button onclick='createReply({{comment.ID}})'>Reply</button>
             </div>
+
+            {% for reply in comment.replies[0:2] %}
+            <div class="comment-card" id="reply-{{reply.ID}}">
+                <p>{{reply.details}}</p>
+            </div>
+            {% endfor %}
             {% endfor %}
         </div>
     </div>
@@ -776,7 +782,7 @@
             reply = document.createElement("div")
             reply.className = "comment-card"
             replyForm = "<form id=\"reply-form\" action='/comments/" + comment_id + "' method=\"POST\">" +
-                "<input type=\"text\" id=\"comment-box\" name=\"details\" placeholder=\"Create a reply\">" +
+                "<input type=\"text\" class=\"text-input\" name=\"reply-details\" placeholder=\"Create a reply\">" +
                     "<input type=\"submit\">"
                 "</form>"
             reply.innerHTML = replyForm
