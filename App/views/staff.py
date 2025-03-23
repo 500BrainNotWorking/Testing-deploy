@@ -17,7 +17,7 @@ from App.controllers import (
     get_recommendations_staff_count, calculate_ranks, get_all_verified, 
     get_reviews, get_review, edit_review, edit_review_work, delete_review_work,
     create_comment, get_comment, get_comment_staff,
-    get_reply, create_reply, get_all_reviews, create_staff, get_student_review_index)            #added get_reviews
+    get_reply, create_reply, get_all_reviews, create_staff, get_student_review_index, get_karma_history)            #added get_reviews
 
 
 staff_views = Blueprint('staff_views',
@@ -26,6 +26,17 @@ staff_views = Blueprint('staff_views',
 '''
 Page/Action Routes
 '''
+
+@staff_views.route('/viewKarmaDetail/<int:karma_id>', methods=['GET'])
+@login_required
+def view_karma_detail(karma_id):
+    karma = get_karma_by_id(karma_id)  # Fetch karma entry from DB
+
+    if karma is None:
+        flash("Karma record not found.", "error")
+        return redirect(url_for('staff_views.getAllReviews'))  # Redirect if invalid
+
+    return redirect(url_for('staff_views.getAllReviews'))
 
 @staff_views.route('/StaffHome', methods=['GET'])
 def get_StaffHome_page():
@@ -658,6 +669,8 @@ def getStudentProfile(uniID):
     numAs = get_total_As(student.UniId)
     reviews = get_reviews(student.ID)
 
+    karma_history = get_karma_history(student.ID)
+
     # Attach staff name dynamically
     for review in reviews:
         staff = get_staff_by_id(review.createdByStaffID)  # Get Staff object
@@ -669,7 +682,8 @@ def getStudentProfile(uniID):
                            transcripts=transcripts,
                            numAs=numAs,
                            karma=karma,
-                           reviews=reviews)
+                           reviews=reviews,
+                           history = karma_history)
 
 
 @staff_views.route('/allRecommendationRequests', methods=['GET'])
