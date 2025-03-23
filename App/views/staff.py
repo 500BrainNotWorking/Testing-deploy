@@ -17,7 +17,7 @@ from App.controllers import (
     get_recommendations_staff_count, calculate_ranks, get_all_verified, 
     get_reviews, get_review, 
     create_comment, get_comment, get_comment_staff,
-    get_reply, create_reply, get_all_reviews, create_staff)            #added get_reviews
+    get_reply, create_reply, get_all_reviews, create_staff, get_student_review_index)            #added get_reviews
 
 
 staff_views = Blueprint('staff_views',
@@ -74,6 +74,29 @@ def student_search_page():
 def review_search_page():
   return render_template('ReviewSearch.html')
 
+@staff_views.route('/students/<int:student_id>/reviews/<int:review_index>', methods=['GET'])
+def review_detail(student_id, review_index):
+   student = get_student_by_UniId(student_id)
+   if student:
+      if review_index in range(len(student.reviews) + 1):
+        review = student.reviews[review_index - 1]
+        if review:
+          staff = get_staff_by_id(review.createdByStaffID)  # Get Staff object
+          review.staff_name = staff.firstname + " " + staff.lastname if staff else "Unknown Staff"  # Attach fullname
+          review.student_name = student.fullname if student else "Unknown Student"  # Attach fullname
+          review.student_id = student.UniId if student else "Unknown ID"
+          return render_template('ReviewDetail.html', review=review)
+
+@staff_views.route('/reviews/<int:review_id>', methods=['POST'])
+@login_required
+def post_comment(review_id):
+  content = request.form
+  review = get_review(review_id)
+  student = get_student_by_id(review.studentID)
+  review_index = get_student_review_index(student.ID, review_id)
+  if current_user.user_type == 'staff':
+    create_comment(review_id, current_user.ID, content['details'])
+  return redirect(f"/students/{student.UniId}/reviews/{review_index}")
 
 @staff_views.route('/mainReviewPage', methods=['GET'])
 def mainReviewPage():
