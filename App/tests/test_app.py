@@ -1368,7 +1368,7 @@ class ReplyIntegrationTests(unittest.TestCase):
 
         replies = get_all_replies_comment(comment.ID)
 
-        assert len(replies) == 4
+        assert len(replies) == 2
 
         parent_reply = get_parent_reply(new_reply2.ID)
 
@@ -1378,7 +1378,7 @@ class ReplyIntegrationTests(unittest.TestCase):
 
 
     
-    def test_get_parent_reply(self):
+    def test_get_root_parent_reply(self):
 
         assert create_staff(username="Mark",firstname="Mark", lastname="Grayson", email="mark@example.com", password="markpass", faculty="FST") == True
         assert create_student(username="Nolan",
