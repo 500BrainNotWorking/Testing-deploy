@@ -828,10 +828,13 @@
             comment = document.getElementById("comment-" + comment_id)
             reply = document.createElement("div")
             reply.className = "comment-card"
-            replyForm = "<form id=\"reply-form\" action='/comments/" + comment_id + "' method=\"POST\">" +
-                "<input type=\"text\" class=\"text-input\" name=\"reply-details\" placeholder=\"Create a reply\">" +
-                    "<input type=\"submit\">"
-                "</form>"
+            replyForm = `
+            <hr><br>
+            <form id="reply-form" action="/comments/${comment_id}" method="POST">
+                <input type="text" class="text-input" name="reply-details" placeholder="Create a reply">
+                <input type="submit" value="Submit" class="button button2">
+            </form>
+            `;
             reply.innerHTML = replyForm
             comment.append(reply)
         }
