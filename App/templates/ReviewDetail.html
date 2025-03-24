@@ -674,27 +674,43 @@
             </div>
 
             {% for comment, staff in comment_info %}
+            {% set i = loop.index0 %}
+            
+            <!-- Comment Card -->
             <div class="comment-card" id="comment-{{comment.ID}}">
-                <div class="review-header">
-                    <img src="{{ staff.profile_pic or 'https://i.ibb.co/KS9VcFr/profile-pic.jpg' }}" alt="Staff Profile" class="review-avatar">
-                    <div class="review-details">
-                        <a href="/staff-profile/{{comment.createdByStaffID}}">
-                            <strong>{{staff.firstname}} {{staff.lastname}}</strong>
-                        </a>
-                        <p>Comment posted on {{comment.dateCreated}}</p>
-                    </div>
+              <div class="review-header">
+                <img src="{{ staff.profile_pic or 'https://i.ibb.co/KS9VcFr/profile-pic.jpg' }}" alt="Staff Profile" class="review-avatar">
+                <div class="review-details">
+                  <a href="/staff-profile/{{comment.createdByStaffID}}">
+                    <strong>{{staff.firstname}} {{staff.lastname}}</strong>
+                  </a>
+                  <p>Comment posted on {{comment.dateCreated}}</p>
                 </div>
-                <p>{{comment.details}}</p>
-                <button class="button button2" onclick='createReply({{comment.ID}})'>Reply</button>
+              </div>
+              <p>{{comment.details}}</p>
+              <button class="button button2" onclick='createReply({{comment.ID}})'>Reply</button>
             </div>
-
-
+          
+            <!-- Replies (first 2 shown) -->
             {% for reply in comment.replies[0:2] %}
-            <div class="comment-card reply-card" id="reply-{{reply.ID}}">
+              {% set j = loop.index0 %}
+              {% set replier = replier_staffs[i][j] %}
+              
+              <div class="comment-card reply-card" id="reply-{{reply.ID}}">
+                <div class="review-header">
+                  <img src="{{ replier.profile_pic or 'https://i.ibb.co/KS9VcFr/profile-pic.jpg' }}" alt="Replier Profile" class="review-avatar">
+                  <div class="review-details">
+                    <a href="/staff-profile/{{reply.createdByStaffID}}">
+                      <strong>{{ replier.firstname }} {{ replier.lastname }}</strong>
+                    </a>
+                    <p>Reply posted on {{ reply.dateCreated }}</p>
+                  </div>
+                </div>
                 <p>{{reply.details}}</p>
-            </div>
+              </div>
             {% endfor %}
-            {% endfor %}
+          {% endfor %}
+          
         </div>
     </div>
 

@@ -87,29 +87,36 @@ def review_search_page():
 
 @staff_views.route('/students/<int:student_id>/reviews/<int:review_index>', methods=['GET'])
 def review_detail(student_id, review_index):
-   student = get_student_by_UniId(student_id)
-   if student:
-      if review_index in range(len(student.reviews)):
-        review_id = student.get_review_id(review_index)
-        review = get_review(review_id)
-        print(review_index)
-        print(review.ID)
-        print()
-        if review:
-          staff = get_staff_by_id(review.createdByStaffID)  # Get Staff object
-          review.staff_name = staff.firstname + " " + staff.lastname if staff else "Unknown Staff"  # Attach fullname
-          review.student_name = student.fullname if student else "Unknown Student"  # Attach fullname
-          review.student_id = student.UniId if student else "Unknown ID"
-          staffs = []
-          for comment in review.comments:
-            staffs.append(get_comment_staff(comment.createdByStaffID))
-          comment_info = zip(review.comments, staffs)
-          return render_template('ReviewDetail.html', review=review, comment_info=comment_info)
-        else:
-           flash("Review does not exist", "error")
-   else:
-      flash("Student does not exist", "error")
-   return redirect('/getMainPage')
+    student = get_student_by_UniId(student_id)
+    if student:
+        if review_index in range(len(student.reviews)):
+            review_id = student.get_review_id(review_index)
+            review = get_review(review_id)
+            if review:
+                staff = get_staff_by_id(review.createdByStaffID)
+                review.staff_name = f"{staff.firstname} {staff.lastname}" if staff else "Unknown Staff"
+                review.student_name = student.fullname
+                review.student_id = student.UniId
+
+                comment_staffs = []
+                replier_staffs = []
+
+                for comment in review.comments:
+                    comment_staffs.append(get_comment_staff(comment.createdByStaffID))
+                    
+                    replier_list = []
+                    for reply in comment.replies:
+                        replier_list.append(get_comment_staff(reply.createdByStaffID))
+                    replier_staffs.append(replier_list)
+
+                comment_info = zip(review.comments, comment_staffs)
+                return render_template('ReviewDetail.html', review=review, comment_info=comment_info, replier_staffs=replier_staffs)
+            else:
+                flash("Review does not exist", "error")
+    else:
+        flash("Student does not exist", "error")
+    return redirect('/getMainPage')
+
 
 @staff_views.route('/reviews/<int:review_id>', methods=['POST'])
 @login_required
