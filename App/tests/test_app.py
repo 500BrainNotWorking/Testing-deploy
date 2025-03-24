@@ -1364,14 +1364,53 @@ class ReplyIntegrationTests(unittest.TestCase):
 
         new_reply1 = create_reply(commentID=comment.ID, staffID=staff.ID, details="My 1st reply!")
         new_reply2 = create_reply(commentID=comment.ID, staffID=staff.ID, details="My 2nd reply!", parentReplyID=new_reply1.ID)
-        new_reply3 = create_reply(commentID=comment.ID, staffID=staff.ID, details="My 3rd reply!", parentReplyID=new_reply1.ID)
-        new_reply4 = create_reply(commentID=comment.ID, staffID=staff.ID, details="My 4th reply!", parentReplyID=new_reply1.ID)
+
 
         replies = get_all_replies_comment(comment.ID)
 
         assert len(replies) == 4
 
         parent_reply = get_parent_reply(new_reply2.ID)
+
+        assert parent_reply is not None
+
+        assert parent_reply == new_reply1
+
+
+    
+    def test_get_parent_reply(self):
+
+        assert create_staff(username="Mark",firstname="Mark", lastname="Grayson", email="mark@example.com", password="markpass", faculty="FST") == True
+        assert create_student(username="Nolan",
+                 firstname="Nolan",
+                 lastname="Grayson",
+                 email="nolan@example.com",
+                 password="nolanpass",
+                 faculty="FST",
+                 admittedTerm="",
+                 UniId='816031166',
+                 degree="",
+                 gpa="") == True
+        student = get_student_by_username("Nolan")
+        staff = get_staff_by_username("Mark")
+        review1 = create_review(staff=staff, student=student, starRating=5, details="THINK MARK, THINK!")
+
+        review = get_review(review1.ID)
+
+        new_comment1 = create_comment(reviewID=review.ID, staffID=staff.ID, details="This is my 1st comment")
+
+        comment = get_comment(new_comment1.ID)
+
+        new_reply1 = create_reply(commentID=comment.ID, staffID=staff.ID, details="My 1st reply!")
+        new_reply2 = create_reply(commentID=comment.ID, staffID=staff.ID, details="My 2nd reply!", parentReplyID=new_reply1.ID)
+        new_reply3 = create_reply(commentID=comment.ID, staffID=staff.ID, details="My 3rd reply!", parentReplyID=new_reply2.ID)
+        new_reply4 = create_reply(commentID=comment.ID, staffID=staff.ID, details="My 4th reply!", parentReplyID=new_reply3.ID)
+
+        replies = get_all_replies_comment(comment.ID)
+
+        assert len(replies) == 4
+
+        parent_reply = get_root_parent_reply(new_reply4.ID)
 
         assert parent_reply is not None
 
