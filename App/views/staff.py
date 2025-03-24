@@ -676,6 +676,12 @@ def getStudentProfile(uniID):
         staff = get_staff_by_id(review.createdByStaffID)  # Get Staff object
         review.staff_name = staff.firstname + " " + staff.lastname if staff else "Unknown Staff"  # Attach fullname
 
+    review_links = []
+    for review in reviews:
+        index = get_student_review_index(student.ID, review.ID)
+        review_links.append(index)
+
+
     return render_template('Student-Profile-forStaff.html',
                            student=student,
                            user=user,
@@ -683,7 +689,8 @@ def getStudentProfile(uniID):
                            numAs=numAs,
                            karma=karma,
                            reviews=reviews,
-                           history = karma_history)
+                           history = karma_history,
+                           review_links = review_links)
 
 
 @staff_views.route('/allRecommendationRequests', methods=['GET'])
@@ -883,3 +890,37 @@ def signup():
         return render_template('login.html') # Redirect to login after signup
 
     return render_template('SignUp.html')
+
+
+
+@staff_views.route('/jsreview/<int:review_id>', methods=['GET'])
+@login_required
+def js_review_detail(review_id):
+    # Retrieve the review using its ID
+    review = get_review(review_id)
+    if not review:
+        flash("Review not found.", "error")
+        return redirect(url_for('staff_views.getAllReviews'))
+    
+    # Retrieve the associated student using the correct attribute name:
+    student = get_student_by_id(review.studentID)  # Use 'studentID' here
+    if not student:
+        flash("Associated student not found.", "error")
+        return redirect(url_for('staff_views.getAllReviews'))
+    
+    # Retrieve the staff member who created the review and attach their full name.
+    staff_member = get_staff_by_id(review.createdByStaffID)
+    review.staff_name = f"{staff_member.firstname} {staff_member.lastname}" if staff_member else "Unknown Staff"
+    
+    # Attach the student's full name for display in the template.
+    review.student_name = student.fullname if student else "Unknown Student"
+    # IMPORTANT: Set review.student_id (used in your template link) to the student's UniId.
+    review.student_id = student.UniId
+    
+    # Format the review date if needed.
+    if review.dateCreated:
+        review.dateCreated = review.dateCreated.strftime('%Y-%m-%d %H:%M:%S')
+    
+    # Render the ReviewDetail page using your provided template.
+    return render_template('ReviewDetail.html', review=review)
+

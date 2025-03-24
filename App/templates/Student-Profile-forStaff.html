@@ -670,9 +670,15 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
     // URLs corresponding to each karma point (modify URL pattern as needed) - /viewKarmaDetail/{{ karma.id }}
     const urls = [
         {% for review in reviews|reverse %}
-            "/reviews/{{ review.id }}"{% if not loop.last %}, {% endif %}
+            "/jsreview/{{ review.ID }}"{% if not loop.last %}, {% endif %}
         {% endfor %}
     ];
+
+
+
+
+
+
 
   
     // Create the chart with a click event
@@ -707,7 +713,7 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
           if (elements.length > 0) {
             const index = elements[0].index; // Get the index of the clicked point
             const url = urls[index]; // Get the corresponding URL
-            window.location.href = url; // Redirect to the URL
+            window.location.href = '/students/816031609/reviews/0' // Redirect to the URL
           }
         }
       }
