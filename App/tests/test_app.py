@@ -1188,67 +1188,74 @@ class ReplyIntegrationTests(unittest.TestCase):
     
         
 
-    # def test_delete_reply(self):
+    def test_delete_reply(self):
         
-    #     assert create_staff(username="Mark",firstname="Mark", lastname="Grayson", email="mark@example.com", password="markpass", faculty="FST") == True
-    #     assert create_student(username="Nolan",
-    #              firstname="Nolan",
-    #              lastname="Grayson",
-    #              email="nolan@example.com",
-    #              password="nolanpass",
-    #              faculty="FST",
-    #              admittedTerm="",
-    #              UniId='816031166',
-    #              degree="",
-    #              gpa="") == True
-    #     student = get_student_by_username("Nolan")
-    #     staff = get_staff_by_username("Mark")
-    #     review1 = create_review(staff=staff, student=student, starRating=5, details="THINK MARK, THINK!")
+        assert create_staff(username="Mark",firstname="Mark", lastname="Grayson", email="mark@example.com", password="markpass", faculty="FST") == True
+        assert create_student(username="Nolan",
+                 firstname="Nolan",
+                 lastname="Grayson",
+                 email="nolan@example.com",
+                 password="nolanpass",
+                 faculty="FST",
+                 admittedTerm="",
+                 UniId='816031166',
+                 degree="",
+                 gpa="") == True
+        student = get_student_by_username("Nolan")
+        staff = get_staff_by_username("Mark")
+        review1 = create_review(staff=staff, student=student, starRating=5, details="THINK MARK, THINK!")
 
-    #     review = get_review(review1.ID)
+        review = get_review(review1.ID)
 
-    #     expected_review = {
-    #             "createdByStaffID":staff.ID, 
-    #             "studentID":student.ID,
-    #             "starRating":5, 
-    #             "details":"THINK MARK, THINK!"
-    #     }
+        expected_review = {
+                "createdByStaffID":staff.ID, 
+                "studentID":student.ID,
+                "starRating":5, 
+                "details":"THINK MARK, THINK!"
+        }
 
-    #     self.assertEqual(review.createdByStaffID, expected_review["createdByStaffID"])
-    #     self.assertEqual(review.studentID, expected_review["studentID"])
-    #     self.assertEqual(review.starRating, expected_review["starRating"])
-    #     self.assertEqual(review.details, expected_review["details"])
+        self.assertEqual(review.createdByStaffID, expected_review["createdByStaffID"])
+        self.assertEqual(review.studentID, expected_review["studentID"])
+        self.assertEqual(review.starRating, expected_review["starRating"])
+        self.assertEqual(review.details, expected_review["details"])
 
-    #     assert review is not None
+        assert review is not None
 
-    #     new_comment = create_comment(reviewID=review.ID, staffID=staff.ID, details="This is a fantastic Review!")
+        new_comment = create_comment(reviewID=review.ID, staffID=staff.ID, details="This is a fantastic Review!")
 
-    #     assert new_comment is not None
+        assert new_comment is not None
 
-    #     expected_comment = {
-    #             "createdByStaffID":staff.ID, 
-    #             "reviewID":review.ID,
-    #             "details":"This is a fantastic Review!"
-    #     }
+        expected_comment = {
+                "createdByStaffID":staff.ID, 
+                "reviewID":review.ID,
+                "details":"This is a fantastic Review!"
+        }
 
-    #     self.assertEqual(new_comment.createdByStaffID, expected_comment["createdByStaffID"])
-    #     self.assertEqual(new_comment.reviewID, expected_comment["reviewID"])
-    #     self.assertEqual(new_comment.details, expected_comment["details"])
+        self.assertEqual(new_comment.createdByStaffID, expected_comment["createdByStaffID"])
+        self.assertEqual(new_comment.reviewID, expected_comment["reviewID"])
+        self.assertEqual(new_comment.details, expected_comment["details"])
 
-    #     review_comment = get_review(review.ID)
+        review_comment = get_review(review.ID)
 
-    #     assert review_comment is not None
+        assert review_comment is not None
 
-    #     assert len(review_comment.comments) == 1
+        assert len(review_comment.comments) == 1
 
-    #     assert review_comment.comments[0].details == "This is a fantastic Review!"
+        assert review_comment.comments[0].details == "This is a fantastic Review!"
 
-    #     status = delete_comment(new_comment.ID, staff.ID)
 
-    #     assert status is True
+        new_reply1 = create_reply(commentID=new_comment.ID, staffID=staff.ID, details="My 1st reply!")
 
-    #     test_comment = get_comment(new_comment.ID)
-    #     assert test_comment is None
+        reply = get_reply(new_reply1.ID)
+
+        assert reply is not None
+
+        status = delete_reply(reply.ID, staff.ID)
+
+        assert status is True
+
+        test_reply = get_reply(reply.ID)
+        assert test_reply is None
 
 
     # def test_edit_comment(self):

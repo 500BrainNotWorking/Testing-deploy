@@ -63,6 +63,7 @@ def delete_reply(reply_id, staff_id):
         if reply.createdByStaffID == staff_id:
             db.session.delete(reply)
             db.session.commit()
+            return True
         else:
             return None
     else:
@@ -77,6 +78,7 @@ def edit_reply(details, reply_id, staff_id):
             existing_reply.dateCreated = datetime.now()
             db.session.add(existing_reply)
             db.session.commit()
+            return True
         else:
             return None
     else:
