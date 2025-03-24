@@ -674,13 +674,6 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
         {% endfor %}
     ];
 
-
-
-
-
-
-
-  
     // Create the chart with a click event
     const ctx = document.getElementById("myChart").getContext("2d");
     const myChart = new Chart(ctx, {
@@ -710,12 +703,13 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
         },
         // Capture clicks on data points
         onClick: (event, elements) => {
-          if (elements.length > 0) {
-            const index = elements[0].index; // Get the index of the clicked point
-            const url = urls[index]; // Get the corresponding URL
-            window.location.href = '/students/816031609/reviews/0' // Redirect to the URL
-          }
+        if (elements.length > 0) {
+          const index = elements[0]._index || elements[0].index; // Chart.js 2 uses _index
+          const studentId = "{{ student.UniId }}"; // Jinja renders this server-side
+          const url = `/students/${studentId}/reviews/${index}`;
+          window.location.href = url;
         }
+      }
       }
     });
   </script>
