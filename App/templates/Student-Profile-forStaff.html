@@ -703,11 +703,20 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
         },
         // Capture clicks on data points
         onClick: (event, elements) => {
-        if (elements.length > 0) {
+        if (elements.length >= 0) {
           const index = elements[0]._index || elements[0].index; // Chart.js 2 uses _index
-          const studentId = "{{ student.UniId }}"; // Jinja renders this server-side
-          const url = `/students/${studentId}/reviews/${index}`;
-          window.location.href = url;
+          if(index >= 1){
+            const studentId = "{{ student.UniId }}"; // Jinja renders this server-side
+            const url = `/students/${studentId}/reviews/${index}`;
+            window.location.href = url;
+          }
+          else{
+            index = 0;
+            const studentId = "{{ student.UniId }}"; // Jinja renders this server-side
+            const url = `/students/${studentId}/reviews/${index}`;
+            window.location.href = url;
+          }
+          
         }
       }
       }

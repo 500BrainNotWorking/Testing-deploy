@@ -100,7 +100,11 @@ def review_detail(student_id, review_index):
           review.staff_name = staff.firstname + " " + staff.lastname if staff else "Unknown Staff"  # Attach fullname
           review.student_name = student.fullname if student else "Unknown Student"  # Attach fullname
           review.student_id = student.UniId if student else "Unknown ID"
-          return render_template('ReviewDetail.html', review=review)
+          staffs = []
+          for comment in review.comments:
+            staffs.append(get_comment_staff(comment.createdByStaffID))
+          comment_info = zip(review.comments, staffs)
+          return render_template('ReviewDetail.html', review=review, comment_info=comment_info)
         else:
            flash("Review does not exist", "error")
    else:

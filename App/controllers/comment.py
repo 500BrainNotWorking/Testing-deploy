@@ -1,5 +1,6 @@
 from App.models import Comment
 from App.models import Review
+from App.models import Staff
 from App.database import db
 from datetime import datetime
 
@@ -8,7 +9,7 @@ def get_all_comments():
     return Comment.query.all()
 
 def get_comment_staff(createdByStaffID):
-    return Comment.query.filter_by(createdByStaffID=createdByStaffID).first()
+    return Staff.query.filter_by(ID=createdByStaffID).first()
 
 def get_comment(id):
     return Comment.query.filter_by(ID=id).first()
