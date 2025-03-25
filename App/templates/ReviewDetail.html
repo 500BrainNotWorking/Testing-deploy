@@ -667,7 +667,7 @@
 
             <div class="comment-card">
                 <form id="comment-form" action='/reviews/{{review.ID}}' method="POST">
-                    <input type="text" class="text-input" name="details" placeholder="Leave a comment">
+                    <input type="text" class="text-input" name="details" placeholder="Leave a comment" required>
                     <input type="submit" value="Submit" class="button button2">
                 </form>
 
@@ -692,7 +692,7 @@
             </div>
           
             <!-- Replies (first 2 shown) -->
-            {% for reply in comment.replies[0:2] %}
+            {% for reply in comment.replies %}
               {% set j = loop.index0 %}
               {% set replier = replier_staffs[i][j] %}
               
@@ -841,18 +841,29 @@
 
         // reply
         function createReply(comment_id) {
+
+            const button = document.querySelector(`button[onclick='createReply(${comment_id})']`);
+            if (button) button.disabled = true;
+
+
             comment = document.getElementById("comment-" + comment_id)
             reply = document.createElement("div")
             reply.className = "comment-card"
             replyForm = `
             <hr><br>
             <form id="reply-form" action="/comments/${comment_id}" method="POST">
-                <input type="text" class="text-input" name="reply-details" placeholder="Create a reply">
+                <input type="text" class="text-input" name="reply-details" placeholder="Create a reply" required>
                 <input type="submit" value="Submit" class="button button2">
             </form>
             `;
             reply.innerHTML = replyForm
             comment.append(reply)
+
+
+            const form = document.getElementById(`reply-form-${comment_id}`);
+            form.addEventListener('submit', () => {
+                button.disabled = false;
+            });
         }
     </script>
 </body>

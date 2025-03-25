@@ -233,6 +233,7 @@
         .review-details p {
             margin: 2px 0;
             font-size: 14px;
+            white-space: pre-wrap;
         }
 
         /* Review Content */
@@ -620,7 +621,7 @@
 
         
         <div id="reviewsList" style="margin-top: 30px;">
-           {% for review in reviews|reverse %} 
+           {% for review in reviews %} 
            <div class="review-card">
                 <div class="review-header">
                     <img src="https://sta.uwi.edu/fst/dcit/sites/default/files/dcit/styles/medium/public/vijay.png?itok=RvPGd4fb" alt="User" class="review-avatar">
@@ -653,7 +654,7 @@
                         <h4>Review for {{review.student_name}} ({{review.student_id}})</h4>
                     </a>
                     
-                    <p>{{review.details}}</p>
+                    <p style="white-space: pre-wrap;">{{review.details}}</p>
                 </div>
                 <div class="review-footer">
                     <div class="likes"><i class="fas fa-thumbs-up"></i> 1.1K</div>

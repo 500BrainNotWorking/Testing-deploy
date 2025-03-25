@@ -3,6 +3,7 @@ from App.models import Review
 from App.models import Staff
 from App.database import db
 from datetime import datetime
+from .reply import delete_reply
 
 
 def get_all_comments():
@@ -16,6 +17,7 @@ def get_comment(id):
 
 def create_comment(reviewID, staffID, details):
     new_comment= Comment(reviewID=reviewID, staffID=staffID, details=details) 
+    new_comment.replies =[]
 
     if new_comment:
         existing_review = Review.query.get(reviewID)
@@ -35,6 +37,8 @@ def delete_comment(comment_id, staff_id):
     comment = get_comment(comment_id)
     if comment:
         if comment.createdByStaffID == staff_id:
+            for reply in comment.replies:
+                delete_reply(reply.ID, staff_id)
             db.session.delete(comment)
             db.session.commit()
         else:
