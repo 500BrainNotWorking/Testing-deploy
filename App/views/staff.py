@@ -18,7 +18,8 @@ from App.controllers import (
     get_recommendations_staff_count, calculate_ranks, get_all_verified, 
     get_reviews, get_review, edit_review, edit_review_work, delete_review_work,
     create_comment, get_comment, get_comment_staff,
-    get_reply, create_reply, get_all_reviews, create_staff, get_student_review_index, get_karma_history)            #added get_reviews
+    get_reply, create_reply, get_all_reviews, create_staff, get_student_review_index, get_karma_history,
+    like, dislike)            #added get_reviews
 
 
 staff_views = Blueprint('staff_views',
@@ -30,16 +31,19 @@ Page/Action Routes
 
 @staff_views.route('/like/<int:review_id>', methods=['POST'])
 def like_review(review_id):
-    review = Review.query.get(review_id)
-    review.likes += 1
-    db.session.commit()
+    # review = Review.query.get(review_id)
+    # review.likes += 1
+    # db.session.commit()
+
+    like(review_id, current_user.get_id())
     return redirect(request.referrer)
 
 @staff_views.route('/dislike/<int:review_id>', methods=['POST'])
 def dislike_review(review_id):
-    review = Review.query.get(review_id)
-    review.dislikes += 1
-    db.session.commit()
+    # review = Review.query.get(review_id)
+    # review.dislikes += 1
+    # db.session.commit()
+    dislike(review_id, current_user.get_id())
     return redirect(request.referrer)
 
 
