@@ -158,5 +158,5 @@ def get_review(id):
     return None
 
 def get_all_reviews():
-  reviews = Review.query.all()
+  reviews = Review.query.order_by(Review.dateCreated.desc()).all() #Review.query.all()
   return reviews
