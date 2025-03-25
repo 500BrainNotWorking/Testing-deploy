@@ -841,6 +841,11 @@
 
         // reply
         function createReply(comment_id) {
+
+            const button = document.querySelector(`button[onclick='createReply(${comment_id})']`);
+            if (button) button.disabled = true;
+
+
             comment = document.getElementById("comment-" + comment_id)
             reply = document.createElement("div")
             reply.className = "comment-card"
@@ -853,6 +858,12 @@
             `;
             reply.innerHTML = replyForm
             comment.append(reply)
+
+
+            const form = document.getElementById(`reply-form-${comment_id}`);
+            form.addEventListener('submit', () => {
+                button.disabled = false;
+            });
         }
     </script>
 </body>
