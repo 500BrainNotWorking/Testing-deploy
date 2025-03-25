@@ -528,6 +528,43 @@
             outline-color: #489fe5;
             ;
         }
+
+
+
+        .button {
+            background-color: #04AA6D; /* Green */
+            border: none;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+            border-radius: 7px;
+            }
+
+            .button2 {
+                background-color: white; 
+                color: black; 
+                border: 2px solid #008CBA;
+                }
+
+                .button2:hover {
+                background-color: #008CBA;
+                color: white;
+                }
+
+                .reply-card {
+                    padding: 15px 20px;
+                    border-radius: 8px;
+                    margin-left: 40px; /* << this gives the nested effect */
+                    margin-top: 10px;
+                    margin-bottom: 10px;
+                }
+
     </style>
 </head>
 
@@ -560,7 +597,7 @@
         <div class="container">
             <div class="more">
                 <div class="profile-pic more-btn">
-                    <img src="https://i.ibb.co/KS9VcFr/profile-pic.jpg" alt="Profile">
+                    <img src="https://sta.uwi.edu/fst/dcit/sites/default/files/dcit/styles/medium/public/vijay.png?itok=RvPGd4fb" alt="Profile">
                 </div>
 
                 <div class="more-menu">
@@ -590,7 +627,7 @@
         <div id="reviewsDetail" style="margin-top: 15vh;">
             <div class="review-card">
                 <div class="review-header">
-                    <img src="https://i.ibb.co/KS9VcFr/profile-pic.jpg" alt="User" class="review-avatar">
+                    <img src="https://sta.uwi.edu/fst/dcit/sites/default/files/dcit/styles/medium/public/vijay.png?itok=RvPGd4fb" alt="User" class="review-avatar">
                     <div class="review-details">
                         <a href="/staff-profile/{{review.createdByStaffID}}">
                             <strong>{{review.staff_name}}</strong>
@@ -615,7 +652,7 @@
                 </div>
 
                 <div class="review-content">
-                    <a href="/getStudentProfile/{{review.student_id}}">
+                    <a href="/getStudentProfile/{{review.studentID}}">
                         <h4>Review for {{review.student_name}} ({{review.student_id}})</h4>
                     </a>
 
@@ -631,23 +668,49 @@
             <div class="comment-card">
                 <form id="comment-form" action='/reviews/{{review.ID}}' method="POST">
                     <input type="text" class="text-input" name="details" placeholder="Leave a comment">
-                    <input type="submit">
+                    <input type="submit" value="Submit" class="button button2">
                 </form>
 
             </div>
 
-            {% for comment in review.comments %}
+            {% for comment, staff in comment_info %}
+            {% set i = loop.index0 %}
+            
+            <!-- Comment Card -->
             <div class="comment-card" id="comment-{{comment.ID}}">
-                <p>{{comment.details}}</p>
-                <button onclick='createReply({{comment.ID}})'>Reply</button>
+              <div class="review-header">
+                <img src="{{ staff.profile_pic or 'https://sta.uwi.edu/fst/dcit/sites/default/files/dcit/styles/medium/public/vijay.png?itok=RvPGd4fb' }}" alt="Staff Profile" class="review-avatar">
+                <div class="review-details">
+                  <a href="/staff-profile/{{comment.createdByStaffID}}">
+                    <strong>{{staff.firstname}} {{staff.lastname}}</strong>
+                  </a>
+                  <p>Comment posted on {{comment.dateCreated}}</p>
+                </div>
+              </div>
+              <p>{{comment.details}}</p>
+              <button class="button button2" onclick='createReply({{comment.ID}})'>Reply</button>
             </div>
-
+          
+            <!-- Replies (first 2 shown) -->
             {% for reply in comment.replies[0:2] %}
-            <div class="comment-card" id="reply-{{reply.ID}}">
+              {% set j = loop.index0 %}
+              {% set replier = replier_staffs[i][j] %}
+              
+              <div class="comment-card reply-card" id="reply-{{reply.ID}}">
+                <div class="review-header">
+                  <img src="{{ replier.profile_pic or 'https://sta.uwi.edu/fst/dcit/sites/default/files/dcit/styles/medium/public/vijay.png?itok=RvPGd4fb' }}" alt="Replier Profile" class="review-avatar">
+                  <div class="review-details">
+                    <a href="/staff-profile/{{reply.createdByStaffID}}">
+                      <strong>{{ replier.firstname }} {{ replier.lastname }}</strong>
+                    </a>
+                    <p>Reply posted on {{ reply.dateCreated }}</p>
+                  </div>
+                </div>
                 <p>{{reply.details}}</p>
-            </div>
+              </div>
             {% endfor %}
-            {% endfor %}
+          {% endfor %}
+          
         </div>
     </div>
 
@@ -781,10 +844,13 @@
             comment = document.getElementById("comment-" + comment_id)
             reply = document.createElement("div")
             reply.className = "comment-card"
-            replyForm = "<form id=\"reply-form\" action='/comments/" + comment_id + "' method=\"POST\">" +
-                "<input type=\"text\" class=\"text-input\" name=\"reply-details\" placeholder=\"Create a reply\">" +
-                    "<input type=\"submit\">"
-                "</form>"
+            replyForm = `
+            <hr><br>
+            <form id="reply-form" action="/comments/${comment_id}" method="POST">
+                <input type="text" class="text-input" name="reply-details" placeholder="Create a reply">
+                <input type="submit" value="Submit" class="button button2">
+            </form>
+            `;
             reply.innerHTML = replyForm
             comment.append(reply)
         }

@@ -1,689 +1,854 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Conduct Tracker - Profile</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Conduct Tracker - Profile</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="styles.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css"
+  />
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script
+src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+</script>
 
-    <style>
-        /* General Styling */
-        body {
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #7C90A0;
-            transition: margin-left 0.5s;
-        }
+  <style>
+    /* General Styling */
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #7C90A0;
+      transition: margin-left 0.5s;
+    }
 
-        a {
-            text-decoration: none;
-            color: black;
-        }
+    a {
+      text-decoration: none;
+      color: black;
+    }
 
-        /* Navbar */
-        .navbar {
-            background-color: #25283D;
-            color: #FFFAFF;
-            display: flex;
-            justify-content: left;
-            align-items: left;
-            padding: 20px;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-        }
+    /* Navbar */
+    .navbar {
+      background-color: #25283D;
+      color: #FFFAFF;
+      display: flex;
+      justify-content: left;
+      align-items: left;
+      padding: 20px;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+    }
 
-        .menu-icon {
-            font-size: 24px;
-            cursor: pointer;
-        }
+    .menu-icon {
+      font-size: 24px;
+      cursor: pointer;
+    }
 
-        .logo img {
-            width: 50px;
-            height: 50px;
-            margin-top: 0px;
-            margin-left: 10px;
-        }
+    .logo img {
+      width: 50px;
+      height: 50px;
+      margin-top: 0px;
+      margin-left: 10px;
+    }
 
-        .navbar-title {
-            padding-left: 15px;
-            padding-top: 10px;
-            font-size: 30px;
-            font-weight: bold;
-            font-family: 'Times New Roman', Times, serif;
-        }
+    .navbar-title {
+      padding-left: 15px;
+      padding-top: 10px;
+      font-size: 30px;
+      font-weight: bold;
+      font-family: 'Times New Roman', Times, serif;
+    }
 
-        .profile-pic img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-        }
+    .profile-pic img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
 
-        /* Sidenav Styles */
-        .sidenav {
-            height: 100%;
-            width: 0;
-            position: fixed;
-            z-index: 1001;
-            top: 0;
-            left: 0;
-            background-color: #111;
-            overflow-x: hidden;
-            transition: 0.5s;
-            padding-top: 60px;
-        }
+    /* Sidenav Styles */
+    .sidenav {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      z-index: 1001;
+      top: 0;
+      left: 0;
+      background-color: #111;
+      overflow-x: hidden;
+      transition: 0.5s;
+      padding-top: 60px;
+    }
 
-        .sidenav a {
-            padding: 8px 8px 8px 32px;
-            text-decoration: none;
-            font-size: 20px;
-            color: #f1f1f1;
-            display: block;
-            transition: 0.3s;
-        }
+    .sidenav a {
+      padding: 8px 8px 8px 32px;
+      text-decoration: none;
+      font-size: 20px;
+      color: #f1f1f1;
+      display: block;
+      transition: 0.3s;
+    }
 
-        .sidenav a:hover {
-            color: #f1f1f1;
-        }
+    .sidenav a:hover {
+      color: #f1f1f1;
+    }
 
-        .sidenav .closebtn {
-            position: absolute;
-            top: 0;
-            right: 25px;
-            font-size: 36px;
-            margin-left: 50px;
-            cursor: pointer;
-        }
+    .sidenav .closebtn {
+      position: absolute;
+      top: 0;
+      right: 25px;
+      font-size: 36px;
+      margin-left: 50px;
+      cursor: pointer;
+    }
 
-        #main-content {
-            margin-top: 80px;
-            transition: margin-left 0.5s;
-            padding: 16px;
-        }
+    #main-content {
+      margin-top: 80px;
+      transition: margin-left 0.5s;
+      padding: 16px;
+    }
 
-        /* Profile Section */
-        .profile-container {
-            color: black;
-            text-align: center;
-            background-color: #FFFAFF;
-            padding: 30px;
-            border-radius: 10px;
-            width: 60%;
-            margin: 5px auto;
-            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-        }
+    /* Profile Section */
+    .profile-container {
+      color: black;
+      text-align: center;
+      background-color: #FFFAFF;
+      padding: 30px;
+      border-radius: 10px;
+      width: 60%;
+      margin: 5px auto;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    }
 
-        .profile-description {
-            text-align: left;
-            background-color: #FFFAFF;
-            padding: 0px;
-            border-radius: 10px;
-            width: 100%;
-            margin-top: 30px;
-        }
+    .profile-description {
+      text-align: left;
+      background-color: #FFFAFF;
+      padding: 0px;
+      border-radius: 10px;
+      width: 100%;
+      margin-top: 30px;
+    }
 
-        .profile-image {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-        }
+    .profile-image {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+    }
 
-        .logout-btn {
-            display: block;
-            margin-top: 10px;
-            color: red;
-            text-decoration: none;
-            font-weight: bold;
-        }
+    .logout-btn {
+      display: block;
+      margin-top: 10px;
+      color: red;
+      text-decoration: none;
+      font-weight: bold;
+    }
 
-        .review-btn {
-            background-color: #355834;
-            border: none;
-            padding: 10px 15px;
-            margin-top: 10px;
-            cursor: pointer;
-            border-radius: 5px;
-            color: white;
-        }
+    .review-btn {
+      background-color: #355834;
+      border: none;
+      padding: 10px 15px;
+      margin-top: 10px;
+      cursor: pointer;
+      border-radius: 5px;
+      color: white;
+    }
 
-        .faculty {
-            font-style: italic;
-            margin-top: 10px;
-        }
+    .faculty {
+      font-style: italic;
+      margin-top: 10px;
+    }
 
-        /* Reviews Section */
-        .reviews-container {
-            width: 50%;
-            margin: 20px auto;
-        }
+    /* Reviews Section */
+    .reviews-container {
+      width: 50%;
+      margin: 20px auto;
+    }
 
-        h3 {
-            color: white;
-            font-size: 24px;
-            margin-bottom: 15px;
-        }
+    h3 {
+      color: white;
+      font-size: 24px;
+      margin-bottom: 15px;
+    }
 
-        /* Reviews should be stacked (like mobile) */
-        .review-card {
-            background-color: #FFFAFF;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-            color: black;
-            margin-bottom: 20px;
-        }
+    /* Reviews should be stacked (like mobile) */
+    .review-card {
+      background-color: #FFFAFF;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+      color: black;
+      margin-bottom: 20px;
+    }
 
-        /* Review Header */
-        .review-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
+    /* Review Header */
+    .review-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
-        .review-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
+    .review-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
 
-        .review-details {
-            flex-grow: 1;
-        }
+    .review-details {
+      flex-grow: 1;
+    }
 
-        .review-details p {
-            margin: 2px 0;
-            font-size: 14px;
-        }
+    .review-details p {
+      margin: 2px 0;
+      font-size: 14px;
+    }
 
-        /* Review Content */
-        .review-content h4 {
-            margin: 10px 0 5px;
-        }
+    /* Review Content */
+    .review-content h4 {
+      margin: 10px 0 5px;
+    }
 
-        .review-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 10px;
-        }
+    .review-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+    }
 
-        .likes, .comments {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
+    .likes,
+    .comments {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
 
-        .expand-btn {
-            background-color: transparent;
-            border: 1px solid white;
-            color: white;
-            padding: 5px 10px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
+    .expand-btn {
+      background-color: transparent;
+      border: 1px solid white;
+      color: white;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
 
-        /* Hide scrollbar for Webkit browsers */
-        ::-webkit-scrollbar {
-            display: none;
-        }
+    /* Hide scrollbar for Webkit browsers */
+    ::-webkit-scrollbar {
+      display: none;
+    }
 
+    /* Dropdown Menu for Profile */
+    .cd__main {
+      position: relative;
+      min-height: 640px;
+    }
+    .container {
+      position: fixed;
+      top: 6%; /* adjust the distance from top */
+      left: 96%; /* adjusted to have at the right! */
+      margin-right: -50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
 
-        /* Dropdown Menu for Profile */
-        .cd__main{
-            position: relative;
-            min-height: 640px;
-        }
-        .container {
-            position:fixed;
-            top: 6%;                            /* adjust the distance from top */
-            left: 96%;                          /* adjusted to have at the right! */
-            margin-right: -50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-        }
-        
-        .more-menu {
-            width: 100px;
-        }
-        
-        /* More Button / Dropdown Menu */
-        
-        .more-btn,
-        .more-menu-btn {
-            background: none;
-            border: 0 none;
-            line-height: normal;
-            overflow: visible;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            width: 100%;
-            text-align: left;
-            outline: none;
-            cursor: pointer;
-        }
-        
-        .more-dot {
-            background-color: #aab8c2;
-            margin: 0 auto;
-            display: inline-block;
-            width: 7px;
-            height: 7px;
-            margin-right: 1px;
-            border-radius: 50%;
-            transition: background-color 0.3s;
-        }
-        
-        .more-menu {
-            position: absolute;
-            top: 100%;
-            z-index: 900;
-            float: left;
-            padding: 10px 0;
-            margin-top: 9px;
-            background-color: #fff;
-            border: 1px solid #ccd8e0;
-            border-radius: 4px;
-            box-shadow: 1px 1px 3px rgba(0,0,0,0.25);
-            opacity: 0;
-            transform: translate(0, 15px) scale(.95);
-            transition: transform 0.1s ease-out, opacity 0.1s ease-out;
-            pointer-events: none;
-        }
-        
-        .more-menu-caret {
-            position: absolute;
-            top: -10px;
-            left: 12px;
-            width: 18px;
-            height: 10px;
-            float: left;
-            overflow: hidden;
-        }
-        
-        .more-menu-caret-outer,
-        .more-menu-caret-inner {
-            position: absolute;
-            display: inline-block;
-            margin-left: -1px;
-            font-size: 0;
-            line-height: 1;
-        }
-        
-        .more-menu-caret-outer {
-            border-bottom: 10px solid #c1d0da;
-            border-left: 10px solid transparent;
-            border-right: 10px solid transparent;
-            height: auto;
-            left: 0;
-            top: 0;
-            width: auto;    
-        }
-        
-        .more-menu-caret-inner {
-            top: 1px;
-            left: 1px;
-            border-left: 9px solid transparent;
-            border-right: 9px solid transparent;
-            border-bottom: 9px solid #fff;
-        }
-        
-        .more-menu-items {
-            margin: 0;
-            list-style: none;
-            padding: 0;
-        }
-        
-        .more-menu-item {
-            display: block;
-        }
-        
-        .more-menu-btn {
-            min-width: 100%;
-            color: #66757f;
-            cursor: pointer;
-            display: block;
-            font-size: 13px;
-            line-height: 18px;
-            padding: 5px 20px;
-            position: relative;
-            white-space: nowrap;
-        }
-        
-        .more-menu-item:hover {
-            background-color: #489fe5;
-        }
-        
-        .more-menu-item:hover .more-menu-btn {
-            color: #fff;
-        }
-        
-        .more-btn:hover .more-dot,
-        .show-more-menu .more-dot {
-            background-color: #516471;
-        }
-        
-        .show-more-menu .more-menu {
-            opacity: 1;
-            transform: translate(0, 0) scale(1);
-            pointer-events: auto;
-        }
+    .more-menu {
+      width: 100px;
+    }
 
-        /*For star rating */
-        .stars {
-            font-size: 24px;
-            color: gold;
-        }
-        .empty {
-            color: lightgray;
-        }
+    /* More Button / Dropdown Menu */
 
-        /*For hamburger Menu*/
-        .slide{
-            margin-top: 13px;
-        }
-        .burger {
-            position: relative;
-            width: 40px;
-            height: 30px;
-            background: transparent;
-            cursor: pointer;
-            display: block;
-            padding-right: 5px;
-        }
+    .more-btn,
+    .more-menu-btn {
+      background: none;
+      border: 0 none;
+      line-height: normal;
+      overflow: visible;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      width: 100%;
+      text-align: left;
+      outline: none;
+      cursor: pointer;
+    }
 
-        .burger input {
-            display: none;
-        }
+    .more-dot {
+      background-color: #aab8c2;
+      margin: 0 auto;
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      margin-right: 1px;
+      border-radius: 50%;
+      transition: background-color 0.3s;
+    }
 
-        .burger span {
-            display: block;
-            position: absolute;
-            height: 4px;
-            width: 100%;
-            background: #FFFAFF;
-            border-radius: 9px;
-            opacity: 1;
-            left: 0;
-            transform: rotate(0deg);
-            transition: .25s ease-in-out;
-        }
+    .more-menu {
+      position: absolute;
+      top: 100%;
+      z-index: 900;
+      float: left;
+      padding: 10px 0;
+      margin-top: 9px;
+      background-color: #fff;
+      border: 1px solid #ccd8e0;
+      border-radius: 4px;
+      box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.25);
+      opacity: 0;
+      transform: translate(0, 15px) scale(0.95);
+      transition: transform 0.1s ease-out, opacity 0.1s ease-out;
+      pointer-events: none;
+    }
 
-        .burger span:nth-of-type(1) {
-            top: 0px;
-            transform-origin: left center;
-        }
+    .more-menu-caret {
+      position: absolute;
+      top: -10px;
+      left: 12px;
+      width: 18px;
+      height: 10px;
+      float: left;
+      overflow: hidden;
+    }
 
-        .burger span:nth-of-type(2) {
-            top: 50%;
-            transform: translateY(-50%);
-            transform-origin: left center;
-        }
+    .more-menu-caret-outer,
+    .more-menu-caret-inner {
+      position: absolute;
+      display: inline-block;
+      margin-left: -1px;
+      font-size: 0;
+      line-height: 1;
+    }
 
-        .burger span:nth-of-type(3) {
-            top: 100%;
-            transform-origin: left center;
-            transform: translateY(-100%);
-        }
-    </style>
+    .more-menu-caret-outer {
+      border-bottom: 10px solid #c1d0da;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      height: auto;
+      left: 0;
+      top: 0;
+      width: auto;
+    }
+
+    .more-menu-caret-inner {
+      top: 1px;
+      left: 1px;
+      border-left: 9px solid transparent;
+      border-right: 9px solid transparent;
+      border-bottom: 9px solid #fff;
+    }
+
+    .more-menu-items {
+      margin: 0;
+      list-style: none;
+      padding: 0;
+    }
+
+    .more-menu-item {
+      display: block;
+    }
+
+    .more-menu-btn {
+      min-width: 100%;
+      color: #66757f;
+      cursor: pointer;
+      display: block;
+      font-size: 13px;
+      line-height: 18px;
+      padding: 5px 20px;
+      position: relative;
+      white-space: nowrap;
+    }
+
+    .more-menu-item:hover {
+      background-color: #489fe5;
+    }
+
+    .more-menu-item:hover .more-menu-btn {
+      color: #fff;
+    }
+
+    .more-btn:hover .more-dot,
+    .show-more-menu .more-dot {
+      background-color: #516471;
+    }
+
+    .show-more-menu .more-menu {
+      opacity: 1;
+      transform: translate(0, 0) scale(1);
+      pointer-events: auto;
+    }
+
+    /*For star rating */
+    .stars {
+      font-size: 24px;
+      color: gold;
+    }
+    .empty {
+      color: lightgray;
+    }
+
+    /*For hamburger Menu*/
+    .slide {
+      margin-top: 13px;
+    }
+    .burger {
+      position: relative;
+      width: 40px;
+      height: 30px;
+      background: transparent;
+      cursor: pointer;
+      display: block;
+      padding-right: 5px;
+    }
+
+    .burger input {
+      display: none;
+    }
+
+    .burger span {
+      display: block;
+      position: absolute;
+      height: 4px;
+      width: 100%;
+      background: #FFFAFF;
+      border-radius: 9px;
+      opacity: 1;
+      left: 0;
+      transform: rotate(0deg);
+      transition: 0.25s ease-in-out;
+    }
+
+    .burger span:nth-of-type(1) {
+      top: 0px;
+      transform-origin: left center;
+    }
+
+    .burger span:nth-of-type(2) {
+      top: 50%;
+      transform: translateY(-50%);
+      transform-origin: left center;
+    }
+
+    .burger span:nth-of-type(3) {
+      top: 100%;
+      transform-origin: left center;
+      transform: translateY(-100%);
+    }
+
+    
+
+    /* The Modal (background) */
+  .modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
+  }
+
+  /* Modal Content/Box */
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+    border-radius: 6px;
+  }
+
+  /* The Close Button */
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  </style>
 </head>
 <body>
+  <!-- Sidenav -->
+  <div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a href="/getMainPage">Home</a>
+    <a href="/leaderboard">Students</a>
+    <a href="/mainReviewPage">Create Review</a>
+  </div>
 
-        <!-- Sidenav -->
-        <div id="mySidenav" class="sidenav">
-            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-            <a href="/getMainPage">Home</a>
-            <a href="/leaderboard">Students</a>
-            <a href="/mainReviewPage">Create Review</a>
-        </div>
-    
-        <!-- Navbar -->
-        <nav class="navbar">
-            <!-- From Uiverse.io by Cevorob --> 
-            <div class="slide">
-                <label class="burger" onclick="openNav()" for="burger">
-                    <input type="checkbox" id="burger">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </label>
-            </div>
-            <div class="logo">
-                <img src="/static/logo.png" alt="Profile">
-            </div>
-            <div class="navbar-title">Student Conduct Tracker</div>
-            <!-- Profile Options -->
-            <div class="container">
-                <div class="more">
-                    <div class="profile-pic more-btn">
-                        <img src="https://i.ibb.co/KS9VcFr/profile-pic.jpg" alt="Profile">
-                    </div>
-                    
-                    <div class="more-menu">
-                        <div class="more-menu-caret">
-                            <div class="more-menu-caret-outer"></div>
-                            <div class="more-menu-caret-inner"></div>
-                        </div>
-                        <ul class="more-menu-items" tabindex="-1" role="menu" aria-labelledby="more-btn" aria-hidden="true">
-                            <li class="more-menu-item" role="presentation">
-                                <a href="/staff-profile" class="more-menu-btn" role="menuitem">Profile</a>
-                            </li>
-                            <li class="more-menu-item" role="presentation">
-                                <a href="/logout" class="more-menu-btn" role="menuitem">Logout</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </nav>
-
-    <!-- Main Content -->
-    <div id="main-content">
-        <!-- Profile Section -->
-        <div class="profile-container">
-            <img src="https://th.bing.com/th/id/OIP.ddo_V6IbnSEbnhL7HaPuJAHaHb?rs=1&pid=ImgDetMain" alt="User Profile" class="profile-image">
-            <h2>{{student.fullname}}</h2>
-            <h4 style="color: #111;">Karma: {{student.get_karma().points}}</h4>   <!--NOTE - CHANGE TO OUR PATTERN-->
-
-            <!-- <a href="/mainReviewPage">
-                <button class="review-btn">Review</button>
-            </a> -->
-            
-            <div class="profile-description">
-                <p class="faculty">ID Number: {{student.UniId}}</p>
-                <p class="faculty">Faculty: {{student.faculty}}</p>   <!--TO CHANGE-->
-                <p class="faculty">Degree: {{student.degree}}</p>
-                <p class="faculty">Email: {{student.email}}</p>
-            </div>
-
-        </div>
-        <br><hr>
-
-        <!-- Reviews Section -->
-        <div class="reviews-container">
-            <h3>{{student.fullname}}'s Reviews:</h3>
-
-            {% for review in reviews %}
-
-            <div class="review-card">
-                <div class="review-header">
-                    <img src="https://i.ibb.co/KS9VcFr/profile-pic.jpg" alt="User" class="review-avatar">
-                    <div class="review-details">
-                        <a href="/staff-profile/{{review.createdByStaffID}}">
-                            <strong>{{review.staff_name}}</strong>
-                        </a>
-                        <p>Posted on {{review.dateCreated}} </p>
-                    </div>
-                    <a href="/reviews/{{review.ID}}" class="fas fa-external-link-alt"></a>
-                </div>
-                <div class="stars">
-                    {% if review.starRating is not none %}
-                        {% for i in range(review.starRating|int) %}
-                            <i class="fas fa-star"></i>
-                        {% endfor %}
-                        {% for i in range(5 - review.starRating|int) %}
-                            <i class="far fa-star empty"></i>
-                        {% endfor %}
-                    {% else %}
-                        {% for i in range(5) %}
-                            <i class="far fa-star empty"></i>
-                        {% endfor %}  
-                    {% endif %}
-                </div>
-                
-                <div class="review-content">
-                    <a href="/getStudentProfile/{{student.UniId}}">
-                        <h4>Review for {{student.fullname}} ({{student.UniId}})</h4>
-                    </a>
-                    
-                    <p>{{review.details}}</p>
-                </div>
-                <div class="review-footer">
-                    <div class="likes"><i class="fas fa-thumbs-up"></i> 1.1K</div>
-                    <div class="comments"><i class="fas fa-comment"></i> 24K</div>
-                    <button class="expand-btn">Expand</button>
-                </div>
-            </div>
-
-            {% endfor %}
-
-            {% if reviews|length == 0 %}
-            <h4 style="text-align: center;color: white;margin-top: 30px;">No Reviews</h4>
-            {% endif %}
-        </div>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <!-- From Uiverse.io by Cevorob -->
+    <div class="slide">
+      <label class="burger" onclick="openNav()" for="burger">
+        <input type="checkbox" id="burger" />
+        <span></span>
+        <span></span>
+        <span></span>
+      </label>
     </div>
+    <div class="logo">
+      <img src="/static/logo.png" alt="Profile" />
+    </div>
+    <div class="navbar-title">Student Conduct Tracker</div>
+    <!-- Profile Options -->
+    <div class="container">
+      <div class="more">
+        <div class="profile-pic more-btn">
+          <img
+            src="https://sta.uwi.edu/fst/dcit/sites/default/files/dcit/styles/medium/public/vijay.png?itok=RvPGd4fb"
+            alt="Profile"
+          />
+        </div>
 
-    <!-- JavaScript -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            var el = document.querySelector('.more');
-            var btn = el.querySelector('.more-btn');
-            var menu = el.querySelector('.more-menu');
-            var visible = false;
+        <div class="more-menu">
+          <div class="more-menu-caret">
+            <div class="more-menu-caret-outer"></div>
+            <div class="more-menu-caret-inner"></div>
+          </div>
+          <ul
+            class="more-menu-items"
+            tabindex="-1"
+            role="menu"
+            aria-labelledby="more-btn"
+            aria-hidden="true"
+          >
+            <li class="more-menu-item" role="presentation">
+              <a href="/staff-profile" class="more-menu-btn" role="menuitem"
+                >Profile</a
+              >
+            </li>
+            <li class="more-menu-item" role="presentation">
+              <a href="/logout" class="more-menu-btn" role="menuitem"
+                >Logout</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
 
-            //  Function to Show Menu
-            function showMenu(e) {
-                e.preventDefault();
-                if (!visible) {
-                    visible = true;
-                    el.classList.add('show-more-menu');
-                    menu.setAttribute('aria-hidden', false);
-                    document.addEventListener('mousedown', hideMenu, false);
-                }
-            }
+  <!-- Main Content -->
+  <div id="main-content">
+    <!-- Profile Section -->
+    <div class="profile-container">
+      <img
+        src="https://th.bing.com/th/id/OIP.ddo_V6IbnSEbnhL7HaPuJAHaHb?rs=1&pid=ImgDetMain"
+        alt="User Profile"
+        class="profile-image"
+      />
+      <h2>{{student.fullname}}</h2>
+      <!-- Added id and cursor style to indicate clickability -->
+      <h4 id="myBtn" style="color: #111; cursor: pointer;">
+        Karma: {{student.get_karma().points}}
+      </h4>
 
-            //  Function to Hide Menu When Clicking Outside
-            function hideMenu(e) {
-                if (btn.contains(e.target) || menu.contains(e.target)) {
-                    return; // Don't close if clicking inside the menu
-                }
-                if (visible) {
-                    visible = false;
-                    el.classList.remove('show-more-menu');
-                    menu.setAttribute('aria-hidden', true);
-                    document.removeEventListener('mousedown', hideMenu);
-                }
-            }
+      <div class="profile-description">
+        <p class="faculty">ID Number: {{student.UniId}}</p>
+        <p class="faculty">Faculty: {{student.faculty}}</p>
+        <p class="faculty">Degree: {{student.degree}}</p>
+        <p class="faculty">Email: {{student.email}}</p>
+      </div>
 
-            // Ensure Click Works for Profile Link
-            document.querySelector(".more-menu a").addEventListener("click", function () {
-                console.log("Profile link clicked! Navigating...");
-                document.querySelector('.more-menu').classList.remove('show-more-menu');
-                window.location.href = "/staff-profile";
-            });
 
-            btn.addEventListener('click', showMenu, false);
 
-            //  Function to Open Sidebar Menu
-            function openNav() {
-                document.getElementById("mySidenav").style.width = "250px";
-                document.getElementById("main-content").style.marginLeft = "250px";
-            }
+      <!-- The Modal -->
+      <div id="myModal" class="modal">
 
-            //  Function to Close Sidebar Menu
-            function closeNav() {
-                document.getElementById("mySidenav").style.width = "0";
-                document.getElementById("main-content").style.marginLeft = "0";
-            }
+        <!-- Modal content -->
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <canvas id="myChart" style="width:100%;max-width:700px;margin: auto"></canvas>
+        </div>
 
-            // Function to Filter Reviews in Search Bar
-            function filterReviews() {
-                let input, filter, reviews, studentName, i, txtValue;
-                input = document.getElementById("myInput");
-                filter = input.value.toUpperCase();
-                reviews = document.getElementById("reviewsList").getElementsByClassName("review-card");
+      </div>
+    </div>
+    <br />
+    <hr />
 
-                for (i = 0; i < reviews.length; i++) {
-                    studentName = reviews[i].querySelector("h4");
-                    
-                    if (studentName) {
-                        txtValue = studentName.textContent || studentName.innerText;
-                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                            reviews[i].style.display = "";
-                        } else {
-                            reviews[i].style.display = "none";
-                        }
-                    }
-                }
-            }
+    <!-- Reviews Section -->
+    <div class="reviews-container">
+      <h3>{{student.fullname}}'s Reviews:</h3>
 
-            //  Function to Search for Students
-            function searchStudents() {
-                const query = document.getElementById("searchQuery").value;
+      {% for review in reviews %}
+      <div class="review-card">
+        <div class="review-header">
+          <img
+            src="https://sta.uwi.edu/fst/dcit/sites/default/files/dcit/styles/medium/public/vijay.png?itok=RvPGd4fb"
+            alt="User"
+            class="review-avatar"
+          />
+          <div class="review-details">
+            <a href="/staff-profile/{{review.createdByStaffID}}">
+              <strong>{{review.staff_name}}</strong>
+            </a>
+            <p>Posted on {{review.dateCreated}} </p>
+          </div>
+          <a href="/reviews/{{review.ID}}" class="fas fa-external-link-alt"></a>
+        </div>
+        <div class="stars">
+          {% if review.starRating is not none %}
+          {% for i in range(review.starRating|int) %}
+          <i class="fas fa-star"></i>
+          {% endfor %}
+          {% for i in range(5 - review.starRating|int) %}
+          <i class="far fa-star empty"></i>
+          {% endfor %}
+          {% else %}
+          {% for i in range(5) %}
+          <i class="far fa-star empty"></i>
+          {% endfor %}
+          {% endif %}
+        </div>
 
-                fetch(`/searchStudent?query=${query}`)
-                .then(response => response.json())
-                .then(data => {
-                    const studentList = document.getElementById("student-list");
-                    const noStudentsMsg = document.getElementById("no-students");
+        <div class="review-content">
+          <a href="/getStudentProfile/{{student.UniId}}">
+            <h4>Review for {{student.fullname}} ({{student.UniId}})</h4>
+          </a>
 
-                    studentList.innerHTML = ""; // Clear existing students
+          <p>{{review.details}}</p>
+        </div>
+        <div class="review-footer">
+          <div class="likes"><i class="fas fa-thumbs-up"></i> 1.1K</div>
+          <div class="comments"><i class="fas fa-comment"></i> 24K</div>
+          <button class="expand-btn">Expand</button>
+          {%if review.createdByStaffID == current_user.ID%}
+                        <a href="/editReviewPage/{{review.ID}}">Edit Review</a>
+                    {%endif%}
 
-                    if (data.students.length > 0) {
-                        noStudentsMsg.style.display = "none";
+                    {%if review.createdByStaffID == current_user.ID%}
+                        <a href="/deleteReview/{{review.ID}}">Delete Review</a>
+                    {%endif%}
+        </div>
+      </div>
+      {% endfor %}
 
-                        data.students.forEach(student => {
-                            const card = document.createElement("div");
-                            card.classList.add("student-card");
-                            card.innerHTML = `
-                                <h3>${student.firstname} ${student.lastname}</h3>
-                                <p><strong>Student ID:</strong> ${student.UniId}</p>
-                                <p><strong>Degree:</strong> ${student.degree ? student.degree : "Not assigned"}</p>
-                                <a href="/getStudentProfile/${student.UniId}">
-                                    <button class="profile-button">View Profile</button>
-                                </a>
-                            `;
-                            studentList.appendChild(card);
-                        });
-                    } else {
-                        noStudentsMsg.style.display = "block";
-                    }
-                })
-                .catch(error => console.error("Error fetching students:", error));
-            }
+      {% if reviews|length == 0 %}
+      <h4 style="text-align: center; color: white; margin-top: 30px;">
+        No Reviews
+      </h4>
+      {% endif %}
+    </div>
+  </div>
 
-            //  Attach Filter Function to Input Field
-            document.getElementById("myInput").addEventListener("keyup", filterReviews);
-        });
+  
 
-        //for navbar
-        function openNav() {
-            document.getElementById("mySidenav").style.width = "250px";
-            document.getElementById("main-content").style.marginLeft = "250px";
+
+
+  <!-- JavaScript -->
+
+  <!-- Graph Attempt -->
+
+  <script>
+    // Generate x and y values dynamically from Jinja, 
+    const xValues = [
+      {% for karma in history|reverse %}
+        "{{ karma.timestamp.strftime('%Y-%m-%d %H:%M') }}"{% if not loop.last %}, {% endif %}
+      {% endfor %}
+    ];
+  
+    const yValues = [
+      {% for karma in history|reverse %}
+        {{ karma.points }}{% if not loop.last %}, {% endif %}
+      {% endfor %}
+    ];
+  
+    // URLs corresponding to each karma point (modify URL pattern as needed) - /viewKarmaDetail/{{ karma.id }}
+    const urls = [
+        {% for review in reviews|reverse %}
+            "/jsreview/{{ review.ID }}"{% if not loop.last %}, {% endif %}
+        {% endfor %}
+    ];
+
+    // Create the chart with a click event
+    const ctx = document.getElementById("myChart").getContext("2d");
+    const myChart = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: xValues,
+        datasets: [{
+          label: "Karma Points Over Time",
+          backgroundColor: "rgba(0,0,255,0.2)",
+          borderColor: "rgba(0,0,255,1)",
+          data: yValues,
+          fill: true,
+          tension: 0.3,
+          pointRadius: 6, // Make points bigger for clickability
+          pointHoverRadius: 8, // Highlight on hover
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: true, position: 'top' },
+          title: { display: true, text: 'Karma Progression Over Time' }
+        },
+        scales: {
+          x: { title: { display: true, text: 'Timestamp' } },
+          y: { title: { display: true, text: 'Karma Points' }, beginAtZero: true }
+        },
+        // Capture clicks on data points
+        onClick: (event, elements) => {
+          if (elements.length > 0) {
+            const index = typeof elements[0]._index !== 'undefined' ? elements[0]._index : elements[0].index;
+            const studentId = "{{ student.UniId }}";
+            const url = `/students/${studentId}/reviews/${index}`;
+            window.location.href = url;
+          }
         }
 
-        function closeNav() {
-            document.getElementById("mySidenav").style.width = "0";
-            document.getElementById("main-content").style.marginLeft = "0";
-        }
-    </script>
+      }
+    });
+  </script>
+  
+    
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var el = document.querySelector(".more");
+      var btn = el.querySelector(".more-btn");
+      var menu = el.querySelector(".more-menu");
+      var visible = false;
 
+      // Function to Show Menu
+      function showMenu(e) {
+        e.preventDefault();
+        if (!visible) {
+          visible = true;
+          el.classList.add("show-more-menu");
+          menu.setAttribute("aria-hidden", false);
+          document.addEventListener("mousedown", hideMenu, false);
+        }
+      }
+
+      // Function to Hide Menu When Clicking Outside
+      function hideMenu(e) {
+        if (btn.contains(e.target) || menu.contains(e.target)) {
+          return; // Don't close if clicking inside the menu
+        }
+        if (visible) {
+          visible = false;
+          el.classList.remove("show-more-menu");
+          menu.setAttribute("aria-hidden", true);
+          document.removeEventListener("mousedown", hideMenu);
+        }
+      }
+
+      // Ensure Click Works for Profile Link
+      document.querySelector(".more-menu a").addEventListener("click", function () {
+        console.log("Profile link clicked! Navigating...");
+        document.querySelector(".more-menu").classList.remove("show-more-menu");
+        window.location.href = "/staff-profile";
+      });
+
+      btn.addEventListener("click", showMenu, false);
+
+      // Function to Open Sidebar Menu
+      window.openNav = function () {
+        document.getElementById("mySidenav").style.width = "250px";
+        document.getElementById("main-content").style.marginLeft = "250px";
+      };
+
+      // Function to Close Sidebar Menu
+      window.closeNav = function () {
+        document.getElementById("mySidenav").style.width = "0";
+        document.getElementById("main-content").style.marginLeft = "0";
+      };
+
+      // Function to Filter Reviews in Search Bar
+      function filterReviews() {
+        let input, filter, reviews, studentName, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        reviews = document.getElementById("reviewsList").getElementsByClassName("review-card");
+
+        for (i = 0; i < reviews.length; i++) {
+          studentName = reviews[i].querySelector("h4");
+
+          if (studentName) {
+            txtValue = studentName.textContent || studentName.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              reviews[i].style.display = "";
+            } else {
+              reviews[i].style.display = "none";
+            }
+          }
+        }
+      }
+
+      
+
+      // Attach Filter Function to Input Field
+      document.getElementById("myInput").addEventListener("keyup", filterReviews);
+
+      // Modal functionality for Karma
+      var karmaDisplay = document.getElementById("karmaDisplay");
+      var karmaModal = document.getElementById("karmaModal");
+      var closeModal = document.querySelector(".close-modal");
+
+      karmaDisplay.addEventListener("click", function () {
+        karmaModal.style.display = "block";
+      });
+
+      closeModal.addEventListener("click", function () {
+        karmaModal.style.display = "none";
+      });
+
+      window.addEventListener("click", function (event) {
+        if (event.target == karmaModal) {
+          karmaModal.style.display = "none";
+        }
+      });
+    });
+
+
+        // Get the modal
+    var modal = document.getElementById("myModal");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks on the button, open the modal
+    btn.onclick = function() {
+      modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+
+
+  </script>
 </body>
 </html>
