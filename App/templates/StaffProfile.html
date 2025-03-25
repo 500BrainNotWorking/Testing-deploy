@@ -565,14 +565,16 @@
                             <span>{{reviews[i].dislikes}}</span>
                         </form>
                     </div>
-                    <div class="comments"><i class="fas fa-comment"></i>{{reviews[i].comments | length}}</div>
+                    <a href="/reviews/{{reviews[i].ID}}">
+                        <div class="comments"><i class="fas fa-comment"></i>{{reviews[i].comments | length}}</div>
+                      </a>
                     <button class="expand-btn">Expand</button>
                     {%if reviews[i].createdByStaffID == current_user.ID%}
-                        <a href="/editReviewPage/{{reviews[i].ID}}">Edit Review</a>
+                        <a href="/editReviewPage/{{reviews[i].ID}}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                     {%endif%}
 
                     {%if reviews[i].createdByStaffID == current_user.ID%}
-                        <a href="/deleteReview/{{reviews[i].ID}}">Delete Review</a>
+                        <a href="/deleteReview/{{reviews[i].ID}}"><i class="fa fa-trash" aria-hidden="true"></i></a>
                     {%endif%}
                 </div>
             </div>

@@ -689,15 +689,17 @@
                         </form>
                     </div>
                     
-                    <div class="comments"><i class="fas fa-comment"></i>{{review.comments | length}}</div>
+                    <a href="/reviews/{{review.ID}}">
+                        <div class="comments"><i class="fas fa-comment"></i>{{review.comments | length}}</div>
+                      </a>
                     <button class="expand-btn">Expand</button>
 
                     {%if review.createdByStaffID == current_user.ID%}
-                        <a href="/editReviewPage/{{review.ID}}">Edit Review</a>
+                        <a href="/editReviewPage/{{review.ID}}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                     {%endif%}
 
                     {%if review.createdByStaffID == current_user.ID%}
-                        <a href="/deleteReview/{{review.ID}}">Delete Review</a>
+                        <a href="/deleteReview/{{review.ID}}"><i class="fa fa-trash" aria-hidden="true"></i></a>
                     {%endif%}
                 </div>
         </div>
