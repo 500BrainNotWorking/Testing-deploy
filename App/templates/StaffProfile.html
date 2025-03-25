@@ -430,6 +430,21 @@
             transform-origin: left center;
             transform: translateY(-100%);
         }
+        .likes form button:hover i,
+        .likes form button:focus i {
+            color: #355834;
+        }
+
+        .likes i {
+            font-size: 18px;
+        }
+
+        .likes span {
+            margin-left: 4px;
+            font-weight: bold;
+        }
+
+
     </style>
 </head>
 <body>
@@ -535,7 +550,21 @@
                     <p style="white-space: pre-wrap;">{{ reviews[i].details }}</p>
                 </div>
                 <div class="review-footer">
-                    <div class="likes"><i class="fas fa-thumbs-up"></i> 1.1K</div>
+                    <div class="likes">
+                        <form action="/like/{{reviews[i].ID}}" method="POST" style="display:inline;">
+                            <button type="submit" style="background:none; border:none; cursor:pointer;">
+                                <i class="fas fa-thumbs-up"></i>
+                            </button>
+                            <span>{{reviews[i].likes}}</span>
+                        </form>
+                    
+                        <form action="/dislike/{{reviews[i].ID}}" method="POST" style="display:inline; margin-left: 15px;">
+                            <button type="submit" style="background:none; border:none; cursor:pointer;">
+                                <i class="fas fa-thumbs-down"></i>
+                            </button>
+                            <span>{{reviews[i].dislikes}}</span>
+                        </form>
+                    </div>
                     <div class="comments"><i class="fas fa-comment"></i>{{reviews[i].comments | length}}</div>
                     <button class="expand-btn">Expand</button>
                     {%if reviews[i].createdByStaffID == current_user.ID%}

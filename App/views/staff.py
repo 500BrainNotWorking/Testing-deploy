@@ -4,6 +4,7 @@ from App.database import db
 from flask_login import login_required, current_user
 from sqlalchemy import or_
 from datetime import datetime
+import textwrap
 
 from App.models import Student, Staff, User, IncidentReport, Review, Comment, Reply
 
@@ -26,6 +27,21 @@ staff_views = Blueprint('staff_views',
 '''
 Page/Action Routes
 '''
+
+@staff_views.route('/like/<int:review_id>', methods=['POST'])
+def like_review(review_id):
+    review = Review.query.get(review_id)
+    review.likes += 1
+    db.session.commit()
+    return redirect(request.referrer)
+
+@staff_views.route('/dislike/<int:review_id>', methods=['POST'])
+def dislike_review(review_id):
+    review = Review.query.get(review_id)
+    review.dislikes += 1
+    db.session.commit()
+    return redirect(request.referrer)
+
 
 @staff_views.route('/viewKarmaDetail/<int:karma_id>', methods=['GET'])
 @login_required
@@ -124,7 +140,10 @@ def post_comment(review_id):
   content = request.form
   review = get_review(review_id)
   if current_user.user_type == 'staff':
-    create_comment(review_id, current_user.ID, content['details'])
+    details = content['details']
+    details = "\n".join(textwrap.wrap(details, width=80))  # Wrap text at 80 characters
+
+    create_comment(review_id, current_user.ID, details)
     return redirect(f"/reviews/{review.ID}")
   else:
      flash("Must be logged in as staff", "error")
@@ -150,6 +169,7 @@ def post_reply(comment_id):
   if staff:
     data = request.form
     details = data['reply-details']
+    details = "\n".join(textwrap.wrap(details, width=80))  # Wrap text at 80 characters
 
     comment = get_comment(comment_id)
 
@@ -321,7 +341,8 @@ def createReview():
     student = get_student_by_UniId(studentID)
 
     if personalReview:
-        details += f"{personalReview}"
+        wrapped_review = "\n".join(textwrap.wrap(personalReview, width=80))  # Wrap text at 80 characters
+        details += f"{wrapped_review}"
         points += int(data.get('starRating', 0))  # Ensure default value if missing
 
     positive = points > 0  # Determine review positivity

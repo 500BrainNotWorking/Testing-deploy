@@ -546,6 +546,22 @@
             background-color: #2196F3;
             color: white;
         }
+
+        .likes form button:hover i,
+.likes form button:focus i {
+    color: #355834;
+}
+
+.likes i {
+    font-size: 18px;
+}
+
+.likes span {
+    margin-left: 4px;
+    font-weight: bold;
+}
+
+
     </style>
 </head>
 <body>
@@ -657,7 +673,22 @@
                     <p style="white-space: pre-wrap;">{{review.details}}</p>
                 </div>
                 <div class="review-footer">
-                    <div class="likes"><i class="fas fa-thumbs-up"></i> 1.1K</div>
+                    <div class="likes">
+                        <form action="/like/{{review.ID}}" method="POST" style="display:inline;">
+                            <button type="submit" style="background:none; border:none; cursor:pointer;">
+                                <i class="fas fa-thumbs-up"></i>
+                            </button>
+                            <span>{{review.likes}}</span>
+                        </form>
+                    
+                        <form action="/dislike/{{review.ID}}" method="POST" style="display:inline; margin-left: 15px;">
+                            <button type="submit" style="background:none; border:none; cursor:pointer;">
+                                <i class="fas fa-thumbs-down"></i>
+                            </button>
+                            <span>{{review.dislikes}}</span>
+                        </form>
+                    </div>
+                    
                     <div class="comments"><i class="fas fa-comment"></i>{{review.comments | length}}</div>
                     <button class="expand-btn">Expand</button>
 
