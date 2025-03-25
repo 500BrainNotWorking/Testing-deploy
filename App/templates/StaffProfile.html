@@ -538,12 +538,12 @@
                     <div class="likes"><i class="fas fa-thumbs-up"></i> 1.1K</div>
                     <div class="comments"><i class="fas fa-comment"></i> 24K</div>
                     <button class="expand-btn">Expand</button>
-                    {%if review.createdByStaffID == current_user.ID%}
-                        <a href="/editReviewPage/{{review.ID}}">Edit Review</a>
+                    {%if reviews[i].createdByStaffID == current_user.ID%}
+                        <a href="/editReviewPage/{{reviews[i].ID}}">Edit Review</a>
                     {%endif%}
 
-                    {%if review.createdByStaffID == current_user.ID%}
-                        <a href="/deleteReview/{{review.ID}}">Delete Review</a>
+                    {%if reviews[i].createdByStaffID == current_user.ID%}
+                        <a href="/deleteReview/{{reviews[i].ID}}">Delete Review</a>
                     {%endif%}
                 </div>
             </div>
