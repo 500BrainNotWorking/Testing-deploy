@@ -658,7 +658,7 @@
                 </div>
                 <div class="review-footer">
                     <div class="likes"><i class="fas fa-thumbs-up"></i> 1.1K</div>
-                    <div class="comments"><i class="fas fa-comment"></i> 24K</div>
+                    <div class="comments"><i class="fas fa-comment"></i>{{review.comments | length}}</div>
                     <button class="expand-btn">Expand</button>
 
                     {%if review.createdByStaffID == current_user.ID%}
