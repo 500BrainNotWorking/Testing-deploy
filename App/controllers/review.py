@@ -125,26 +125,58 @@ def vote(review_id):
     print(str(e))
     db.session.rollback()
 
-def like(review_id):
+def like(review_id, staff_id):
   review = get_review(review_id)
-  if review:
-    review.likes += 1
-    vote(review_id)
 
-def dislike(review_id):
+  if staff_id in review.liked_by_staff:
+    print('already liked')
+    return False
+
+  if staff_id in review.disliked_by_staff:
+    review.disliked_by_staff.remove(staff_id)
+    review.dislikes = review.dislikes - 1
+
+    review.likes = review.likes +1
+    vote(review_id)
+    review.liked_by_staff.append(staff_id)
+  else:
+    review.likes = review.likes +1
+    vote(review_id)
+    review.liked_by_staff.append(staff_id)
+
+
+  db.session.commit()
+  return True
+
+
+
+  # if review:
+  #   review.likes += 1
+  #   vote(review_id)
+
+def dislike(review_id, staff_id):
+
   review = get_review(review_id)
-  if review:
-    review.dislikes += 1
-    vote(review_id)
 
-# def get_total_review_points(studentID):
-#   reviews = Review.query.filter_by(studentID=studentID).all()
-#   if reviews:
-#     sum = 0
-#     for review in reviews:
-#       sum += review.points
-#     return sum
-#   return 0
+  if staff_id in review.disliked_by_staff:
+    print('already disliked')
+    return False
+
+  if staff_id in review.liked_by_staff:
+    review.liked_by_staff.remove(staff_id)
+    review.likes = review.likes - 1
+
+    review.dislikes = review.dislikes +1
+    vote(review_id)
+    review.disliked_by_staff.append(staff_id)
+  else:
+    review.dislikes = review.dislikes +1
+    vote(review_id)
+    review.disliked_by_staff.append(staff_id)
+
+
+  db.session.commit()
+  return True
 
 def get_reviews(studentID):
   reviews = Review.query.filter_by(studentID=studentID).all()                   #added this function for staff views (by A.M.)

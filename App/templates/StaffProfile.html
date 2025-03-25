@@ -430,6 +430,21 @@
             transform-origin: left center;
             transform: translateY(-100%);
         }
+        .likes form button:hover i,
+        .likes form button:focus i {
+            color: #355834;
+        }
+
+        .likes i {
+            font-size: 18px;
+        }
+
+        .likes span {
+            margin-left: 4px;
+            font-weight: bold;
+        }
+
+
     </style>
 </head>
 <body>
@@ -532,18 +547,34 @@
                     <a href="/getStudentProfile/{{ student_names[i].split('(')[-1][:-1] }}">
                         <h4>Review for {{ student_names[i] }}</h4>
                     </a>                    
-                    <p>{{ reviews[i].details }}</p>
+                    <p style="white-space: pre-wrap;">{{ reviews[i].details }}</p>
                 </div>
                 <div class="review-footer">
-                    <div class="likes"><i class="fas fa-thumbs-up"></i> 1.1K</div>
-                    <div class="comments"><i class="fas fa-comment"></i> 24K</div>
+                    <div class="likes">
+                        <form action="/like/{{reviews[i].ID}}" method="POST" style="display:inline;">
+                            <button type="submit" style="background:none; border:none; cursor:pointer;">
+                                <i class="fas fa-thumbs-up"></i>
+                            </button>
+                            <span>{{reviews[i].likes}}</span>
+                        </form>
+                    
+                        <form action="/dislike/{{reviews[i].ID}}" method="POST" style="display:inline; margin-left: 15px;">
+                            <button type="submit" style="background:none; border:none; cursor:pointer;">
+                                <i class="fas fa-thumbs-down"></i>
+                            </button>
+                            <span>{{reviews[i].dislikes}}</span>
+                        </form>
+                    </div>
+                    <a href="/reviews/{{reviews[i].ID}}">
+                        <div class="comments"><i class="fas fa-comment"></i>{{reviews[i].comments | length}}</div>
+                      </a>
                     <button class="expand-btn">Expand</button>
                     {%if reviews[i].createdByStaffID == current_user.ID%}
-                        <a href="/editReviewPage/{{reviews[i].ID}}">Edit Review</a>
+                        <a href="/editReviewPage/{{reviews[i].ID}}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                     {%endif%}
 
                     {%if reviews[i].createdByStaffID == current_user.ID%}
-                        <a href="/deleteReview/{{reviews[i].ID}}">Delete Review</a>
+                        <a href="/deleteReview/{{reviews[i].ID}}"><i class="fa fa-trash" aria-hidden="true"></i></a>
                     {%endif%}
                 </div>
             </div>
