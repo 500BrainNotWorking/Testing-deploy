@@ -667,7 +667,7 @@
 
             <div class="comment-card">
                 <form id="comment-form" action='/reviews/{{review.ID}}' method="POST">
-                    <input type="text" class="text-input" name="details" placeholder="Leave a comment">
+                    <input type="text" class="text-input" name="details" placeholder="Leave a comment" required>
                     <input type="submit" value="Submit" class="button button2">
                 </form>
 
@@ -852,7 +852,7 @@
             replyForm = `
             <hr><br>
             <form id="reply-form" action="/comments/${comment_id}" method="POST">
-                <input type="text" class="text-input" name="reply-details" placeholder="Create a reply">
+                <input type="text" class="text-input" name="reply-details" placeholder="Create a reply" required>
                 <input type="submit" value="Submit" class="button button2">
             </form>
             `;
