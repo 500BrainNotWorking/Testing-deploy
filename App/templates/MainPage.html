@@ -576,7 +576,7 @@
         <div class="container">
             <div class="more">
                 <div class="profile-pic more-btn">
-                    <img src="https://i.ibb.co/KS9VcFr/profile-pic.jpg" alt="Profile">
+                    <img src="https://sta.uwi.edu/fst/dcit/sites/default/files/dcit/styles/medium/public/vijay.png?itok=RvPGd4fb" alt="Profile">
                 </div>
                 
                 <div class="more-menu">
@@ -620,10 +620,10 @@
 
         
         <div id="reviewsList" style="margin-top: 30px;">
-           {% for review in reviews %} 
+           {% for review in reviews|reverse %} 
            <div class="review-card">
                 <div class="review-header">
-                    <img src="https://i.ibb.co/KS9VcFr/profile-pic.jpg" alt="User" class="review-avatar">
+                    <img src="https://sta.uwi.edu/fst/dcit/sites/default/files/dcit/styles/medium/public/vijay.png?itok=RvPGd4fb" alt="User" class="review-avatar">
                     <div class="review-details">
                         <a href="/staff-profile/{{review.createdByStaffID}}">
                             <strong>{{review.staff_name}}</strong>

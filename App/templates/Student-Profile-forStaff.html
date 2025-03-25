@@ -516,7 +516,7 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
       <div class="more">
         <div class="profile-pic more-btn">
           <img
-            src="https://i.ibb.co/KS9VcFr/profile-pic.jpg"
+            src="https://sta.uwi.edu/fst/dcit/sites/default/files/dcit/styles/medium/public/vijay.png?itok=RvPGd4fb"
             alt="Profile"
           />
         </div>
@@ -595,7 +595,7 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
       <div class="review-card">
         <div class="review-header">
           <img
-            src="https://i.ibb.co/KS9VcFr/profile-pic.jpg"
+            src="https://sta.uwi.edu/fst/dcit/sites/default/files/dcit/styles/medium/public/vijay.png?itok=RvPGd4fb"
             alt="User"
             class="review-avatar"
           />
@@ -605,7 +605,7 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
             </a>
             <p>Posted on {{review.dateCreated}} </p>
           </div>
-          <i class="fas fa-external-link-alt"></i>
+          <a href="/reviews/{{review.ID}}" class="fas fa-external-link-alt"></a>
         </div>
         <div class="stars">
           {% if review.starRating is not none %}
@@ -703,22 +703,14 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
         },
         // Capture clicks on data points
         onClick: (event, elements) => {
-        if (elements.length >= 0) {
-          const index = elements[0]._index || elements[0].index; // Chart.js 2 uses _index
-          if(index >= 1){
-            const studentId = "{{ student.UniId }}"; // Jinja renders this server-side
+          if (elements.length > 0) {
+            const index = typeof elements[0]._index !== 'undefined' ? elements[0]._index : elements[0].index;
+            const studentId = "{{ student.UniId }}";
             const url = `/students/${studentId}/reviews/${index}`;
             window.location.href = url;
           }
-          else{
-            index = 0;
-            const studentId = "{{ student.UniId }}"; // Jinja renders this server-side
-            const url = `/students/${studentId}/reviews/${index}`;
-            window.location.href = url;
-          }
-          
         }
-      }
+
       }
     });
   </script>

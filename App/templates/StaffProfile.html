@@ -461,7 +461,7 @@
             <div class="container">
                 <div class="more">
                     <div class="profile-pic more-btn">
-                        <img src="https://i.ibb.co/KS9VcFr/profile-pic.jpg" alt="Profile">
+                        <img src="https://sta.uwi.edu/fst/dcit/sites/default/files/dcit/styles/medium/public/vijay.png?itok=RvPGd4fb" alt="Profile">
                     </div>
                     
                     <div class="more-menu">
@@ -504,14 +504,14 @@
             {% for i in range(reviews|length) %}
             <div class="review-card">
                 <div class="review-header">
-                    <img src="https://i.ibb.co/KS9VcFr/profile-pic.jpg" alt="User" class="review-avatar">
+                    <img src="https://sta.uwi.edu/fst/dcit/sites/default/files/dcit/styles/medium/public/vijay.png?itok=RvPGd4fb" alt="User" class="review-avatar">
                     <div class="review-details">
                         <a href="/staff-profile/{{reviews[i].createdByStaffID}}">
                             <strong>{{ staff.firstname }} {{ staff.lastname }}</strong>
                         </a>
                         <p>Posted on {{ reviews[i].dateCreated }} </p>
                     </div>
-                    <i class="fas fa-external-link-alt"></i>
+                    <a href="/reviews/{{reviews[i].ID}}" class="fas fa-external-link-alt"></a>
                 </div>
                 <div class="stars">
                     {% if reviews[i].starRating is not none %}
