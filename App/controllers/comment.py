@@ -3,6 +3,7 @@ from App.models import Review
 from App.models import Staff
 from App.database import db
 from datetime import datetime
+from .reply import delete_reply
 
 
 def get_all_comments():
@@ -36,7 +37,8 @@ def delete_comment(comment_id, staff_id):
     comment = get_comment(comment_id)
     if comment:
         if comment.createdByStaffID == staff_id:
-            comment.replies =[]
+            for reply in comment.replies:
+                delete_reply(reply.ID, staff_id)
             db.session.delete(comment)
             db.session.commit()
         else:

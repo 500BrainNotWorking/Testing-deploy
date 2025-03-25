@@ -2,6 +2,7 @@ from App.models import Review, Karma
 from App.database import db
 from .student import get_student_by_id
 from datetime import datetime
+from .comment import delete_comment
 
 def create_review(staff, student, starRating, details):
   if starRating is None:
@@ -61,7 +62,8 @@ def delete_review_work(review_id, staff_id):
     review = get_review(review_id)
     if review:
         if review.createdByStaffID == staff_id:
-            review.comments = []
+            for comment in review.comments:
+              delete_comment(comment.ID, staff_id)
             db.session.delete(review)
             db.session.commit()
         else:
