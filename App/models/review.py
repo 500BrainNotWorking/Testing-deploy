@@ -21,6 +21,7 @@ class Review(db.Model):
         self.studentID = student.ID
         self.starRating = starRating
         self.details = details
+        self.comments = []
 
     def get_id(self):
         return self.ID

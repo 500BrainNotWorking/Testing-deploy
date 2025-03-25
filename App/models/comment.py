@@ -16,6 +16,7 @@ class Comment(db.Model):
         self.reviewID = reviewID
         self.details = details
         self.dateCreated = datetime.now()
+        self.replies =[]
     
     def get_id(self):
         return self.ID

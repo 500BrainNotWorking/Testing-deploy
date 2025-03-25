@@ -11,6 +11,8 @@ def create_review(staff, student, starRating, details):
                      student=student,
                      starRating=starRating,
                      details=details)
+
+  newReview.comments=[]
   db.session.add(newReview)
   """Adjust the student's karma based on the star rating of the review."""
   if newReview.starRating == 5:
@@ -59,6 +61,7 @@ def delete_review_work(review_id, staff_id):
     review = get_review(review_id)
     if review:
         if review.createdByStaffID == staff_id:
+            review.comments = []
             db.session.delete(review)
             db.session.commit()
         else:

@@ -692,7 +692,7 @@
             </div>
           
             <!-- Replies (first 2 shown) -->
-            {% for reply in comment.replies[0:2] %}
+            {% for reply in comment.replies %}
               {% set j = loop.index0 %}
               {% set replier = replier_staffs[i][j] %}
               
