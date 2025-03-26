@@ -526,6 +526,10 @@
                         </a>
                         <p>Posted on {{ reviews[i].dateCreated }} </p>
                     </div>
+                    {%if reviews[i].createdByStaffID == current_user.ID%}
+                        <div style="padding-right: 40px;"><a href="/editReviewPage/{{reviews[i].ID}}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                          </div>
+                    {%endif%}
                     <a href="/reviews/{{reviews[i].ID}}" class="fas fa-external-link-alt"></a>
                 </div>
                 <div class="stars">
@@ -569,9 +573,6 @@
                         <div class="comments"><i class="fas fa-comment"></i>{{reviews[i].comments | length}}</div>
                       </a>
                     <button class="expand-btn">Expand</button>
-                    {%if reviews[i].createdByStaffID == current_user.ID%}
-                        <a href="/editReviewPage/{{reviews[i].ID}}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                    {%endif%}
 
                     {%if reviews[i].createdByStaffID == current_user.ID%}
                         <a href="/deleteReview/{{reviews[i].ID}}"><i class="fa fa-trash" aria-hidden="true"></i></a>
