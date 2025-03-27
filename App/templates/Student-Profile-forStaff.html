@@ -17,6 +17,7 @@
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css"
   />
+  <link rel="icon" type="image/x-icon" href="/static/logo.png">
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   <script
 src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
@@ -532,7 +533,7 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
       <div class="more">
         <div class="profile-pic more-btn">
           <img
-            src="https://sta.uwi.edu/fst/dcit/sites/default/files/dcit/styles/medium/public/vijay.png?itok=RvPGd4fb"
+            src="{{current_user.profile_pic}}"
             alt="Profile"
           />
         </div>
@@ -611,7 +612,7 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
       <div class="review-card">
         <div class="review-header">
           <img
-            src="https://sta.uwi.edu/fst/dcit/sites/default/files/dcit/styles/medium/public/vijay.png?itok=RvPGd4fb"
+            src="{{review.staffpic}}"
             alt="User"
             class="review-avatar"
           />
@@ -621,6 +622,10 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
             </a>
             <p>Posted on {{review.dateCreated}} </p>
           </div>
+          {%if review.createdByStaffID == current_user.ID%}
+                        <div style="padding-right: 40px;"><a href="/editReviewPage/{{review.ID}}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                          </div>
+                    {%endif%}
           <a href="/reviews/{{review.ID}}" class="fas fa-external-link-alt"></a>
         </div>
         <div class="stars">
@@ -666,9 +671,6 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
             <div class="comments"><i class="fas fa-comment"></i>{{review.comments | length}}</div>
           </a>
           <button class="expand-btn">Expand</button>
-          {%if review.createdByStaffID == current_user.ID%}
-                        <a href="/editReviewPage/{{review.ID}}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                    {%endif%}
 
                     {%if review.createdByStaffID == current_user.ID%}
                         <a href="/deleteReview/{{review.ID}}"><i class="fa fa-trash" aria-hidden="true"></i></a>
@@ -692,6 +694,18 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
   <!-- JavaScript -->
 
   <!-- Graph Attempt -->
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(function () {
+            let flashMessages = document.querySelectorAll(".flash-message");
+            flashMessages.forEach(function (msg) {
+                msg.style.opacity = "0";
+                setTimeout(() => msg.style.display = "none", 500);
+            });
+        }, 3000); // Messages disappear after 3 seconds
+    });
+</script>
 
   <script>
     // Generate x and y values dynamically from Jinja, 

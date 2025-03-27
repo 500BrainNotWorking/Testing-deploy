@@ -50,6 +50,7 @@ class Student(User, StudentInterface):
     self.grades = []
     self.transcripts = []
     self.badges = []
+    
 
   def get_id(self):
     return self.ID

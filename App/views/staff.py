@@ -19,7 +19,7 @@ from App.controllers import (
     get_reviews, get_review, edit_review, edit_review_work, delete_review_work,
     create_comment, get_comment, get_comment_staff,
     get_reply, create_reply, get_all_reviews, create_staff, get_student_review_index, get_karma_history,
-    like, dislike)            #added get_reviews
+    like, dislike, update_staff_profile)            #added get_reviews
 
 
 staff_views = Blueprint('staff_views',
@@ -28,6 +28,45 @@ staff_views = Blueprint('staff_views',
 '''
 Page/Action Routes
 '''
+
+@staff_views.route('/edit-profile/<int:staff_id>', methods=['GET'])
+def edit_staff_profile_route(staff_id):
+    staff = Staff.query.get(staff_id)
+    if not staff:
+        flash("Staff not found.", "error")
+        return redirect(request.referrer)
+
+    return render_template('EditProfile.html', staff=staff)
+
+
+@staff_views.route('/update-staff-profile', methods=['POST'])
+def update_staff_profile_route():
+    staff_id = request.form.get('staff_id')
+    firstname = request.form.get('firstname')
+    lastname = request.form.get('lastname')
+    faculty = request.form.get('faculty')
+    email = request.form.get('email')
+    profile_pic = request.files.get('profile_pic')
+
+    try:
+        # Assume this function updates everything and handles the image too
+        update_staff_profile(
+            staff_id=staff_id,
+            firstname=firstname,
+            lastname=lastname,
+            faculty=faculty,
+            email=email,
+            profile_pic=profile_pic
+        )
+
+        flash("Profile updated successfully!", "success")
+        return redirect(url_for('staff_views.staff_profile', staff_id=staff_id))
+    except Exception as e:
+        print(f"Error updating profile: {e}")
+        flash("Something went wrong while updating the profile.", "error")
+        return redirect(url_for('staff_views.getAllReviews'))
+
+
 
 @staff_views.route('/like/<int:review_id>', methods=['POST'])
 def like_review(review_id):
@@ -117,6 +156,7 @@ def review_detail(student_id, review_index):
                 review.staff_name = f"{staff.firstname} {staff.lastname}" if staff else "Unknown Staff"
                 review.student_name = student.fullname
                 review.student_id = student.UniId
+                review.staffpic = staff.profile_pic
 
                 comment_staffs = []
                 replier_staffs = []
@@ -413,7 +453,7 @@ def edit_review(review_id):
   if review:
     edit_review_work(details=details, review_id=review_id, staff_id=staff_id, starRating=starRating)
     print("work")
-    flash(f"Successfully edited review for {review_id}!", "success")
+    flash(f"Successfully edited review!", "success")
   else:
     flash(f"Error editing review for {review_id}. Please check student details.", "error")
   
@@ -711,6 +751,7 @@ def getStudentProfile(uniID):
     for review in reviews:
         staff = get_staff_by_id(review.createdByStaffID)  # Get Staff object
         review.staff_name = staff.firstname + " " + staff.lastname if staff else "Unknown Staff"  # Attach fullname
+        review.staffpic = staff.profile_pic
 
     review_links = []
     for review in reviews:
@@ -841,6 +882,7 @@ def getAllReviews():
     for review in reviews:
         staff = get_staff_by_id(review.createdByStaffID)  # Get Staff object
         review.staff_name = staff.firstname + " " + staff.lastname if staff else "Unknown Staff"  # Attach fullname
+        review.staffpic = staff.profile_pic
 
     for review in reviews:
         student = get_student_by_id(review.studentID)
@@ -960,3 +1002,18 @@ def js_review_detail(review_id):
     # Render the ReviewDetail page using your provided template.
     return render_template('ReviewDetail.html', review=review)
 
+@staff_views.route('/search-students', methods=['GET'])
+def search_students():
+    query = request.args.get('q', '')
+    students = Student.query.filter(
+        (Student.firstname.ilike(f'%{query}%')) |
+        (Student.lastname.ilike(f'%{query}%')) |
+        ((Student.firstname + ' ' + Student.lastname).ilike(f'%{query}%'))
+    ).all()
+
+    results = [{
+        "id": s.UniId,
+        "name": f"{s.firstname} {s.lastname}"
+    } for s in students]
+
+    return jsonify(results)

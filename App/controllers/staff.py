@@ -1,5 +1,7 @@
 from App.models import Staff, Review, Student
 from App.database import db 
+import os
+from werkzeug.utils import secure_filename
 
 from .review import (
     create_review,
@@ -69,5 +71,35 @@ def staff_create_review(staff, student, starRating, details):
     else:
         return False
 
+
+import os
+from werkzeug.utils import secure_filename
+from App.database import db
+from App.models.staff import Staff
+
+def update_staff_profile(staff_id, firstname, lastname, faculty, email, profile_pic=None):
+    staff = Staff.query.get(staff_id)
+
+    if not staff:
+        raise ValueError("Staff not found")
+
+    staff.firstname = firstname
+    staff.lastname = lastname
+    staff.faculty = faculty
+    staff.email = email
+
+    if profile_pic and profile_pic.filename:
+        filename = secure_filename(profile_pic.filename)
+        # This is relative to the root directory of your app
+        upload_dir = os.path.join('App', 'static', 'uploads')
+        os.makedirs(upload_dir, exist_ok=True)
+
+        upload_path = os.path.join(upload_dir, filename)
+        profile_pic.save(upload_path)
+
+        # This is the path used by HTML <img src="">
+        staff.profile_pic = f'/static/uploads/{filename}'
+
+    db.session.commit()
 
 
