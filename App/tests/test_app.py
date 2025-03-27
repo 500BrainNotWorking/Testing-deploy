@@ -1,4 +1,4 @@
-import os, tempfile, pytest, logging, unittest
+import os, tempfile, pytest, logging, unittest, time
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from App.main import create_app
@@ -36,7 +36,7 @@ from App.controllers import (
     staff_edit_review,
     #create_student,
     #get_student_by_username,
-    get_review,
+    get_review, get_reviews,
 
     #create_student,
     #create_staff,
@@ -54,7 +54,7 @@ from App.controllers import (
     create_reply, edit_reply, delete_reply, get_reply, get_all_replies, get_all_replies_staff, get_all_replies_comment, get_parent_reply,
     get_root_parent_reply,
 
-    get_karma, create_karma
+    get_karma, create_karma, like, dislike
 )
 
 
@@ -1482,23 +1482,64 @@ class KarmaIntegrationTests(unittest.TestCase):
         
         assert create_staff(username="naruto",firstname="Naruto", lastname="Uzumaki", email="naruto@example.com", password="narutopass", faculty="FST") == True
 
-        staff = get_staff_by_username("naruto")
+        staff_testing = get_staff_by_username("naruto")
 
         student = get_student_by_username("billyjoel")
 
-        karma_status = create_karma(points=100, studentID=student.ID)
+        # karma_status = create_karma(points=100, studentID=student.ID)
 
-        assert karma_status is True
+        # assert karma_status is True
 
-        karma = get_karma(student.ID)
+        # karma = get_karma(student.ID)
 
-        assert karma.points == 100
-        assert karma is not None
-        assert karma.studentID == student.ID
+        # assert karma.points == 100
+        # assert karma is not None
+        # assert karma.studentID == student.ID
 
-        #call like function
 
-        #assert that the karma point from before is now less than karma points now.
+        assert create_staff(username="joe",firstname="Joe", lastname="Mama", email="joe@example.com", password="joepass", faculty="FST") == True
+        assert create_student(username="billy",
+                 firstname="Billy",
+                 lastname="John",
+                 email="billy@example.com",
+                 password="billypass",
+                 faculty="FST",
+                 admittedTerm="",
+                 UniId='816031160',
+                 degree="",
+                 gpa="") == True
+        student = get_student_by_username("billy")
+        staff = get_staff_by_username("joe")
+        review1 = create_review(staff=staff, student=student, starRating=5, details="Billy is Amazing.")
+
+        review = get_review(review1.ID)
+
+        expected_review = {
+                "createdByStaffID":staff.ID, 
+                "studentID":student.ID,
+                "starRating":5, 
+                "details":"Billy is Amazing."
+        }
+
+        self.assertEqual(review.createdByStaffID, expected_review["createdByStaffID"])
+        self.assertEqual(review.studentID, expected_review["studentID"])
+        self.assertEqual(review.starRating, expected_review["starRating"])
+        self.assertEqual(review.details, expected_review["details"])
+
+        prev_karma = get_karma(student.ID)
+
+        time.sleep(1) # This is done because change is karma is done by checking the timestamp for any changes made to the karma model,
+                        #therefore, since the test are executed simultaneously at the same time, we need a time.sleep() to ensure the change is karma is recorded.
+
+        like_status = like(review.ID, staff_testing.ID)
+
+        assert like_status is True
+
+
+        new_karma = get_karma(student.ID)
+
+        assert prev_karma.points < new_karma.points
+
         
     
     

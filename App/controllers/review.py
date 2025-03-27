@@ -2,6 +2,7 @@ from App.models import Review, Karma
 from App.database import db
 from .student import get_student_by_id
 from datetime import datetime
+import ast
 
 def create_review(staff, student, starRating, details):
   if starRating is None:
@@ -113,7 +114,7 @@ def vote(review_id):
   if review:
     student = get_student_by_id(review.studentID)
     current_karma = student.get_karma()
-    new_karma_points = current_karma + review.starRating * ((review.likes - review.dislikes) / (4 * (review.likes + review.dislikes)))
+    new_karma_points = current_karma.points + review.starRating * ((review.likes - review.dislikes) / (4 * (review.likes + review.dislikes)))
     newKarma = Karma(new_karma_points, student.ID)
   db.session.add(newKarma)
   try:
@@ -122,17 +123,88 @@ def vote(review_id):
     print(str(e))
     db.session.rollback()
 
-def like(review_id):
+def like(review_id, staff_id):
   review = get_review(review_id)
-  if review:
-    review.likes += 1
-    vote(review_id)
 
-def dislike(review_id):
-  review = get_review(review_id)
-  if review:
-    review.dislikes += 1
+  liked_by_staff = ast.literal_eval(review.liked_by_staff or '[]')
+  disliked_by_staff = ast.literal_eval(review.disliked_by_staff or '[]')
+
+  staff_id = str(staff_id)
+
+  #print(review.liked_by_staff)
+
+  if staff_id in review.liked_by_staff:
+    #print('already liked')
+    return False
+
+  if staff_id in review.disliked_by_staff:
+    #print ('change to likes')
+    disliked_by_staff.remove(staff_id)
+    review.dislikes = review.dislikes - 1
+
+    review.likes = review.likes +1
     vote(review_id)
+    liked_by_staff.append(staff_id)
+  else:
+    #print('already in likes')
+    review.likes = review.likes +1
+    vote(review_id)
+    liked_by_staff.append(staff_id)
+
+  
+  review.liked_by_staff = str(liked_by_staff)
+  review.disliked_by_staff = str(disliked_by_staff)
+
+  staff_id = int(staff_id)
+
+
+  db.session.commit()
+  return True
+
+
+
+  # if review:
+  #   review.likes += 1
+  #   vote(review_id)
+
+def dislike(review_id, staff_id):
+
+  review = get_review(review_id)
+
+  liked_by_staff = ast.literal_eval(review.liked_by_staff or '[]')
+  disliked_by_staff = ast.literal_eval(review.disliked_by_staff or '[]')
+
+  staff_id = str(staff_id)
+
+  #print(review.disliked_by_staff)
+
+  if staff_id in review.disliked_by_staff:
+    #print('already disliked')
+    return False
+
+  if staff_id in review.liked_by_staff:
+    #print('change to likes likes')
+    liked_by_staff.remove(staff_id)
+    review.likes = review.likes - 1
+
+    review.dislikes = review.dislikes +1
+    vote(review_id)
+    disliked_by_staff.append(staff_id)
+  else:
+    #print('already in dislikes')
+    review.dislikes = review.dislikes +1
+    vote(review_id)
+    disliked_by_staff.append(staff_id)
+
+
+  review.liked_by_staff = str(liked_by_staff)
+  review.disliked_by_staff = str(disliked_by_staff)
+
+  staff = int(staff_id)
+
+
+  db.session.commit()
+  return True
 
 # def get_total_review_points(studentID):
 #   reviews = Review.query.filter_by(studentID=studentID).all()
