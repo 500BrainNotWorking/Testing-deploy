@@ -1002,3 +1002,18 @@ def js_review_detail(review_id):
     # Render the ReviewDetail page using your provided template.
     return render_template('ReviewDetail.html', review=review)
 
+@staff_views.route('/search-students', methods=['GET'])
+def search_students():
+    query = request.args.get('q', '')
+    students = Student.query.filter(
+        (Student.firstname.ilike(f'%{query}%')) |
+        (Student.lastname.ilike(f'%{query}%')) |
+        ((Student.firstname + ' ' + Student.lastname).ilike(f'%{query}%'))
+    ).all()
+
+    results = [{
+        "id": s.UniId,
+        "name": f"{s.firstname} {s.lastname}"
+    } for s in students]
+
+    return jsonify(results)
