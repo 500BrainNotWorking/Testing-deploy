@@ -50,6 +50,7 @@ class Student(User, StudentInterface):
     self.grades = []
     self.transcripts = []
     self.badges = []
+    
 
   def get_id(self):
     return self.ID
@@ -94,6 +95,16 @@ class Student(User, StudentInterface):
           return max(self.karma_history, key=lambda k: k.timestamp)  # Get latest karma entry
       return None
 
+
+  def get_review_index(self, review_id):
+    self.reviews.sort(key = lambda e: e.ID)
+    for review in self.reviews:
+      if review.ID == review_id:
+        return self.reviews.index(review)
+        
+  def get_review_id(self, review_index):
+    self.reviews.sort(key = lambda e: e.ID)
+    return self.reviews[review_index].ID
 
   def update(self, rank):
       """Update the karma rank for the student"""

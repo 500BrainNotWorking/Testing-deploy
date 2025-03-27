@@ -14,13 +14,17 @@ class Review(db.Model):
     details = db.Column(db.String(400), nullable=False)
     likes = db.Column(db.Integer, nullable=False, default=0)
     dislikes = db.Column(db.Integer, nullable=False, default=0)
-    comments = db.relationship('Comment', backref='review', lazy=True)
+    comments = db.relationship('Comment', backref='review', cascade="all, delete-orphan", passive_deletes=True)
+
+    liked_by_staff = db.Column(db.String, default='')
+    disliked_by_staff = db.Column(db.String, default='')
 
     def __init__(self, staff, student, starRating, details):
         self.createdByStaffID = staff.ID
         self.studentID = student.ID
         self.starRating = starRating
         self.details = details
+        self.comments = []
 
     def get_id(self):
         return self.ID

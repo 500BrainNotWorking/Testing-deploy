@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Conduct Tracker - Create Review</title>
-  <link rel="icon" href="https://github.com/RichardR963/Info3604_Project/blob/main/images/AV2.png?raw=true" type="image/png">
+    <link rel="icon" type="image/x-icon" href="/static/logo.png">
 
     <style>
         body {
@@ -708,6 +708,15 @@
             color: white;
         }
 
+        #suggestions {
+    position: absolute;
+    background-color: white;
+    width: 40%;
+    border: 1px solid #ccc;
+    z-index: 999;
+}
+
+
 
     </style>
 </head>
@@ -739,7 +748,7 @@
             <div class="container">
                 <div class="more">
                     <div class="profile-pic more-btn">
-                        <img src="https://i.ibb.co/KS9VcFr/profile-pic.jpg" alt="Profile">
+                        <img src="{{current_user.profile_pic}}" alt="Profile">
                     </div>
                     
                     <div class="more-menu">
@@ -777,6 +786,8 @@
         <form id="review-form" action="/createReview" method="post">
             <input type="text" id="studentID" name="studentID" placeholder="Student ID" required oninput="fetchStudentName()">
           <input type="text" id="name" name="name" placeholder="Student Name" required>
+          <div id="suggestions" class="dropdown-content" style="display: none;"></div>
+
             
           <input type="hidden" id="num" name="num" value="0">
             <input type="hidden" id="points" name="points" value="0">
@@ -811,6 +822,43 @@
         </form>
         
     </div>
+
+    <script>
+        document.getElementById('name').addEventListener('input', function () {
+    const query = this.value;
+    const suggestionsBox = document.getElementById('suggestions');
+
+    if (query.length < 2) {
+        suggestionsBox.style.display = 'none';
+        return;
+    }
+
+    fetch(`/search-students?q=${encodeURIComponent(query)}`)
+        .then(response => response.json())
+        .then(data => {
+            suggestionsBox.innerHTML = '';
+            if (data.length > 0) {
+                data.forEach(student => {
+                    const option = document.createElement('a');
+                    option.textContent = student.name;
+                    option.href = "#";
+                    option.onclick = function (e) {
+                        e.preventDefault();
+                        document.getElementById('name').value = student.name;
+                        document.getElementById('studentID').value = student.id;
+                        suggestionsBox.style.display = 'none';
+                    };
+                    suggestionsBox.appendChild(option);
+                });
+                suggestionsBox.style.display = 'block';
+            } else {
+                suggestionsBox.style.display = 'none';
+            }
+        })
+        .catch(error => console.error('Error fetching suggestions:', error));
+});
+
+    </script>
 
     <script>
 

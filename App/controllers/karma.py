@@ -12,6 +12,14 @@ def get_karma(studentID):
   else:
     return None
 
+
+def get_karma_history(studentID):
+  history = Karma.query.filter_by(studentID = studentID).order_by(Karma.timestamp.desc())
+  if history:                                                                                  #FOR GRAPH, IF BREAK ITS HERE
+    return history
+  else:
+    return None
+
 def get_karma_student(student):
   karma = Karma.query.filter_by(studentID=student.ID).order_by(Karma.timestamp.desc()).first()
   if karma:

@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Conduct Tracker - Student Search</title>
+    <title>Student Conduct Tracker - Review for {{review.student_name}}</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
@@ -59,6 +60,7 @@
             font-weight: bold;
             font-family: 'Times New Roman', Times, serif;
         }
+
         /* Navbar */
         .navbar {
             background-color: #25283D;
@@ -234,7 +236,6 @@
         .review-details p {
             margin: 2px 0;
             font-size: 14px;
-            white-space: pre-wrap;
         }
 
         /* Review Content */
@@ -249,7 +250,8 @@
             margin-top: 10px;
         }
 
-        .likes, .comments {
+        .likes,
+        .comments {
             display: flex;
             align-items: center;
             gap: 5px;
@@ -271,25 +273,28 @@
 
 
         /* Dropdown Menu for Profile */
-        .cd__main{
+        .cd__main {
             position: relative;
             min-height: 640px;
         }
+
         .container {
-            position:fixed;
-            top: 6%;                            /* adjust the distance from top */
-            left: 96%;                          /* adjusted to have at the right! */
+            position: fixed;
+            top: 6%;
+            /* adjust the distance from top */
+            left: 96%;
+            /* adjusted to have at the right! */
             margin-right: -50%;
             transform: translate(-50%, -50%);
             text-align: center;
         }
-        
+
         .more-menu {
             width: 100px;
         }
-        
+
         /* More Button / Dropdown Menu */
-        
+
         .more-btn,
         .more-menu-btn {
             background: none;
@@ -304,7 +309,7 @@
             outline: none;
             cursor: pointer;
         }
-        
+
         .more-dot {
             background-color: #aab8c2;
             margin: 0 auto;
@@ -315,7 +320,7 @@
             border-radius: 50%;
             transition: background-color 0.3s;
         }
-        
+
         .more-menu {
             position: absolute;
             top: 100%;
@@ -326,13 +331,13 @@
             background-color: #fff;
             border: 1px solid #ccd8e0;
             border-radius: 4px;
-            box-shadow: 1px 1px 3px rgba(0,0,0,0.25);
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.25);
             opacity: 0;
             transform: translate(0, 15px) scale(.95);
             transition: transform 0.1s ease-out, opacity 0.1s ease-out;
             pointer-events: none;
         }
-        
+
         .more-menu-caret {
             position: absolute;
             top: -10px;
@@ -342,7 +347,7 @@
             float: left;
             overflow: hidden;
         }
-        
+
         .more-menu-caret-outer,
         .more-menu-caret-inner {
             position: absolute;
@@ -351,7 +356,7 @@
             font-size: 0;
             line-height: 1;
         }
-        
+
         .more-menu-caret-outer {
             border-bottom: 10px solid #c1d0da;
             border-left: 10px solid transparent;
@@ -359,9 +364,9 @@
             height: auto;
             left: 0;
             top: 0;
-            width: auto;    
+            width: auto;
         }
-        
+
         .more-menu-caret-inner {
             top: 1px;
             left: 1px;
@@ -369,17 +374,17 @@
             border-right: 9px solid transparent;
             border-bottom: 9px solid #fff;
         }
-        
+
         .more-menu-items {
             margin: 0;
             list-style: none;
             padding: 0;
         }
-        
+
         .more-menu-item {
             display: block;
         }
-        
+
         .more-menu-btn {
             min-width: 100%;
             color: #66757f;
@@ -391,20 +396,20 @@
             position: relative;
             white-space: nowrap;
         }
-        
+
         .more-menu-item:hover {
             background-color: #489fe5;
         }
-        
+
         .more-menu-item:hover .more-menu-btn {
             color: #fff;
         }
-        
+
         .more-btn:hover .more-dot,
         .show-more-menu .more-dot {
             background-color: #516471;
         }
-        
+
         .show-more-menu .more-menu {
             opacity: 1;
             transform: translate(0, 0) scale(1);
@@ -416,14 +421,16 @@
             font-size: 24px;
             color: gold;
         }
+
         .empty {
             color: lightgray;
         }
 
         /*For hamburger Menu*/
-        .slide{
+        .slide {
             margin-top: 13px;
         }
+
         .burger {
             position: relative;
             width: 40px;
@@ -467,6 +474,7 @@
             transform-origin: left center;
             transform: translateY(-100%);
         }
+
         /* Search Bar */
         #myInput {
             background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Magnifying_glass_icon.svg/1024px-Magnifying_glass_icon.svg.png');
@@ -475,7 +483,8 @@
             background-size: 22px;
             width: 100%;
             font-size: 16px;
-            padding: 12px 20px 12px 40px; /* Adjust left padding to make room for the icon */
+            padding: 12px 20px 12px 40px;
+            /* Adjust left padding to make room for the icon */
             border: 1px solid #ddd;
             margin-bottom: 12px;
             border-radius: 5px;
@@ -486,11 +495,12 @@
             list-style-type: none;
             padding: 0;
             margin: 0;
-            }
+        }
 
         #myUL li a {
             border: 1px solid #ddd;
-            margin-top: -1px; /* Prevent double borders */
+            margin-top: -1px;
+            /* Prevent double borders */
             background-color: #f6f6f6;
             padding: 12px;
             text-decoration: none;
@@ -500,10 +510,77 @@
         }
 
         #myUL li a:hover:not(.header) {
-             background-color: #eee;
+            background-color: #eee;
         }
 
-        /* Flash Messages */
+        /* For comments and replies */
+        .comment-card {
+            background-color: #FFFAFF;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .text-input {
+            background-color: #FFFAFF;
+            width: 80%;
+            padding: 15px;
+            border: 0;
+            outline-color: #489fe5;
+            ;
+        }
+
+
+
+        .button {
+            background-color: #04AA6D; /* Green */
+            border: none;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+            border-radius: 7px;
+            }
+
+            .button2 {
+                background-color: white; 
+                color: black; 
+                border: 2px solid #008CBA;
+                }
+
+                .button2:hover {
+                background-color: #008CBA;
+                color: white;
+                }
+
+                .reply-card {
+                    padding: 15px 20px;
+                    border-radius: 8px;
+                    margin-left: 40px; /* << this gives the nested effect */
+                    margin-top: 10px;
+                    margin-bottom: 10px;
+                }
+
+                .likes form button:hover i,
+                .likes form button:focus i {
+                    color: #355834;
+                }
+
+                .likes i {
+                    font-size: 18px;
+                }
+
+                .likes span {
+                    margin-left: 4px;
+                    font-weight: bold;
+                }
+
+                /* Flash Messages */
         .flash-messages {
             position: fixed;
             top: 10px;
@@ -548,23 +625,11 @@
             color: white;
         }
 
-        .likes form button:hover i,
-.likes form button:focus i {
-    color: #355834;
-}
-
-.likes i {
-    font-size: 18px;
-}
-
-.likes span {
-    margin-left: 4px;
-    font-weight: bold;
-}
 
 
     </style>
 </head>
+
 <body>
 
     <!-- Sidenav -->
@@ -577,7 +642,7 @@
 
     <!-- Navbar -->
     <nav class="navbar">
-        <!-- From Uiverse.io by Cevorob --> 
+        <!-- From Uiverse.io by Cevorob -->
         <div class="slide">
             <label class="burger" onclick="openNav()" for="burger">
                 <input type="checkbox" id="burger">
@@ -596,7 +661,7 @@
                 <div class="profile-pic more-btn">
                     <img src="{{current_user.profile_pic}}" alt="Profile">
                 </div>
-                
+
                 <div class="more-menu">
                     <div class="more-menu-caret">
                         <div class="more-menu-caret-outer"></div>
@@ -617,67 +682,46 @@
 
 
     <!-- Search Section -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-        <div class="flash-messages">
-            {% for category, message in messages %}
-            <div class="flash-message {{ category }}">
-                {{ message }}
-            </div>
-            {% endfor %}
-        </div>
-        {% endif %}
-    {% endwith %}  
-    
+
 
     <!-- Reviews Section -->
     <div class="reviews-container">
-        <h3>Latest Reviews:</h3>
-
-        <input type="text" id="myInput" onkeyup="filterReviews()" placeholder="Search for reviews by name or ID..." title="Type in a name" style="width: 700px;">
-
-        
-        <div id="reviewsList" style="margin-top: 30px;">
-           {% for review in reviews %} 
-           <div class="review-card">
+        <div id="reviewsDetail" style="margin-top: 15vh;">
+            <div class="review-card">
                 <div class="review-header">
                     <img src="{{review.staffpic}}" alt="User" class="review-avatar">
                     <div class="review-details">
                         <a href="/staff-profile/{{review.createdByStaffID}}">
                             <strong>{{review.staff_name}}</strong>
                         </a>
-                        
-                        <p>Posted on {{review.dateCreated.strftime('%Y-%m-%d %H:%M:%S')}} </p>
+
+                        <p>Posted on {{review.dateCreated}} </p>
                     </div>
-                    {%if review.createdByStaffID == current_user.ID%}
-                        <div style="padding-right: 40px;"><a href="/editReviewPage/{{review.ID}}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                          </div>
-                    {%endif%}
-                    <a href="/reviews/{{review.ID}}" class="fas fa-external-link-alt"></a>
                 </div>
                 <div class="stars">
                     {% if review.starRating is not none %}
-                        {% for i in range(review.starRating|int) %}
-                            <i class="fas fa-star"></i>
-                        {% endfor %}
-                        {% for i in range(5 - review.starRating|int) %}
-                            <i class="far fa-star empty"></i>
-                        {% endfor %}
+                    {% for i in range(review.starRating|int) %}
+                    <i class="fas fa-star"></i>
+                    {% endfor %}
+                    {% for i in range(5 - review.starRating|int) %}
+                    <i class="far fa-star empty"></i>
+                    {% endfor %}
                     {% else %}
-                        {% for i in range(5) %}
-                            <i class="far fa-star empty"></i>
-                        {% endfor %}  
+                    {% for i in range(5) %}
+                    <i class="far fa-star empty"></i>
+                    {% endfor %}
                     {% endif %}
                 </div>
-                
+
                 <div class="review-content">
-                    <a href="/getStudentProfile/{{review.student_id}}">
+                    <a href="/getStudentProfile/{{review.studentID}}">
                         <h4>Review for {{review.student_name}} ({{review.student_id}})</h4>
                     </a>
-                    
+
                     <p style="white-space: pre-wrap;">{{review.details}}</p>
                 </div>
                 <div class="review-footer">
+                    <!-- <div class="likes"><i class="fas fa-thumbs-up"></i>{{review.likes}}</div> -->
                     <div class="likes">
                         <form action="/like/{{review.ID}}" method="POST" style="display:inline;">
                             <button type="submit" style="background:none; border:none; cursor:pointer;">
@@ -694,64 +738,86 @@
                         </form>
                     </div>
                     
-                    <a href="/reviews/{{review.ID}}">
-                        <div class="comments"><i class="fas fa-comment"></i>{{review.comments | length}}</div>
-                      </a>
+                    <div class="comments"><i class="fas fa-comment"></i>{{review.comments | length}}</div>
                     <button class="expand-btn">Expand</button>
-
-
-                    {%if review.createdByStaffID == current_user.ID%}
-                        <a href="/deleteReview/{{review.ID}}"><i class="fa fa-trash" aria-hidden="true"></i></a>
-                    {%endif%}
                 </div>
-        </div>
+            </div>
 
-        {% endfor %}
+            <div class="comment-card">
+                <form id="comment-form" action='/reviews/{{review.ID}}' method="POST">
+                    <input type="text" class="text-input" name="details" placeholder="Leave a comment" required>
+                    <input type="submit" value="Submit" class="button button2">
+                </form>
 
-        {% if reviews|length == 0 %}
-        <h4 style="text-align: center;color: white;margin-top: 30px;">No Reviews</h4>
-        {% endif %}
+            </div>
+
+            {% for comment, staff in comment_info %}
+            {% set i = loop.index0 %}
+            
+            <!-- Comment Card -->
+            <div class="comment-card" id="comment-{{comment.ID}}">
+              <div class="review-header">
+                <img src="{{ staff.profile_pic or 'https://sta.uwi.edu/fst/dcit/sites/default/files/dcit/styles/medium/public/vijay.png?itok=RvPGd4fb' }}" alt="Staff Profile" class="review-avatar">
+                <div class="review-details">
+                  <a href="/staff-profile/{{comment.createdByStaffID}}">
+                    <strong>{{staff.firstname}} {{staff.lastname}}</strong>
+                  </a>
+                  <p>Comment posted on {{comment.dateCreated}}</p>
+                </div>
+              </div>
+              <p style="white-space: pre-wrap;">{{comment.details}}</p>
+              <button class="button button2" onclick='createReply({{comment.ID}})'>Reply</button>
+            </div>
+          
+            <!-- Replies (first 2 shown) -->
+            {% for reply in comment.replies %}
+              {% set j = loop.index0 %}
+              {% set replier = replier_staffs[i][j] %}
+              
+              <div class="comment-card reply-card" id="reply-{{reply.ID}}">
+                <div class="review-header">
+                  <img src="{{ replier.profile_pic or 'https://sta.uwi.edu/fst/dcit/sites/default/files/dcit/styles/medium/public/vijay.png?itok=RvPGd4fb' }}" alt="Replier Profile" class="review-avatar">
+                  <div class="review-details">
+                    <a href="/staff-profile/{{reply.createdByStaffID}}">
+                      <strong>{{ replier.firstname }} {{ replier.lastname }}</strong>
+                    </a>
+                    <p>Reply posted on {{ reply.dateCreated }}</p>
+                  </div>
+                </div>
+                <p style="white-space: pre-wrap;">{{reply.details}}</p>
+              </div>
+            {% endfor %}
+          {% endfor %}
+          
         </div>
     </div>
 
-    <script>
-        function searchStudents() {
-            const query = document.getElementById("searchQuery").value;
-
-            fetch(`/searchStudent?query=${query}`)
-            .then(response => response.json())
-            .then(data => {
-                const studentList = document.getElementById("student-list");
-                const noStudentsMsg = document.getElementById("no-students");
-
-                studentList.innerHTML = ""; // Clear existing students
-
-                if (data.students.length > 0) {
-                    noStudentsMsg.style.display = "none";
-
-                    data.students.forEach(student => {
-                        const card = document.createElement("div");
-                        card.classList.add("student-card");
-                        card.innerHTML = `
-                            <h3>${student.firstname} ${student.lastname}</h3>
-                            <p><strong>Student ID:</strong> ${student.UniId}</p>
-                            <p><strong>Degree:</strong> ${student.degree ? student.degree : "Not assigned"}</p>
-                            <a href="/getStudentProfile/${student.UniId}">
-                                <button class="profile-button">View Profile</button>
-                            </a>
-                        `;
-                        studentList.appendChild(card);
-                    });
-                } else {
-                    noStudentsMsg.style.display = "block";
-                }
-            })
-            .catch(error => console.error("Error fetching students:", error));
-        }
-    </script>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="flash-messages">
+            {% for category, message in messages %}
+              <div class="flash-message {{ category }}">
+                {{ message }}
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %} 
 
 
     <!-- JavaScript -->
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            setTimeout(function () {
+                let flashMessages = document.querySelectorAll(".flash-message");
+                flashMessages.forEach(function (msg) {
+                    msg.style.opacity = "0";
+                    setTimeout(() => msg.style.display = "none", 500);
+                });
+            }, 3000); // Messages disappear after 3 seconds
+        });
+    </script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             var el = document.querySelector('.more');
@@ -813,7 +879,7 @@
 
                 for (i = 0; i < reviews.length; i++) {
                     studentName = reviews[i].querySelector("h4");
-                    
+
                     if (studentName) {
                         txtValue = studentName.textContent || studentName.innerText;
                         if (txtValue.toUpperCase().indexOf(filter) > -1) {
@@ -830,20 +896,20 @@
                 const query = document.getElementById("searchQuery").value;
 
                 fetch(`/searchStudent?query=${query}`)
-                .then(response => response.json())
-                .then(data => {
-                    const studentList = document.getElementById("student-list");
-                    const noStudentsMsg = document.getElementById("no-students");
+                    .then(response => response.json())
+                    .then(data => {
+                        const studentList = document.getElementById("student-list");
+                        const noStudentsMsg = document.getElementById("no-students");
 
-                    studentList.innerHTML = ""; // Clear existing students
+                        studentList.innerHTML = ""; // Clear existing students
 
-                    if (data.students.length > 0) {
-                        noStudentsMsg.style.display = "none";
+                        if (data.students.length > 0) {
+                            noStudentsMsg.style.display = "none";
 
-                        data.students.forEach(student => {
-                            const card = document.createElement("div");
-                            card.classList.add("student-card");
-                            card.innerHTML = `
+                            data.students.forEach(student => {
+                                const card = document.createElement("div");
+                                card.classList.add("student-card");
+                                card.innerHTML = `
                                 <h3>${student.firstname} ${student.lastname}</h3>
                                 <p><strong>Student ID:</strong> ${student.UniId}</p>
                                 <p><strong>Degree:</strong> ${student.degree ? student.degree : "Not assigned"}</p>
@@ -851,13 +917,13 @@
                                     <button class="profile-button">View Profile</button>
                                 </a>
                             `;
-                            studentList.appendChild(card);
-                        });
-                    } else {
-                        noStudentsMsg.style.display = "block";
-                    }
-                })
-                .catch(error => console.error("Error fetching students:", error));
+                                studentList.appendChild(card);
+                            });
+                        } else {
+                            noStudentsMsg.style.display = "block";
+                        }
+                    })
+                    .catch(error => console.error("Error fetching students:", error));
             }
 
             //  Attach Filter Function to Input Field
@@ -874,18 +940,34 @@
             document.getElementById("mySidenav").style.width = "0";
             document.getElementById("main-content").style.marginLeft = "0";
         }
-    </script>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        setTimeout(function () {
-            let flashMessages = document.querySelectorAll(".flash-message");
-            flashMessages.forEach(function (msg) {
-                msg.style.opacity = "0";
-                setTimeout(() => msg.style.display = "none", 500);
+        // reply
+        function createReply(comment_id) {
+
+            const button = document.querySelector(`button[onclick='createReply(${comment_id})']`);
+            if (button) button.disabled = true;
+
+
+            comment = document.getElementById("comment-" + comment_id)
+            reply = document.createElement("div")
+            reply.className = "comment-card"
+            replyForm = `
+            <hr><br>
+            <form id="reply-form" action="/comments/${comment_id}" method="POST">
+                <input type="text" class="text-input" name="reply-details" placeholder="Create a reply" required>
+                <input type="submit" value="Submit" class="button button2">
+            </form>
+            `;
+            reply.innerHTML = replyForm
+            comment.append(reply)
+
+
+            const form = document.getElementById(`reply-form-${comment_id}`);
+            form.addEventListener('submit', () => {
+                button.disabled = false;
             });
-        }, 3000); // Messages disappear after 3 seconds
-    });
-</script>
+        }
+    </script>
 </body>
+
 </html>
