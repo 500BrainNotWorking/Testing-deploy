@@ -503,6 +503,9 @@
         <div class="profile-container">
             <img src="{{current_user.profile_pic}}" alt="User Profile" class="profile-image">
             <h2>{{staff.firstname}} {{staff.lastname}}</h2>
+            {%if staff.ID == current_user.ID%}
+            <a href="/edit-profile/{{ staff.ID }}" >Edit Profile</a>
+            {%endif%}
             <!--<button class="review-btn">Review</button> -->
             <div class="profile-description">
                 <p class="faculty">Faculty: {{staff.faculty}}</p>   <!--TO CHANGE-->

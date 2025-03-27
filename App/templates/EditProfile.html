@@ -583,17 +583,19 @@ input[type="email"] {
         <br>
         <h1>Editing Profile</h1>
  
-            <div class="profile-pic-edit">
-  <label class="-label" for="file">
-    <span class="glyphicon glyphicon-camera"></span>
-    <span>Change Image</span>
-  </label>
-  <input id="file" type="file" name="profile_pic" onchange="loadFile(event)"/>
-  <img src="{{staff.profile_pic}}" id="output" width="200" class="profile-pic-edit" />
-</div>
+
 <br>
 <br>
             <form action="/update-staff-profile" method="POST" enctype="multipart/form-data">
+                <div class="profile-pic-edit">
+                    <label class="-label" for="file">
+                      <span class="glyphicon glyphicon-camera"></span>
+                      <span>Change Image</span>
+                    </label>
+                    <input id="file" type="file" name="profile_pic" onchange="loadFile(event)"/>
+                    <img src="{{staff.profile_pic}}" id="output" width="200" class="profile-pic-edit" />
+                  </div>
+                  <br>
     <input type="hidden" name="staff_id" value="{{staff.ID}}">
     
     <div style="margin-top: 20px;">

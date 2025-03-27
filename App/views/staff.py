@@ -19,7 +19,7 @@ from App.controllers import (
     get_reviews, get_review, edit_review, edit_review_work, delete_review_work,
     create_comment, get_comment, get_comment_staff,
     get_reply, create_reply, get_all_reviews, create_staff, get_student_review_index, get_karma_history,
-    like, dislike)            #added get_reviews
+    like, dislike, update_staff_profile)            #added get_reviews
 
 
 staff_views = Blueprint('staff_views',
@@ -28,6 +28,43 @@ staff_views = Blueprint('staff_views',
 '''
 Page/Action Routes
 '''
+
+@staff_views.route('/edit-profile/<int:staff_id>', methods=['GET'])
+def edit_staff_profile_route(staff_id):
+    staff = Staff.query.get(staff_id)
+    if not staff:
+        flash("Staff not found.", "error")
+        return redirect(request.referrer)
+
+    return render_template('EditProfile.html', staff=staff)
+
+
+@staff_views.route('/update-staff-profile', methods=['POST'])
+def update_staff_profile_route():
+    staff_id = request.form.get('staff_id')
+    firstname = request.form.get('firstname')
+    lastname = request.form.get('lastname')
+    faculty = request.form.get('faculty')
+    email = request.form.get('email')
+    profile_pic = request.files.get('profile_pic')
+
+    try:
+        # Assume this function updates everything and handles the image too
+        update_staff_profile(
+            staff_id=staff_id,
+            firstname=firstname,
+            lastname=lastname,
+            faculty=faculty,
+            email=email,
+            profile_pic=profile_pic
+        )
+
+        flash("Profile updated successfully!", "success")
+        return redirect(url_for('staff_views.get_staff_profile', staff_id=staff_id))  # adjust to your actual profile route
+    except Exception as e:
+        print(f"Error updating profile: {e}")
+        flash("Something went wrong while updating the profile.", "error")
+        return redirect(request.referrer)
 
 
 
