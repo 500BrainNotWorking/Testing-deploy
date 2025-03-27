@@ -26,6 +26,31 @@ def delete_student(uni_id):
     return f"Successfully deleted student {uni_id}"
   return "Student does not exist." 
 
+def update_student(uni_id, field, new_value):
+  student = get_student_by_UniId(uni_id)
+  field = field.lower()
+  if student:
+    if field == 'first_name':
+      student.firstname = new_value
+    elif field == 'last_name':
+      student.lastname = new_value
+    elif field == 'email':
+      student.email = new_value
+    elif field == 'faculty':
+      student.faculty = new_value
+    elif field == 'admit_term':
+      student.admittedTerm = new_value
+    elif field == 'degree':
+      student.degree = new_value
+    elif field == 'gpa':
+      student.gpa = new_value
+    else:
+      return f"Student does not contain a propert {field}"
+    student.fullname = student.firstname + " " + student.lastname
+    db.session.commit()
+    return f"Updated {uni_id}' {field} to {new_value}"
+  return "Student does not exist"
+
 def create_student_from_transcript(transcript_data, student_data):
   try:
 

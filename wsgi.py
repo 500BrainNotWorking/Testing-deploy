@@ -17,7 +17,8 @@ from App.controllers import (
     create_accomplishment, get_staff_by_id, get_student_by_id,
     create_job_recommendation, create_karma, get_karma, create_badge, 
     calculate_ranks,
-    get_accomplishments_by_studentID, get_staff_by_name, create_comment, delete_student)
+    get_accomplishments_by_studentID, get_staff_by_name, create_comment, delete_student,
+    update_student)
 
 # This commands file allow you to create convenient CLI commands for testing controllers
 
@@ -723,6 +724,13 @@ def add_students(path):
         for student in reader:
             create_student("", student['uni_id'], student['first_name'], student['last_name'], student['email'], "", student['faculty'], student['admit_term'], student['degree'], student['gpa'])
         print("Added all students successfully")
+
+@app.cli.command("edit_student")
+@click.argument("uni_id")
+@click.argument("field", type=click.Choice(['first_name', 'last_name', 'email', 'faculty', 'admit_term', 'degree', 'gpa'], case_sensitive=False))
+@click.argument("new_value")
+def edit_student(uni_id, field, new_value):
+    print(update_student(uni_id, field, new_value))
 
 @app.cli.command("delete_student")
 @click.argument("uni_id")
