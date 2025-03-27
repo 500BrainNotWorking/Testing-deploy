@@ -500,8 +500,9 @@
     <!-- Main Content -->
     <div id="main-content">
         <!-- Profile Section -->
+         <h1>Editing Profile</h1>
         <div class="profile-container">
-            <img src="{{current_user.profile_pic}}" alt="User Profile" class="profile-image">
+            <img src="https://th.bing.com/th/id/OIP.ddo_V6IbnSEbnhL7HaPuJAHaHb?rs=1&pid=ImgDetMain" alt="User Profile" class="profile-image">
             <h2>{{staff.firstname}} {{staff.lastname}}</h2>
             <!--<button class="review-btn">Review</button> -->
             <div class="profile-description">
@@ -511,80 +512,6 @@
 
         </div>
         <br><hr>
-
-        <!-- Reviews Section -->
-        <div class="reviews-container">
-            <h3>Reviews Made:</h3>
-
-            {% for i in range(reviews|length) %}
-            <div class="review-card">
-                <div class="review-header">
-                    <img src="https://sta.uwi.edu/fst/dcit/sites/default/files/dcit/styles/medium/public/vijay.png?itok=RvPGd4fb" alt="User" class="review-avatar">
-                    <div class="review-details">
-                        <a href="/staff-profile/{{reviews[i].createdByStaffID}}">
-                            <strong>{{ staff.firstname }} {{ staff.lastname }}</strong>
-                        </a>
-                        <p>Posted on {{ reviews[i].dateCreated }} </p>
-                    </div>
-                    {%if reviews[i].createdByStaffID == current_user.ID%}
-                        <div style="padding-right: 40px;"><a href="/editReviewPage/{{reviews[i].ID}}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                          </div>
-                    {%endif%}
-                    <a href="/reviews/{{reviews[i].ID}}" class="fas fa-external-link-alt"></a>
-                </div>
-                <div class="stars">
-                    {% if reviews[i].starRating is not none %}
-                        {% for _ in range(reviews[i].starRating|int) %}
-                            <i class="fas fa-star"></i>
-                        {% endfor %}
-                        {% for _ in range(5 - reviews[i].starRating|int) %}
-                            <i class="far fa-star empty"></i>
-                        {% endfor %}
-                    {% else %}
-                        {% for _ in range(5) %}
-                            <i class="far fa-star empty"></i>
-                        {% endfor %}  
-                    {% endif %}
-                </div>
-                
-                <div class="review-content">
-                    <a href="/getStudentProfile/{{ student_names[i].split('(')[-1][:-1] }}">
-                        <h4>Review for {{ student_names[i] }}</h4>
-                    </a>                    
-                    <p style="white-space: pre-wrap;">{{ reviews[i].details }}</p>
-                </div>
-                <div class="review-footer">
-                    <div class="likes">
-                        <form action="/like/{{reviews[i].ID}}" method="POST" style="display:inline;">
-                            <button type="submit" style="background:none; border:none; cursor:pointer;">
-                                <i class="fas fa-thumbs-up"></i>
-                            </button>
-                            <span>{{reviews[i].likes}}</span>
-                        </form>
-                    
-                        <form action="/dislike/{{reviews[i].ID}}" method="POST" style="display:inline; margin-left: 15px;">
-                            <button type="submit" style="background:none; border:none; cursor:pointer;">
-                                <i class="fas fa-thumbs-down"></i>
-                            </button>
-                            <span>{{reviews[i].dislikes}}</span>
-                        </form>
-                    </div>
-                    <a href="/reviews/{{reviews[i].ID}}">
-                        <div class="comments"><i class="fas fa-comment"></i>{{reviews[i].comments | length}}</div>
-                      </a>
-                    <button class="expand-btn">Expand</button>
-
-                    {%if reviews[i].createdByStaffID == current_user.ID%}
-                        <a href="/deleteReview/{{reviews[i].ID}}"><i class="fa fa-trash" aria-hidden="true"></i></a>
-                    {%endif%}
-                </div>
-            </div>
-            {% endfor %}
-
-            {% if reviews|length == 0 %}
-            <h4 style="text-align: center;color: white;margin-top: 30px;">No Reviews</h4>
-            {% endif %}
-        </div>
 
 
 

@@ -10,6 +10,7 @@ class Staff(User):
   reports = db.relationship('IncidentReport',
                             backref='staffReports',
                             lazy='joined')
+  profile_pic = db.Column(db.String(120), nullable=True)
   pendingAccomplishments = db.relationship('Accomplishment',
                                            backref='studentaccomplishments',
                                            lazy='joined')
@@ -26,6 +27,9 @@ class Staff(User):
     self.reviews = []
     self.reports = []
     self.pendingAccomplishments = []
+    self.profile_pic = "https://st3.depositphotos.com/4111759/13425/v/600/depositphotos_134255634-stock-illustration-avatar-icon-male-profile-gray.jpg"
+
+  
 
 
 #return staff details on json format
