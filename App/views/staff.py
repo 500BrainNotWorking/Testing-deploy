@@ -60,7 +60,7 @@ def update_staff_profile_route():
         )
 
         flash("Profile updated successfully!", "success")
-        return redirect(url_for('staff_views.get_staff_profile', staff_id=staff_id))  # adjust to your actual profile route
+        return redirect(url_for('staff_views.staff_profile', staff_id=staff_id))
     except Exception as e:
         print(f"Error updating profile: {e}")
         flash("Something went wrong while updating the profile.", "error")
