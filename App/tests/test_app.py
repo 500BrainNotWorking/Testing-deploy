@@ -52,7 +52,9 @@ from App.controllers import (
     create_comment, edit_comment, delete_comment, get_all_comments, get_comment, get_comment_staff, get_all_comments_review,
 
     create_reply, edit_reply, delete_reply, get_reply, get_all_replies, get_all_replies_staff, get_all_replies_comment, get_parent_reply,
-    get_root_parent_reply
+    get_root_parent_reply,
+
+    get_karma, create_karma
 )
 
 
@@ -161,6 +163,7 @@ class CommentUnitTests(unittest.TestCase):
     def test_new_comment(self):
         comment = Comment(reviewID=1, staffID=1, details="Best review I've read for this student!")
         assert comment.createdByStaffID == 1
+        assert comment is not None
 
 
 class ReplyUnitTests(unittest.TestCase):
@@ -168,6 +171,15 @@ class ReplyUnitTests(unittest.TestCase):
     def test_new_reply(self):
         reply = Reply(commentID=1, staffID=10, details="Best review I've read for this student!")
         assert reply.createdByStaffID == 10
+        assert reply is not None
+
+
+class KarmaUnitTests(unittest.TestCase):
+
+    def test_new_karma(self):
+        karma = Karma(points=100, studentID=1)
+        assert karma.points == 100
+        assert karma is not None
 
 
 '''
@@ -1415,3 +1427,35 @@ class ReplyIntegrationTests(unittest.TestCase):
         assert parent_reply is not None
 
         assert parent_reply == new_reply1
+
+
+
+# class KarmaIntegrationTests(unittest.TestCase):
+
+#     def test_create_student(self):
+#         assert create_student(username="billy", firstname="Billy", lastname="John", email="billy@example.com", password="billypass", faculty="FST", admittedTerm="2022/2023", UniId="816000000", degree="BSc Computer Science", gpa="3.5") == True
+        
+    # def test_get_student_by_id(self):
+    #     #create_student(username="willy", firstname="Willy", lastname="Fohn", email="willy@example.com", password="willypass", faculty="FST", admittedTerm="2022/2023", UniId="816000001", degree="BSc Computer Science", gpa="2.5")
+    #     student = get_student_by_id(5)
+
+
+class KarmaIntegrationTests(unittest.TestCase):
+
+    def test_create_karma(self):
+
+
+        assert create_student(username="billyjoel", firstname="Billyjoel", lastname="Johnson", email="billyjoel@example.com", password="billyjoelpass", faculty="FST", admittedTerm="2022/2023", UniId="816000777", degree="BSc Computer Science", gpa="3.5") == True
+        
+        student = get_student_by_username("billyjoel")
+
+        karma_status = create_karma(points=100, studentID=student.ID)
+
+        assert karma_status is True
+
+        karma = get_karma(student.ID)
+
+        assert karma.points == 100
+
+    
+    
