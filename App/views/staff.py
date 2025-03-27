@@ -4,6 +4,7 @@ from App.database import db
 from flask_login import login_required, current_user
 from sqlalchemy import or_
 from datetime import datetime
+import textwrap
 
 from App.models import Student, Staff, User, IncidentReport, Review, Comment, Reply
 
@@ -17,7 +18,8 @@ from App.controllers import (
     get_recommendations_staff_count, calculate_ranks, get_all_verified, 
     get_reviews, get_review, edit_review, edit_review_work, delete_review_work,
     create_comment, get_comment, get_comment_staff,
-    get_reply, create_reply, get_all_reviews, create_staff)            #added get_reviews
+    get_reply, create_reply, get_all_reviews, create_staff, get_student_review_index, get_karma_history,
+    like, dislike)            #added get_reviews
 
 
 staff_views = Blueprint('staff_views',
@@ -26,6 +28,35 @@ staff_views = Blueprint('staff_views',
 '''
 Page/Action Routes
 '''
+
+@staff_views.route('/like/<int:review_id>', methods=['POST'])
+def like_review(review_id):
+    # review = Review.query.get(review_id)
+    # review.likes += 1
+    # db.session.commit()
+
+    like(review_id, current_user.get_id())
+    return redirect(request.referrer)
+
+@staff_views.route('/dislike/<int:review_id>', methods=['POST'])
+def dislike_review(review_id):
+    # review = Review.query.get(review_id)
+    # review.dislikes += 1
+    # db.session.commit()
+    dislike(review_id, current_user.get_id())
+    return redirect(request.referrer)
+
+
+@staff_views.route('/viewKarmaDetail/<int:karma_id>', methods=['GET'])
+@login_required
+def view_karma_detail(karma_id):
+    karma = get_karma_by_id(karma_id)  # Fetch karma entry from DB
+
+    if karma is None:
+        flash("Karma record not found.", "error")
+        return redirect(url_for('staff_views.getAllReviews'))  # Redirect if invalid
+
+    return redirect(url_for('staff_views.getAllReviews'))
 
 @staff_views.route('/StaffHome', methods=['GET'])
 def get_StaffHome_page():
@@ -74,7 +105,88 @@ def student_search_page():
 def review_search_page():
   return render_template('ReviewSearch.html')
 
+@staff_views.route('/students/<int:student_id>/reviews/<int:review_index>', methods=['GET'])
+def review_detail(student_id, review_index):
+    student = get_student_by_UniId(student_id)
+    if student:
+        if review_index in range(len(student.reviews)):
+            review_id = student.get_review_id(review_index)
+            review = get_review(review_id)
+            if review:
+                staff = get_staff_by_id(review.createdByStaffID)
+                review.staff_name = f"{staff.firstname} {staff.lastname}" if staff else "Unknown Staff"
+                review.student_name = student.fullname
+                review.student_id = student.UniId
 
+                comment_staffs = []
+                replier_staffs = []
+
+                for comment in review.comments:
+                    comment_staffs.append(get_comment_staff(comment.createdByStaffID))
+                    
+                    replier_list = []
+                    for reply in comment.replies:
+                        replier_list.append(get_comment_staff(reply.createdByStaffID))
+                    replier_staffs.append(replier_list)
+
+                comment_info = zip(review.comments, comment_staffs)
+                return render_template('ReviewDetail.html', review=review, comment_info=comment_info, replier_staffs=replier_staffs)
+            else:
+                flash("Review does not exist", "error")
+    else:
+        flash("Student does not exist", "error")
+    return redirect('/getMainPage')
+
+
+@staff_views.route('/reviews/<int:review_id>', methods=['POST'])
+@login_required
+def post_comment(review_id):
+  content = request.form
+  review = get_review(review_id)
+  if current_user.user_type == 'staff':
+    details = content['details']
+    details = "\n".join(textwrap.wrap(details, width=80))  # Wrap text at 80 characters
+
+    create_comment(review_id, current_user.ID, details)
+    return redirect(f"/reviews/{review.ID}")
+  else:
+     flash("Must be logged in as staff", "error")
+     return redirect('/login')
+
+@staff_views.route('/reviews/<int:review_id>', methods=['GET'])
+@login_required
+def expand_review(review_id):
+  review = get_review(review_id)
+  if review:
+    student = get_student_by_id(review.studentID)
+    review_index = get_student_review_index(student.ID, review.ID)
+    return redirect(f"/students/{student.UniId}/reviews/{review_index}")
+  else:
+     flash("Review does not exist", "error")
+     return redirect('/getMainPage')
+
+@staff_views.route('/comments/<int:comment_id>', methods=['POST'])
+@login_required
+def post_reply(comment_id):
+  staff_id = current_user.get_id()
+  staff = get_staff_by_id(staff_id)
+  if staff:
+    data = request.form
+    details = data['reply-details']
+    details = "\n".join(textwrap.wrap(details, width=80))  # Wrap text at 80 characters
+
+    comment = get_comment(comment_id)
+
+    if comment:
+        create_reply(commentID=comment_id, staffID=staff_id, details=details, parentReplyID=None)
+        return redirect(f"/reviews/{comment.reviewID}")
+    else:
+        error = f"Comment is not found!"
+  else:
+    error = f"You are not logged in as staff and cannot post a Reply!"
+  flash(error, "error")
+  return redirect('/getMainPage')
+   
 @staff_views.route('/mainReviewPage', methods=['GET'])
 def mainReviewPage():
   return render_template('CreateReview.html')
@@ -233,7 +345,8 @@ def createReview():
     student = get_student_by_UniId(studentID)
 
     if personalReview:
-        details += f"{personalReview}"
+        wrapped_review = "\n".join(textwrap.wrap(personalReview, width=80))  # Wrap text at 80 characters
+        details += f"{wrapped_review}"
         points += int(data.get('starRating', 0))  # Ensure default value if missing
 
     positive = points > 0  # Determine review positivity
@@ -592,10 +705,18 @@ def getStudentProfile(uniID):
     numAs = get_total_As(student.UniId)
     reviews = get_reviews(student.ID)
 
+    karma_history = get_karma_history(student.ID)
+
     # Attach staff name dynamically
     for review in reviews:
         staff = get_staff_by_id(review.createdByStaffID)  # Get Staff object
         review.staff_name = staff.firstname + " " + staff.lastname if staff else "Unknown Staff"  # Attach fullname
+
+    review_links = []
+    for review in reviews:
+        index = get_student_review_index(student.ID, review.ID)
+        review_links.append(index)
+
 
     return render_template('Student-Profile-forStaff.html',
                            student=student,
@@ -603,7 +724,9 @@ def getStudentProfile(uniID):
                            transcripts=transcripts,
                            numAs=numAs,
                            karma=karma,
-                           reviews=reviews)
+                           reviews=reviews,
+                           history = karma_history,
+                           review_links = review_links)
 
 
 @staff_views.route('/allRecommendationRequests', methods=['GET'])
@@ -803,3 +926,37 @@ def signup():
         return render_template('login.html') # Redirect to login after signup
 
     return render_template('SignUp.html')
+
+
+
+@staff_views.route('/jsreview/<int:review_id>', methods=['GET'])
+@login_required
+def js_review_detail(review_id):
+    # Retrieve the review using its ID
+    review = get_review(review_id)
+    if not review:
+        flash("Review not found.", "error")
+        return redirect(url_for('staff_views.getAllReviews'))
+    
+    # Retrieve the associated student using the correct attribute name:
+    student = get_student_by_id(review.studentID)  # Use 'studentID' here
+    if not student:
+        flash("Associated student not found.", "error")
+        return redirect(url_for('staff_views.getAllReviews'))
+    
+    # Retrieve the staff member who created the review and attach their full name.
+    staff_member = get_staff_by_id(review.createdByStaffID)
+    review.staff_name = f"{staff_member.firstname} {staff_member.lastname}" if staff_member else "Unknown Staff"
+    
+    # Attach the student's full name for display in the template.
+    review.student_name = student.fullname if student else "Unknown Student"
+    # IMPORTANT: Set review.student_id (used in your template link) to the student's UniId.
+    review.student_id = student.UniId
+    
+    # Format the review date if needed.
+    if review.dateCreated:
+        review.dateCreated = review.dateCreated.strftime('%Y-%m-%d %H:%M:%S')
+    
+    # Render the ReviewDetail page using your provided template.
+    return render_template('ReviewDetail.html', review=review)
+

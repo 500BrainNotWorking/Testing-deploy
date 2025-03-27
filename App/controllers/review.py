@@ -2,6 +2,9 @@ from App.models import Review, Karma
 from App.database import db
 from .student import get_student_by_id
 from datetime import datetime
+
+from .comment import delete_comment
+
 import ast
 
 def create_review(staff, student, starRating, details):
@@ -12,6 +15,8 @@ def create_review(staff, student, starRating, details):
                      student=student,
                      starRating=starRating,
                      details=details)
+
+  newReview.comments=[]
   db.session.add(newReview)
   """Adjust the student's karma based on the star rating of the review."""
   if newReview.starRating == 5:
@@ -60,6 +65,8 @@ def delete_review_work(review_id, staff_id):
     review = get_review(review_id)
     if review:
         if review.createdByStaffID == staff_id:
+            for comment in review.comments:
+              delete_comment(comment.ID, staff_id)
             db.session.delete(review)
             db.session.commit()
             return True
@@ -203,17 +210,13 @@ def dislike(review_id, staff_id):
   staff = int(staff_id)
 
 
+
   db.session.commit()
   return True
 
-# def get_total_review_points(studentID):
-#   reviews = Review.query.filter_by(studentID=studentID).all()
-#   if reviews:
-#     sum = 0
-#     for review in reviews:
-#       sum += review.points
-#     return sum
-#   return 0
+
+  db.session.commit()
+  return True
 
 def get_reviews(studentID):
   reviews = Review.query.filter_by(studentID=studentID).all()                   #added this function for staff views (by A.M.)
@@ -227,5 +230,5 @@ def get_review(id):
     return None
 
 def get_all_reviews():
-  reviews = Review.query.all()
+  reviews = Review.query.order_by(Review.dateCreated.desc()).all() #Review.query.all()
   return reviews
