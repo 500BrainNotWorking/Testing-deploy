@@ -1556,6 +1556,83 @@ class KarmaIntegrationTests(unittest.TestCase):
 
 
 
+    def test_dislike_karma(self):
+
+        assert create_student(username="billyjoel", firstname="Billyjoel", lastname="Johnson", email="billyjoel@example.com", password="billyjoelpass", faculty="FST", admittedTerm="2022/2023", UniId="816000777", degree="BSc Computer Science", gpa="3.5") == True
+        
+        assert create_staff(username="naruto",firstname="Naruto", lastname="Uzumaki", email="naruto@example.com", password="narutopass", faculty="FST") == True
+
+        staff_testing = get_staff_by_username("naruto")
+
+        student = get_student_by_username("billyjoel")
+
+        # karma_status = create_karma(points=100, studentID=student.ID)
+
+        # assert karma_status is True
+
+        # karma = get_karma(student.ID)
+
+        # assert karma.points == 100
+        # assert karma is not None
+        # assert karma.studentID == student.ID
+
+
+        assert create_staff(username="joe",firstname="Joe", lastname="Mama", email="joe@example.com", password="joepass", faculty="FST") == True
+        assert create_student(username="billy",
+                 firstname="Billy",
+                 lastname="John",
+                 email="billy@example.com",
+                 password="billypass",
+                 faculty="FST",
+                 admittedTerm="",
+                 UniId='816031160',
+                 degree="",
+                 gpa="") == True
+        student = get_student_by_username("billy")
+        staff = get_staff_by_username("joe")
+        review1 = create_review(staff=staff, student=student, starRating=5, details="Billy is Amazing.")
+
+        review = get_review(review1.ID)
+
+        expected_review = {
+                "createdByStaffID":staff.ID, 
+                "studentID":student.ID,
+                "starRating":5, 
+                "details":"Billy is Amazing."
+        }
+
+        self.assertEqual(review.createdByStaffID, expected_review["createdByStaffID"])
+        self.assertEqual(review.studentID, expected_review["studentID"])
+        self.assertEqual(review.starRating, expected_review["starRating"])
+        self.assertEqual(review.details, expected_review["details"])
+
+        prev_karma = get_karma(student.ID)
+
+        time.sleep(1) # This is done because change is karma is done by checking the timestamp for any changes made to the karma model,
+                        #therefore, since the test are executed simultaneously at the same time, we need a time.sleep() to ensure the change is karma is recorded.
+
+        dislike_status = dislike(review.ID, staff_testing.ID)
+
+        assert dislike_status is True
+
+
+        new_karma = get_karma(student.ID)
+
+        time.sleep(1)
+
+        assert prev_karma.points > new_karma.points
+
+
+        dislike_status = dislike(review.ID, staff_testing.ID)
+
+        assert dislike_status is False
+
+
+        new_karma_1 = get_karma(student.ID)
+
+        time.sleep(1)
+
+        assert new_karma_1.points == new_karma.points
         
     
     
