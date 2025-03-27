@@ -16,7 +16,7 @@ from App.controllers import (
     create_accomplishment, get_staff_by_id, get_student_by_id,
     create_job_recommendation, create_karma, get_karma, create_badge, 
     calculate_ranks,
-    get_accomplishments_by_studentID, get_staff_by_name, create_comment)
+    get_accomplishments_by_studentID, get_staff_by_name, create_comment, delete_student)
 
 # This commands file allow you to create convenient CLI commands for testing controllers
 
@@ -712,3 +712,8 @@ def view_karma_history(student_id):
 @click.argument("gpa")
 def add_student(uni_id, first_name, last_name, email, faculty, admit_term, degree, gpa):
     create_student("", uni_id, first_name, last_name, email, "", faculty, admit_term, degree, gpa)
+
+@app.cli.command("delete_student")
+@click.argument("uni_id")
+def remove_student(uni_id):
+    delete_student(uni_id)

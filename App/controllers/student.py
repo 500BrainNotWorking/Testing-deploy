@@ -18,6 +18,10 @@ def create_student(username, UniId, firstname, lastname, email, password,
     db.session.rollback()
     return False
 
+def delete_student(uni_id):
+  student = get_student_by_UniId(uni_id)
+  db.session.delete(student)
+  db.session.commit()
 
 def create_student_from_transcript(transcript_data, student_data):
   try:
