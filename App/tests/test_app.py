@@ -1476,4 +1476,29 @@ class KarmaIntegrationTests(unittest.TestCase):
         assert karma.studentID == student.ID
 
     
+    def test_like_karma(self):
+
+        assert create_student(username="billyjoel", firstname="Billyjoel", lastname="Johnson", email="billyjoel@example.com", password="billyjoelpass", faculty="FST", admittedTerm="2022/2023", UniId="816000777", degree="BSc Computer Science", gpa="3.5") == True
+        
+        assert create_staff(username="naruto",firstname="Naruto", lastname="Uzumaki", email="naruto@example.com", password="narutopass", faculty="FST") == True
+
+        staff = get_staff_by_username("naruto")
+
+        student = get_student_by_username("billyjoel")
+
+        karma_status = create_karma(points=100, studentID=student.ID)
+
+        assert karma_status is True
+
+        karma = get_karma(student.ID)
+
+        assert karma.points == 100
+        assert karma is not None
+        assert karma.studentID == student.ID
+
+        #call like function
+
+        #assert that the karma point from before is now less than karma points now.
+        
+    
     
