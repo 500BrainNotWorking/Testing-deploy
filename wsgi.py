@@ -260,6 +260,18 @@ def review_tests_command(type):
     else:
         sys.exit(pytest.main(["-k", "Comment"]))
 
+
+
+@test.command("reply", help="Run Reply tests")
+@click.argument("type", default="all")
+def review_tests_command(type):
+    if type == "unit":
+        sys.exit(pytest.main(["-k", "ReplyUnitTests"]))
+    elif type == "int":
+        sys.exit(pytest.main(["-k", "ReplyIntegrationTests"]))
+    else:
+        sys.exit(pytest.main(["-k", "Reply"]))
+
 # @test.command("final", help="Runs ALL tests")
 # @click.argument("type", default="all")
 # def final_tests_command(type):

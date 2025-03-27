@@ -7,6 +7,12 @@ from datetime import datetime
 def get_all_replies():
     return Reply.query.all()
 
+def get_all_replies_comment(commentID):
+    return Reply.query.filter_by(commentID=commentID).all()
+
+def get_all_replies_staff(createdByStaffID):
+    return Reply.query.filter_by(createdByStaffID=createdByStaffID).all()
+
 def get_parent_reply(reply_id):
     reply = get_reply(reply_id)
 
@@ -57,6 +63,7 @@ def delete_reply(reply_id, staff_id):
         if reply.createdByStaffID == staff_id:
             db.session.delete(reply)
             db.session.commit()
+            return True
         else:
             return None
     else:
@@ -71,6 +78,7 @@ def edit_reply(details, reply_id, staff_id):
             existing_reply.dateCreated = datetime.now()
             db.session.add(existing_reply)
             db.session.commit()
+            return True
         else:
             return None
     else:
