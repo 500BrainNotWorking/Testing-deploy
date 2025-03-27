@@ -880,6 +880,7 @@ def getAllReviews():
     for review in reviews:
         staff = get_staff_by_id(review.createdByStaffID)  # Get Staff object
         review.staff_name = staff.firstname + " " + staff.lastname if staff else "Unknown Staff"  # Attach fullname
+        review.staffpic = staff.profile_pic
 
     for review in reviews:
         student = get_student_by_id(review.studentID)

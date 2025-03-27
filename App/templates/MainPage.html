@@ -640,7 +640,7 @@
            {% for review in reviews %} 
            <div class="review-card">
                 <div class="review-header">
-                    <img src="https://sta.uwi.edu/fst/dcit/sites/default/files/dcit/styles/medium/public/vijay.png?itok=RvPGd4fb" alt="User" class="review-avatar">
+                    <img src="{{review.staffpic}}" alt="User" class="review-avatar">
                     <div class="review-details">
                         <a href="/staff-profile/{{review.createdByStaffID}}">
                             <strong>{{review.staff_name}}</strong>

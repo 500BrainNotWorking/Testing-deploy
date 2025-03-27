@@ -501,7 +501,7 @@
     <div id="main-content">
         <!-- Profile Section -->
         <div class="profile-container">
-            <img src="{{current_user.profile_pic}}" alt="User Profile" class="profile-image">
+            <img src="{{staff.profile_pic}}" alt="User Profile" class="profile-image">
             <h2>{{staff.firstname}} {{staff.lastname}}</h2>
             {%if staff.ID == current_user.ID%}
             <a href="/edit-profile/{{ staff.ID }}" >Edit Profile</a>
@@ -522,7 +522,7 @@
             {% for i in range(reviews|length) %}
             <div class="review-card">
                 <div class="review-header">
-                    <img src="https://sta.uwi.edu/fst/dcit/sites/default/files/dcit/styles/medium/public/vijay.png?itok=RvPGd4fb" alt="User" class="review-avatar">
+                    <img src="{{staff.profile_pic}}" alt="User" class="review-avatar">
                     <div class="review-details">
                         <a href="/staff-profile/{{reviews[i].createdByStaffID}}">
                             <strong>{{ staff.firstname }} {{ staff.lastname }}</strong>
