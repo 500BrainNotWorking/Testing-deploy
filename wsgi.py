@@ -1,5 +1,6 @@
 import click, pytest, sys
 import nltk
+import csv
 from flask import current_app
 from flask import Flask
 from flask.cli import with_appcontext, AppGroup
@@ -713,6 +714,15 @@ def view_karma_history(student_id):
 def add_student(uni_id, first_name, last_name, email, faculty, admit_term, degree, gpa):
     create_student("", uni_id, first_name, last_name, email, "", faculty, admit_term, degree, gpa)
     print(f"Created student {uni_id} successfully")
+
+@app.cli.command("add_students")
+@click.argument("path")
+def add_students(path):
+    with open(path, newline='') as student_csv:
+        reader = csv.DictReader(student_csv)
+        for student in reader:
+            create_student("", student['uni_id'], student['first_name'], student['last_name'], student['email'], "", student['faculty'], student['admit_term'], student['degree'], student['gpa'])
+        print("Added all students successfully")
 
 @app.cli.command("delete_student")
 @click.argument("uni_id")
