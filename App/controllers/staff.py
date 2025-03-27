@@ -73,7 +73,7 @@ def staff_create_review(staff, student, starRating, details):
 
 
 def update_staff_profile(staff_id, firstname, lastname, faculty, email, profile_pic=None):
-    staff = Staff.query.get(ID = staff_id)
+    staff = Staff.query.get(staff_id)
 
     if not staff:
         raise ValueError("Staff not found")
@@ -83,10 +83,13 @@ def update_staff_profile(staff_id, firstname, lastname, faculty, email, profile_
     staff.faculty = faculty
     staff.email = email
 
-    if profile_pic:
+    if profile_pic and profile_pic.filename:
         filename = secure_filename(profile_pic.filename)
-        upload_path = os.path.join("static/uploads", filename)
+        upload_dir = os.path.join("static", "uploads")
+        os.makedirs(upload_dir, exist_ok=True)
+        upload_path = os.path.join(upload_dir, filename)
         profile_pic.save(upload_path)
-        staff.profile_pic = f"/{upload_path}"
+        staff.profile_pic = f"/{upload_path}"  # for use in HTML <img>
 
     db.session.commit()
+
