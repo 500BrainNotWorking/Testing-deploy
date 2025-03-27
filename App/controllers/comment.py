@@ -17,7 +17,6 @@ def get_comment_staff(createdByStaffID):
     return Comment.query.filter_by(createdByStaffID=createdByStaffID).all()
 
 
-
 def get_comment(id):
     return Comment.query.filter_by(ID=id).first()
 

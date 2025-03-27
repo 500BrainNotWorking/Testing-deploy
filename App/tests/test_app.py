@@ -1,4 +1,4 @@
-import os, tempfile, pytest, logging, unittest
+import os, tempfile, pytest, logging, unittest, time
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from App.main import create_app
@@ -36,7 +36,9 @@ from App.controllers import (
     staff_edit_review,
     #create_student,
     #get_student_by_username,
-    get_review,
+
+    get_review, get_reviews,
+
 
     #create_student,
     #create_staff,
@@ -52,7 +54,11 @@ from App.controllers import (
     create_comment, edit_comment, delete_comment, get_all_comments, get_comment, get_comment_staff, get_all_comments_review,
 
     create_reply, edit_reply, delete_reply, get_reply, get_all_replies, get_all_replies_staff, get_all_replies_comment, get_parent_reply,
-    get_root_parent_reply
+
+    get_root_parent_reply,
+
+    get_karma, create_karma, like, dislike
+
 )
 
 
@@ -162,12 +168,26 @@ class CommentUnitTests(unittest.TestCase):
         comment = Comment(reviewID=1, staffID=1, details="Best review I've read for this student!")
         assert comment.createdByStaffID == 1
 
+        assert comment is not None
+
+
 
 class ReplyUnitTests(unittest.TestCase):
 
     def test_new_reply(self):
         reply = Reply(commentID=1, staffID=10, details="Best review I've read for this student!")
         assert reply.createdByStaffID == 10
+
+        assert reply is not None
+
+
+class KarmaUnitTests(unittest.TestCase):
+
+    def test_new_karma(self):
+        karma = Karma(points=100, studentID=1)
+        assert karma.points == 100
+        assert karma is not None
+
 
 
 '''
@@ -1414,4 +1434,217 @@ class ReplyIntegrationTests(unittest.TestCase):
 
         assert parent_reply is not None
 
+
         assert parent_reply == new_reply1
+
+
+
+# class KarmaIntegrationTests(unittest.TestCase):
+
+#     def test_create_student(self):
+#         assert create_student(username="billy", firstname="Billy", lastname="John", email="billy@example.com", password="billypass", faculty="FST", admittedTerm="2022/2023", UniId="816000000", degree="BSc Computer Science", gpa="3.5") == True
+        
+    # def test_get_student_by_id(self):
+    #     #create_student(username="willy", firstname="Willy", lastname="Fohn", email="willy@example.com", password="willypass", faculty="FST", admittedTerm="2022/2023", UniId="816000001", degree="BSc Computer Science", gpa="2.5")
+    #     student = get_student_by_id(5)
+
+
+class KarmaIntegrationTests(unittest.TestCase):
+
+    def test_create_karma(self):
+
+
+        assert create_student(username="billyjoel", firstname="Billyjoel", lastname="Johnson", email="billyjoel@example.com", password="billyjoelpass", faculty="FST", admittedTerm="2022/2023", UniId="816000777", degree="BSc Computer Science", gpa="3.5") == True
+        
+        student = get_student_by_username("billyjoel")
+
+        karma_status = create_karma(points=100, studentID=student.ID)
+
+        assert karma_status is True
+
+        karma = get_karma(student.ID)
+
+        assert karma.points == 100
+
+
+    def test_get_karma(self):
+
+
+        assert create_student(username="billyjoel", firstname="Billyjoel", lastname="Johnson", email="billyjoel@example.com", password="billyjoelpass", faculty="FST", admittedTerm="2022/2023", UniId="816000777", degree="BSc Computer Science", gpa="3.5") == True
+        
+        student = get_student_by_username("billyjoel")
+
+        karma_status = create_karma(points=100, studentID=student.ID)
+
+        assert karma_status is True
+
+        karma = get_karma(student.ID)
+
+        assert karma.points == 100
+        assert karma is not None
+        assert karma.studentID == student.ID
+
+    
+    def test_like_karma(self):
+
+        assert create_student(username="billyjoel", firstname="Billyjoel", lastname="Johnson", email="billyjoel@example.com", password="billyjoelpass", faculty="FST", admittedTerm="2022/2023", UniId="816000777", degree="BSc Computer Science", gpa="3.5") == True
+        
+        assert create_staff(username="naruto",firstname="Naruto", lastname="Uzumaki", email="naruto@example.com", password="narutopass", faculty="FST") == True
+
+        staff_testing = get_staff_by_username("naruto")
+
+        student = get_student_by_username("billyjoel")
+
+        # karma_status = create_karma(points=100, studentID=student.ID)
+
+        # assert karma_status is True
+
+        # karma = get_karma(student.ID)
+
+        # assert karma.points == 100
+        # assert karma is not None
+        # assert karma.studentID == student.ID
+
+
+        assert create_staff(username="joe",firstname="Joe", lastname="Mama", email="joe@example.com", password="joepass", faculty="FST") == True
+        assert create_student(username="billy",
+                 firstname="Billy",
+                 lastname="John",
+                 email="billy@example.com",
+                 password="billypass",
+                 faculty="FST",
+                 admittedTerm="",
+                 UniId='816031160',
+                 degree="",
+                 gpa="") == True
+        student = get_student_by_username("billy")
+        staff = get_staff_by_username("joe")
+        review1 = create_review(staff=staff, student=student, starRating=5, details="Billy is Amazing.")
+
+        review = get_review(review1.ID)
+
+        expected_review = {
+                "createdByStaffID":staff.ID, 
+                "studentID":student.ID,
+                "starRating":5, 
+                "details":"Billy is Amazing."
+        }
+
+        self.assertEqual(review.createdByStaffID, expected_review["createdByStaffID"])
+        self.assertEqual(review.studentID, expected_review["studentID"])
+        self.assertEqual(review.starRating, expected_review["starRating"])
+        self.assertEqual(review.details, expected_review["details"])
+
+        prev_karma = get_karma(student.ID)
+
+        time.sleep(1) # This is done because change is karma is done by checking the timestamp for any changes made to the karma model,
+                        #therefore, since the test are executed simultaneously at the same time, we need a time.sleep() to ensure the change is karma is recorded.
+
+        like_status = like(review.ID, staff_testing.ID)
+
+        assert like_status is True
+
+
+        new_karma = get_karma(student.ID)
+
+        time.sleep(1)
+
+        assert prev_karma.points < new_karma.points
+
+
+        like_status = like(review.ID, staff_testing.ID)
+
+        assert like_status is False
+
+
+        new_karma_1 = get_karma(student.ID)
+
+        time.sleep(1)
+
+        assert new_karma_1.points == new_karma.points
+
+
+
+    def test_dislike_karma(self):
+
+        assert create_student(username="billyjoel", firstname="Billyjoel", lastname="Johnson", email="billyjoel@example.com", password="billyjoelpass", faculty="FST", admittedTerm="2022/2023", UniId="816000777", degree="BSc Computer Science", gpa="3.5") == True
+        
+        assert create_staff(username="naruto",firstname="Naruto", lastname="Uzumaki", email="naruto@example.com", password="narutopass", faculty="FST") == True
+
+        staff_testing = get_staff_by_username("naruto")
+
+        student = get_student_by_username("billyjoel")
+
+        # karma_status = create_karma(points=100, studentID=student.ID)
+
+        # assert karma_status is True
+
+        # karma = get_karma(student.ID)
+
+        # assert karma.points == 100
+        # assert karma is not None
+        # assert karma.studentID == student.ID
+
+
+        assert create_staff(username="joe",firstname="Joe", lastname="Mama", email="joe@example.com", password="joepass", faculty="FST") == True
+        assert create_student(username="billy",
+                 firstname="Billy",
+                 lastname="John",
+                 email="billy@example.com",
+                 password="billypass",
+                 faculty="FST",
+                 admittedTerm="",
+                 UniId='816031160',
+                 degree="",
+                 gpa="") == True
+        student = get_student_by_username("billy")
+        staff = get_staff_by_username("joe")
+        review1 = create_review(staff=staff, student=student, starRating=5, details="Billy is Amazing.")
+
+        review = get_review(review1.ID)
+
+        expected_review = {
+                "createdByStaffID":staff.ID, 
+                "studentID":student.ID,
+                "starRating":5, 
+                "details":"Billy is Amazing."
+        }
+
+        self.assertEqual(review.createdByStaffID, expected_review["createdByStaffID"])
+        self.assertEqual(review.studentID, expected_review["studentID"])
+        self.assertEqual(review.starRating, expected_review["starRating"])
+        self.assertEqual(review.details, expected_review["details"])
+
+        prev_karma = get_karma(student.ID)
+
+        time.sleep(1) # This is done because change is karma is done by checking the timestamp for any changes made to the karma model,
+                        #therefore, since the test are executed simultaneously at the same time, we need a time.sleep() to ensure the change is karma is recorded.
+
+        dislike_status = dislike(review.ID, staff_testing.ID)
+
+        assert dislike_status is True
+
+
+        new_karma = get_karma(student.ID)
+
+        time.sleep(1)
+
+        assert prev_karma.points > new_karma.points
+
+
+        dislike_status = dislike(review.ID, staff_testing.ID)
+
+        assert dislike_status is False
+
+
+        new_karma_1 = get_karma(student.ID)
+
+        time.sleep(1)
+
+        assert new_karma_1.points == new_karma.points
+        
+    
+    
+
+        assert parent_reply == new_reply1
+

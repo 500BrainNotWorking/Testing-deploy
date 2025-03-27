@@ -2,7 +2,9 @@ from App.models import Review, Karma
 from App.database import db
 from .student import get_student_by_id
 from datetime import datetime
+
 from .comment import delete_comment
+
 import ast
 
 def create_review(staff, student, starRating, details):
@@ -206,6 +208,11 @@ def dislike(review_id, staff_id):
   review.disliked_by_staff = str(disliked_by_staff)
 
   staff = int(staff_id)
+
+
+
+  db.session.commit()
+  return True
 
 
   db.session.commit()

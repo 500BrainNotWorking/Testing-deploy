@@ -19,6 +19,9 @@ class Review(db.Model):
     liked_by_staff = db.Column(db.String, default='')
     disliked_by_staff = db.Column(db.String, default='')
 
+    liked_by_staff = db.Column(db.String, default='')
+    disliked_by_staff = db.Column(db.String, default='')
+
     def __init__(self, staff, student, starRating, details):
         self.createdByStaffID = staff.ID
         self.studentID = student.ID

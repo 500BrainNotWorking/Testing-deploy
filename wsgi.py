@@ -272,6 +272,19 @@ def review_tests_command(type):
     else:
         sys.exit(pytest.main(["-k", "Reply"]))
 
+
+
+@test.command("karma", help="Run Karma tests")
+@click.argument("type", default="all")
+def review_tests_command(type):
+    if type == "unit":
+        sys.exit(pytest.main(["-k", "KarmaUnitTests"]))
+    elif type == "int":
+        sys.exit(pytest.main(["-k", "KarmaIntegrationTests"]))
+    else:
+        sys.exit(pytest.main(["-k", "Karma"]))
+
+
 # @test.command("final", help="Runs ALL tests")
 # @click.argument("type", default="all")
 # def final_tests_command(type):
