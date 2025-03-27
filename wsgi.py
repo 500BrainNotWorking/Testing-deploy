@@ -703,21 +703,21 @@ def view_karma_history(student_id):
    if (student):
       print (student.karma_history)
 
-@app.cli.command("add_student")
-@click.argument("uni_id")
-@click.argument("first_name")
-@click.argument("last_name")
-@click.argument("email")
-@click.argument("faculty")
-@click.argument("admit_term")
-@click.argument("degree")
-@click.argument("gpa")
+@app.cli.command("add_student", help="Add a student manually")
+@click.argument("uni_id", required=True)
+@click.argument("first_name", required=True)
+@click.argument("last_name", required=True)
+@click.argument("email", required=True)
+@click.argument("faculty", required=True)
+@click.argument("admit_term", required=True)
+@click.argument("degree", required=True)
+@click.argument("gpa", required=True)
 def add_student(uni_id, first_name, last_name, email, faculty, admit_term, degree, gpa):
     create_student("", uni_id, first_name, last_name, email, "", faculty, admit_term, degree, gpa)
     print(f"Created student {uni_id} successfully")
 
-@app.cli.command("add_students")
-@click.argument("path")
+@app.cli.command("add_students", help="Add multiple students by specifying a CSV file")
+@click.argument("path", required=True)
 def add_students(path):
     with open(path, newline='') as student_csv:
         reader = csv.DictReader(student_csv)
@@ -725,14 +725,14 @@ def add_students(path):
             create_student("", student['uni_id'], student['first_name'], student['last_name'], student['email'], "", student['faculty'], student['admit_term'], student['degree'], student['gpa'])
         print("Added all students successfully")
 
-@app.cli.command("edit_student")
-@click.argument("uni_id")
-@click.argument("field", type=click.Choice(['first_name', 'last_name', 'email', 'faculty', 'admit_term', 'degree', 'gpa'], case_sensitive=False))
-@click.argument("new_value")
+@app.cli.command("edit_student", help="Edit a student record")
+@click.argument("uni_id", required=True)
+@click.argument("field", type=click.Choice(['first_name', 'last_name', 'email', 'faculty', 'admit_term', 'degree', 'gpa'], case_sensitive=False), required=True)
+@click.argument("new_value", required=True)
 def edit_student(uni_id, field, new_value):
     print(update_student(uni_id, field, new_value))
 
-@app.cli.command("delete_student")
-@click.argument("uni_id")
+@app.cli.command("delete_student", help="Remove a student record")
+@click.argument("uni_id", required=True)
 def remove_student(uni_id):
     print(delete_student(uni_id))

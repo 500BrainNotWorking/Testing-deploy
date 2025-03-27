@@ -48,7 +48,7 @@ def update_student(uni_id, field, new_value):
       return f"Student does not contain a propert {field}"
     student.fullname = student.firstname + " " + student.lastname
     db.session.commit()
-    return f"Updated {uni_id}' {field} to {new_value}"
+    return f"Updated {uni_id}'s {field} to {new_value}"
   return "Student does not exist"
 
 def create_student_from_transcript(transcript_data, student_data):
