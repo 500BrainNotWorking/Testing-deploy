@@ -874,5 +874,17 @@
             document.getElementById("main-content").style.marginLeft = "0";
         }
     </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(function () {
+            let flashMessages = document.querySelectorAll(".flash-message");
+            flashMessages.forEach(function (msg) {
+                msg.style.opacity = "0";
+                setTimeout(() => msg.style.display = "none", 500);
+            });
+        }, 3000); // Messages disappear after 3 seconds
+    });
+</script>
 </body>
 </html>

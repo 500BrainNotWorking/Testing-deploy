@@ -695,6 +695,18 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
   <!-- Graph Attempt -->
 
   <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(function () {
+            let flashMessages = document.querySelectorAll(".flash-message");
+            flashMessages.forEach(function (msg) {
+                msg.style.opacity = "0";
+                setTimeout(() => msg.style.display = "none", 500);
+            });
+        }, 3000); // Messages disappear after 3 seconds
+    });
+</script>
+
+  <script>
     // Generate x and y values dynamically from Jinja, 
     const xValues = [
       {% for karma in history|reverse %}

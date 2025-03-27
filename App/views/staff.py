@@ -453,7 +453,7 @@ def edit_review(review_id):
   if review:
     edit_review_work(details=details, review_id=review_id, staff_id=staff_id, starRating=starRating)
     print("work")
-    flash(f"Successfully edited review for {review_id}!", "success")
+    flash(f"Successfully edited review!", "success")
   else:
     flash(f"Error editing review for {review_id}. Please check student details.", "error")
   
