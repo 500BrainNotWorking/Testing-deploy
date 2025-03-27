@@ -29,6 +29,8 @@ staff_views = Blueprint('staff_views',
 Page/Action Routes
 '''
 
+
+
 @staff_views.route('/like/<int:review_id>', methods=['POST'])
 def like_review(review_id):
     # review = Review.query.get(review_id)
