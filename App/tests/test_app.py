@@ -36,7 +36,9 @@ from App.controllers import (
     staff_edit_review,
     #create_student,
     #get_student_by_username,
+
     get_review, get_reviews,
+
 
     #create_student,
     #create_staff,
@@ -52,9 +54,11 @@ from App.controllers import (
     create_comment, edit_comment, delete_comment, get_all_comments, get_comment, get_comment_staff, get_all_comments_review,
 
     create_reply, edit_reply, delete_reply, get_reply, get_all_replies, get_all_replies_staff, get_all_replies_comment, get_parent_reply,
+
     get_root_parent_reply,
 
     get_karma, create_karma, like, dislike
+
 )
 
 
@@ -163,7 +167,9 @@ class CommentUnitTests(unittest.TestCase):
     def test_new_comment(self):
         comment = Comment(reviewID=1, staffID=1, details="Best review I've read for this student!")
         assert comment.createdByStaffID == 1
+
         assert comment is not None
+
 
 
 class ReplyUnitTests(unittest.TestCase):
@@ -171,6 +177,7 @@ class ReplyUnitTests(unittest.TestCase):
     def test_new_reply(self):
         reply = Reply(commentID=1, staffID=10, details="Best review I've read for this student!")
         assert reply.createdByStaffID == 10
+
         assert reply is not None
 
 
@@ -180,6 +187,7 @@ class KarmaUnitTests(unittest.TestCase):
         karma = Karma(points=100, studentID=1)
         assert karma.points == 100
         assert karma is not None
+
 
 
 '''
@@ -1426,6 +1434,7 @@ class ReplyIntegrationTests(unittest.TestCase):
 
         assert parent_reply is not None
 
+
         assert parent_reply == new_reply1
 
 
@@ -1636,3 +1645,6 @@ class KarmaIntegrationTests(unittest.TestCase):
         
     
     
+
+        assert parent_reply == new_reply1
+

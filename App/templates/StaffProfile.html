@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link rel="icon" type="image/x-icon" href="/static/logo.png">
 
     <style>
         /* General Styling */
@@ -445,6 +446,51 @@
         }
 
 
+         /* Flash Messages */
+         .flash-messages {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            z-index: 1000;
+        }
+
+        .flash-message {
+            padding: 12px 18px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+            opacity: 1;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        /* Success Messages */
+        .flash-message.success {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        /* Error Messages */
+        .flash-message.error {
+            background-color: #f44336;
+            color: white;
+        }
+
+        /* Warning Messages */
+        .flash-message.warning {
+            background-color: #ff9800;
+            color: white;
+        }
+
+        /* Info Messages */
+        .flash-message.info {
+            background-color: #2196F3;
+            color: white;
+        }
+
     </style>
 </head>
 <body>
@@ -476,7 +522,7 @@
             <div class="container">
                 <div class="more">
                     <div class="profile-pic more-btn">
-                        <img src="https://sta.uwi.edu/fst/dcit/sites/default/files/dcit/styles/medium/public/vijay.png?itok=RvPGd4fb" alt="Profile">
+                        <img src="{{current_user.profile_pic}}" alt="Profile">
                     </div>
                     
                     <div class="more-menu">
@@ -501,8 +547,11 @@
     <div id="main-content">
         <!-- Profile Section -->
         <div class="profile-container">
-            <img src="https://th.bing.com/th/id/OIP.ddo_V6IbnSEbnhL7HaPuJAHaHb?rs=1&pid=ImgDetMain" alt="User Profile" class="profile-image">
+            <img src="{{staff.profile_pic}}" alt="User Profile" class="profile-image">
             <h2>{{staff.firstname}} {{staff.lastname}}</h2>
+            {%if staff.ID == current_user.ID%}
+            <a href="/edit-profile/{{ staff.ID }}" >Edit Profile</a>
+            {%endif%}
             <!--<button class="review-btn">Review</button> -->
             <div class="profile-description">
                 <p class="faculty">Faculty: {{staff.faculty}}</p>   <!--TO CHANGE-->
@@ -519,13 +568,17 @@
             {% for i in range(reviews|length) %}
             <div class="review-card">
                 <div class="review-header">
-                    <img src="https://sta.uwi.edu/fst/dcit/sites/default/files/dcit/styles/medium/public/vijay.png?itok=RvPGd4fb" alt="User" class="review-avatar">
+                    <img src="{{staff.profile_pic}}" alt="User" class="review-avatar">
                     <div class="review-details">
                         <a href="/staff-profile/{{reviews[i].createdByStaffID}}">
                             <strong>{{ staff.firstname }} {{ staff.lastname }}</strong>
                         </a>
                         <p>Posted on {{ reviews[i].dateCreated }} </p>
                     </div>
+                    {%if reviews[i].createdByStaffID == current_user.ID%}
+                        <div style="padding-right: 40px;"><a href="/editReviewPage/{{reviews[i].ID}}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                          </div>
+                    {%endif%}
                     <a href="/reviews/{{reviews[i].ID}}" class="fas fa-external-link-alt"></a>
                 </div>
                 <div class="stars">
@@ -569,9 +622,6 @@
                         <div class="comments"><i class="fas fa-comment"></i>{{reviews[i].comments | length}}</div>
                       </a>
                     <button class="expand-btn">Expand</button>
-                    {%if reviews[i].createdByStaffID == current_user.ID%}
-                        <a href="/editReviewPage/{{reviews[i].ID}}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                    {%endif%}
 
                     {%if reviews[i].createdByStaffID == current_user.ID%}
                         <a href="/deleteReview/{{reviews[i].ID}}"><i class="fa fa-trash" aria-hidden="true"></i></a>
@@ -585,7 +635,17 @@
             {% endif %}
         </div>
 
-
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="flash-messages">
+            {% for category, message in messages %}
+              <div class="flash-message {{ category }}">
+                {{ message }}
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %} 
 
     <!-- JavaScript -->
     <script>
@@ -711,6 +771,19 @@
             document.getElementById("main-content").style.marginLeft = "0";
         }
     </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(function () {
+            let flashMessages = document.querySelectorAll(".flash-message");
+            flashMessages.forEach(function (msg) {
+                msg.style.opacity = "0";
+                setTimeout(() => msg.style.display = "none", 500);
+            });
+        }, 3000); // Messages disappear after 3 seconds
+    });
+</script>
+
 
 </body>
 </html>

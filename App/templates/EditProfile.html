@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Conduct Tracker - Student Search</title>
+    <title>Student Conduct Tracker - Profile</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
@@ -20,44 +20,9 @@
             background-color: #7C90A0;
             transition: margin-left 0.5s;
         }
-
         a {
             text-decoration: none;
             color: black;
-        }
-
-        /* Navbar */
-        .navbar {
-            background-color: #25283D;
-            color: #FFFAFF;
-            display: flex;
-            justify-content: left;
-            align-items: left;
-            padding: 20px;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .menu-icon {
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        .logo img {
-            width: 50px;
-            height: 50px;
-            margin-top: 0px;
-            margin-left: 10px;
-        }
-
-        .navbar-title {
-            padding-left: 15px;
-            padding-top: 10px;
-            font-size: 30px;
-            font-weight: bold;
-            font-family: 'Times New Roman', Times, serif;
         }
         /* Navbar */
         .navbar {
@@ -200,7 +165,7 @@
         h3 {
             color: white;
             font-size: 24px;
-            margin-top: 100px;
+            margin-bottom: 15px;
         }
 
         /* Reviews should be stacked (like mobile) */
@@ -234,7 +199,6 @@
         .review-details p {
             margin: 2px 0;
             font-size: 14px;
-            white-space: pre-wrap;
         }
 
         /* Review Content */
@@ -467,44 +431,98 @@
             transform-origin: left center;
             transform: translateY(-100%);
         }
-        /* Search Bar */
-        #myInput {
-            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Magnifying_glass_icon.svg/1024px-Magnifying_glass_icon.svg.png');
-            background-position: 10px center;
-            background-repeat: no-repeat;
-            background-size: 22px;
-            width: 100%;
-            font-size: 16px;
-            padding: 12px 20px 12px 40px; /* Adjust left padding to make room for the icon */
-            border: 1px solid #ddd;
-            margin-bottom: 12px;
-            border-radius: 5px;
+        .likes form button:hover i,
+        .likes form button:focus i {
+            color: #355834;
         }
 
-
-        #myUL {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-            }
-
-        #myUL li a {
-            border: 1px solid #ddd;
-            margin-top: -1px; /* Prevent double borders */
-            background-color: #f6f6f6;
-            padding: 12px;
-            text-decoration: none;
+        .likes i {
             font-size: 18px;
-            color: black;
-            display: block
         }
 
-        #myUL li a:hover:not(.header) {
-             background-color: #eee;
+        .likes span {
+            margin-left: 4px;
+            font-weight: bold;
         }
+        
+.profile-pic-edit {
+  position: relative;
+  width: 165px;
+  height: 165px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+}
 
-        /* Flash Messages */
-        .flash-messages {
+.profile-pic-edit input {
+  display: none;
+}
+
+.profile-pic-edit img {
+  width: 165px;
+  height: 165px;
+  object-fit: cover;
+  border-radius: 100px;
+  box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.35);
+  z-index: 0;
+}
+
+.profile-pic-edit .-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 165px;
+  height: 165px;
+  border-radius: 100px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: transparent;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.profile-pic-edit:hover .-label {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: rgb(250, 250, 250);
+  z-index: 1;
+}
+
+.profile-pic-edit .-label span {
+  display: inline-flex;
+  padding: 0.2em;
+  height: 2em;
+}
+
+#output.profile-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 0 10px 0 rgba(255,255,255,.35);
+    display: block;
+    margin: 0 auto;
+}
+
+
+
+
+
+input[type="text"],
+input[type="email"] {
+    width: 60%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+
+ /* Flash Messages */
+ .flash-messages {
             position: fixed;
             top: 10px;
             left: 50%;
@@ -548,211 +566,131 @@
             color: white;
         }
 
-        .likes form button:hover i,
-.likes form button:focus i {
-    color: #355834;
-}
-
-.likes i {
-    font-size: 18px;
-}
-
-.likes span {
-    margin-left: 4px;
-    font-weight: bold;
-}
 
 
     </style>
 </head>
 <body>
 
-    <!-- Sidenav -->
-    <div id="mySidenav" class="sidenav">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="/getMainPage">Home</a>
-        <a href="/leaderboard">Students</a>
-        <a href="/mainReviewPage">Create Review</a>
-    </div>
-
-    <!-- Navbar -->
-    <nav class="navbar">
-        <!-- From Uiverse.io by Cevorob --> 
-        <div class="slide">
-            <label class="burger" onclick="openNav()" for="burger">
-                <input type="checkbox" id="burger">
-                <span></span>
-                <span></span>
-                <span></span>
-            </label>
+        <!-- Sidenav -->
+        <div id="mySidenav" class="sidenav">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <a href="/getMainPage">Home</a>
+            <a href="/leaderboard">Students</a>
+            <a href="/mainReviewPage">Create Review</a>
         </div>
-        <div class="logo">
-            <img src="/static/logo.png" alt="Profile">
-        </div>
-        <div class="navbar-title">Student Conduct Tracker</div>
-        <!-- Profile Options -->
-        <div class="container">
-            <div class="more">
-                <div class="profile-pic more-btn">
-                    <img src="{{current_user.profile_pic}}" alt="Profile">
-                </div>
-                
-                <div class="more-menu">
-                    <div class="more-menu-caret">
-                        <div class="more-menu-caret-outer"></div>
-                        <div class="more-menu-caret-inner"></div>
-                    </div>
-                    <ul class="more-menu-items" tabindex="-1" role="menu" aria-labelledby="more-btn" aria-hidden="true">
-                        <li class="more-menu-item" role="presentation">
-                            <a href="/staff-profile" class="more-menu-btn" role="menuitem">Profile</a>
-                        </li>
-                        <li class="more-menu-item" role="presentation">
-                            <a href="/logout" class="more-menu-btn" role="menuitem">Logout</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-
-    <!-- Search Section -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-        <div class="flash-messages">
-            {% for category, message in messages %}
-            <div class="flash-message {{ category }}">
-                {{ message }}
-            </div>
-            {% endfor %}
-        </div>
-        {% endif %}
-    {% endwith %}  
     
+        <!-- Navbar -->
+        <nav class="navbar">
+            <!-- From Uiverse.io by Cevorob --> 
+            <div class="slide">
+                <label class="burger" onclick="openNav()" for="burger">
+                    <input type="checkbox" id="burger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </label>
+            </div>
+            <div class="logo">
+                <img src="/static/logo.png" alt="Profile">
+            </div>
+            <div class="navbar-title">Student Conduct Tracker</div>
+            <!-- Profile Options -->
+            <div class="container">
+                <div class="more">
+                    <div class="profile-pic more-btn">
+                        <img src="{{current_user.profile_pic}}" alt="Profile">
+                    </div>
+                    
+                    <div class="more-menu">
+                        <div class="more-menu-caret">
+                            <div class="more-menu-caret-outer"></div>
+                            <div class="more-menu-caret-inner"></div>
+                        </div>
+                        <ul class="more-menu-items" tabindex="-1" role="menu" aria-labelledby="more-btn" aria-hidden="true">
+                            <li class="more-menu-item" role="presentation">
+                                <a href="/staff-profile" class="more-menu-btn" role="menuitem">Profile</a>
+                            </li>
+                            <li class="more-menu-item" role="presentation">
+                                <a href="/logout" class="more-menu-btn" role="menuitem">Logout</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
 
-    <!-- Reviews Section -->
-    <div class="reviews-container">
-        <h3>Latest Reviews:</h3>
+    <!-- Main Content -->
+    <div id="main-content">
+        <!-- Profile Section -->
+         
+        <div class="profile-container">
+        <br>
+        <br>
+        <h1>Editing Profile</h1>
+ 
 
-        <input type="text" id="myInput" onkeyup="filterReviews()" placeholder="Search for reviews by name or ID..." title="Type in a name" style="width: 700px;">
+<br>
+<br>
+            <form action="/update-staff-profile" method="POST" enctype="multipart/form-data">
+                <div class="profile-pic-edit">
+                    <label class="-label" for="file">
+                      <span class="glyphicon glyphicon-camera"></span>
+                      <span>Change Image</span>
+                    </label>
+                    <input id="file" type="file" name="profile_pic" accept=".jpg,.jpeg" onchange="loadFile(event)">
+                    <img src="{{staff.profile_pic}}" id="output" width="200" class="profile-pic-edit" />
+                  </div>
+                  <br>
+    <input type="hidden" name="staff_id" value="{{staff.ID}}">
+    
+    <div style="margin-top: 20px;">
+        <label for="firstname"><strong>First Name:</strong></label><br>
+        <input type="text" name="firstname" value="{{staff.firstname}}" required><br><br>
+
+        <label for="lastname"><strong>Last Name:</strong></label><br>
+        <input type="text" name="lastname" value="{{staff.lastname}}" required><br><br>
+
+        <label for="faculty"><strong>Faculty:</strong></label><br>
+        <input type="text" name="faculty" value="{{staff.faculty}}"><br><br>
+
+        <label for="email"><strong>Email:</strong></label><br>
+        <input type="email" name="email" value="{{staff.email}}" required><br><br>
+        
+
+        <input type="submit" value="Save Changes" class="review-btn">
+    </div>
+</form>
+
+
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="flash-messages">
+            {% for category, message in messages %}
+              <div class="flash-message {{ category }}">
+                {{ message }}
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %} 
 
         
-        <div id="reviewsList" style="margin-top: 30px;">
-           {% for review in reviews %} 
-           <div class="review-card">
-                <div class="review-header">
-                    <img src="{{review.staffpic}}" alt="User" class="review-avatar">
-                    <div class="review-details">
-                        <a href="/staff-profile/{{review.createdByStaffID}}">
-                            <strong>{{review.staff_name}}</strong>
-                        </a>
-                        
-                        <p>Posted on {{review.dateCreated.strftime('%Y-%m-%d %H:%M:%S')}} </p>
-                    </div>
-                    {%if review.createdByStaffID == current_user.ID%}
-                        <div style="padding-right: 40px;"><a href="/editReviewPage/{{review.ID}}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                          </div>
-                    {%endif%}
-                    <a href="/reviews/{{review.ID}}" class="fas fa-external-link-alt"></a>
-                </div>
-                <div class="stars">
-                    {% if review.starRating is not none %}
-                        {% for i in range(review.starRating|int) %}
-                            <i class="fas fa-star"></i>
-                        {% endfor %}
-                        {% for i in range(5 - review.starRating|int) %}
-                            <i class="far fa-star empty"></i>
-                        {% endfor %}
-                    {% else %}
-                        {% for i in range(5) %}
-                            <i class="far fa-star empty"></i>
-                        {% endfor %}  
-                    {% endif %}
-                </div>
-                
-                <div class="review-content">
-                    <a href="/getStudentProfile/{{review.student_id}}">
-                        <h4>Review for {{review.student_name}} ({{review.student_id}})</h4>
-                    </a>
-                    
-                    <p style="white-space: pre-wrap;">{{review.details}}</p>
-                </div>
-                <div class="review-footer">
-                    <div class="likes">
-                        <form action="/like/{{review.ID}}" method="POST" style="display:inline;">
-                            <button type="submit" style="background:none; border:none; cursor:pointer;">
-                                <i class="fas fa-thumbs-up"></i>
-                            </button>
-                            <span>{{review.likes}}</span>
-                        </form>
-                    
-                        <form action="/dislike/{{review.ID}}" method="POST" style="display:inline; margin-left: 15px;">
-                            <button type="submit" style="background:none; border:none; cursor:pointer;">
-                                <i class="fas fa-thumbs-down"></i>
-                            </button>
-                            <span>{{review.dislikes}}</span>
-                        </form>
-                    </div>
-                    
-                    <a href="/reviews/{{review.ID}}">
-                        <div class="comments"><i class="fas fa-comment"></i>{{review.comments | length}}</div>
-                      </a>
-                    <button class="expand-btn">Expand</button>
+        <script>
+        var loadFile = function (event) {
+  var image = document.getElementById("output");
+  image.src = URL.createObjectURL(event.target.files[0]);
+};
+        </script>
 
-
-                    {%if review.createdByStaffID == current_user.ID%}
-                        <a href="/deleteReview/{{review.ID}}"><i class="fa fa-trash" aria-hidden="true"></i></a>
-                    {%endif%}
-                </div>
-        </div>
-
-        {% endfor %}
-
-        {% if reviews|length == 0 %}
-        <h4 style="text-align: center;color: white;margin-top: 30px;">No Reviews</h4>
-        {% endif %}
-        </div>
-    </div>
-
-    <script>
-        function searchStudents() {
-            const query = document.getElementById("searchQuery").value;
-
-            fetch(`/searchStudent?query=${query}`)
-            .then(response => response.json())
-            .then(data => {
-                const studentList = document.getElementById("student-list");
-                const noStudentsMsg = document.getElementById("no-students");
-
-                studentList.innerHTML = ""; // Clear existing students
-
-                if (data.students.length > 0) {
-                    noStudentsMsg.style.display = "none";
-
-                    data.students.forEach(student => {
-                        const card = document.createElement("div");
-                        card.classList.add("student-card");
-                        card.innerHTML = `
-                            <h3>${student.firstname} ${student.lastname}</h3>
-                            <p><strong>Student ID:</strong> ${student.UniId}</p>
-                            <p><strong>Degree:</strong> ${student.degree ? student.degree : "Not assigned"}</p>
-                            <a href="/getStudentProfile/${student.UniId}">
-                                <button class="profile-button">View Profile</button>
-                            </a>
-                        `;
-                        studentList.appendChild(card);
-                    });
-                } else {
-                    noStudentsMsg.style.display = "block";
-                }
-            })
-            .catch(error => console.error("Error fetching students:", error));
-        }
-    </script>
 
 
     <!-- JavaScript -->
     <script>
+    
+    
         document.addEventListener("DOMContentLoaded", function () {
             var el = document.querySelector('.more');
             var btn = el.querySelector('.more-btn');
@@ -887,5 +825,6 @@
         }, 3000); // Messages disappear after 3 seconds
     });
 </script>
+
 </body>
 </html>

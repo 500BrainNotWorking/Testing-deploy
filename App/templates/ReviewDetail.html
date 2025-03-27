@@ -9,6 +9,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link rel="icon" type="image/x-icon" href="/static/logo.png">
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
     <style>
@@ -579,6 +580,52 @@
                     font-weight: bold;
                 }
 
+                /* Flash Messages */
+        .flash-messages {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            z-index: 1000;
+        }
+
+        .flash-message {
+            padding: 12px 18px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+            opacity: 1;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        /* Success Messages */
+        .flash-message.success {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        /* Error Messages */
+        .flash-message.error {
+            background-color: #f44336;
+            color: white;
+        }
+
+        /* Warning Messages */
+        .flash-message.warning {
+            background-color: #ff9800;
+            color: white;
+        }
+
+        /* Info Messages */
+        .flash-message.info {
+            background-color: #2196F3;
+            color: white;
+        }
+
+
 
     </style>
 </head>
@@ -612,7 +659,7 @@
         <div class="container">
             <div class="more">
                 <div class="profile-pic more-btn">
-                    <img src="https://sta.uwi.edu/fst/dcit/sites/default/files/dcit/styles/medium/public/vijay.png?itok=RvPGd4fb" alt="Profile">
+                    <img src="{{current_user.profile_pic}}" alt="Profile">
                 </div>
 
                 <div class="more-menu">
@@ -642,7 +689,7 @@
         <div id="reviewsDetail" style="margin-top: 15vh;">
             <div class="review-card">
                 <div class="review-header">
-                    <img src="https://sta.uwi.edu/fst/dcit/sites/default/files/dcit/styles/medium/public/vijay.png?itok=RvPGd4fb" alt="User" class="review-avatar">
+                    <img src="{{review.staffpic}}" alt="User" class="review-avatar">
                     <div class="review-details">
                         <a href="/staff-profile/{{review.createdByStaffID}}">
                             <strong>{{review.staff_name}}</strong>
@@ -745,8 +792,32 @@
         </div>
     </div>
 
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="flash-messages">
+            {% for category, message in messages %}
+              <div class="flash-message {{ category }}">
+                {{ message }}
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %} 
+
 
     <!-- JavaScript -->
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            setTimeout(function () {
+                let flashMessages = document.querySelectorAll(".flash-message");
+                flashMessages.forEach(function (msg) {
+                    msg.style.opacity = "0";
+                    setTimeout(() => msg.style.display = "none", 500);
+                });
+            }, 3000); // Messages disappear after 3 seconds
+        });
+    </script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             var el = document.querySelector('.more');
