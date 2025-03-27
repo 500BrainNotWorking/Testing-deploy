@@ -1538,7 +1538,23 @@ class KarmaIntegrationTests(unittest.TestCase):
 
         new_karma = get_karma(student.ID)
 
+        time.sleep(1)
+
         assert prev_karma.points < new_karma.points
+
+
+        like_status = like(review.ID, staff_testing.ID)
+
+        assert like_status is False
+
+
+        new_karma_1 = get_karma(student.ID)
+
+        time.sleep(1)
+
+        assert new_karma_1.points == new_karma.points
+
+
 
         
     
