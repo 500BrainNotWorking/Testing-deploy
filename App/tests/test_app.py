@@ -1457,5 +1457,23 @@ class KarmaIntegrationTests(unittest.TestCase):
 
         assert karma.points == 100
 
+
+    def test_get_karma(self):
+
+
+        assert create_student(username="billyjoel", firstname="Billyjoel", lastname="Johnson", email="billyjoel@example.com", password="billyjoelpass", faculty="FST", admittedTerm="2022/2023", UniId="816000777", degree="BSc Computer Science", gpa="3.5") == True
+        
+        student = get_student_by_username("billyjoel")
+
+        karma_status = create_karma(points=100, studentID=student.ID)
+
+        assert karma_status is True
+
+        karma = get_karma(student.ID)
+
+        assert karma.points == 100
+        assert karma is not None
+        assert karma.studentID == student.ID
+
     
     
