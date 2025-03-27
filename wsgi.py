@@ -700,3 +700,15 @@ def view_karma_history(student_id):
    student = get_student_by_id(student_id)
    if (student):
       print (student.karma_history)
+
+@app.cli.command("add_student")
+@click.argument("uni_id")
+@click.argument("first_name")
+@click.argument("last_name")
+@click.argument("email")
+@click.argument("faculty")
+@click.argument("admit_term")
+@click.argument("degree")
+@click.argument("gpa")
+def add_student(uni_id, first_name, last_name, email, faculty, admit_term, degree, gpa):
+    create_student("", uni_id, first_name, last_name, email, "", faculty, admit_term, degree, gpa)
