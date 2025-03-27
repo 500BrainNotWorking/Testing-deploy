@@ -9,8 +9,14 @@ from .reply import delete_reply
 def get_all_comments():
     return Comment.query.all()
 
+def get_all_comments_review(reviewID):
+    return Comment.query.filter_by(reviewID=reviewID).all()
+
 def get_comment_staff(createdByStaffID):
-    return Staff.query.filter_by(ID=createdByStaffID).first()
+
+    return Comment.query.filter_by(createdByStaffID=createdByStaffID).all()
+
+
 
 def get_comment(id):
     return Comment.query.filter_by(ID=id).first()
@@ -41,6 +47,7 @@ def delete_comment(comment_id, staff_id):
                 delete_reply(reply.ID, staff_id)
             db.session.delete(comment)
             db.session.commit()
+            return True
         else:
             return None
     else:
@@ -57,6 +64,7 @@ def edit_comment(details, comment_id, staff_id):
             existing_comment.dateCreated = datetime.now()
             db.session.add(existing_comment)
             db.session.commit()
+            return True
         else:
             return None
     else:
