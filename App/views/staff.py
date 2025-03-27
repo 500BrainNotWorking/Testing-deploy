@@ -156,6 +156,7 @@ def review_detail(student_id, review_index):
                 review.staff_name = f"{staff.firstname} {staff.lastname}" if staff else "Unknown Staff"
                 review.student_name = student.fullname
                 review.student_id = student.UniId
+                review.staffpic = staff.profile_pic
 
                 comment_staffs = []
                 replier_staffs = []
@@ -750,6 +751,7 @@ def getStudentProfile(uniID):
     for review in reviews:
         staff = get_staff_by_id(review.createdByStaffID)  # Get Staff object
         review.staff_name = staff.firstname + " " + staff.lastname if staff else "Unknown Staff"  # Attach fullname
+        review.staffpic = staff.profile_pic
 
     review_links = []
     for review in reviews:
