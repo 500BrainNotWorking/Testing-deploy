@@ -592,7 +592,7 @@ input[type="email"] {
                       <span class="glyphicon glyphicon-camera"></span>
                       <span>Change Image</span>
                     </label>
-                    <input id="file" type="file" name="profile_pic" onchange="loadFile(event)"/>
+                    <input id="file" type="file" name="profile_pic" accept=".jpg,.jpeg" onchange="loadFile(event)">
                     <img src="{{staff.profile_pic}}" id="output" width="200" class="profile-pic-edit" />
                   </div>
                   <br>

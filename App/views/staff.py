@@ -64,7 +64,7 @@ def update_staff_profile_route():
     except Exception as e:
         print(f"Error updating profile: {e}")
         flash("Something went wrong while updating the profile.", "error")
-        return redirect(request.referrer)
+        return redirect(url_for('staff_views.getAllReviews'))
 
 
 
