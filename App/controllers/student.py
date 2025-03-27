@@ -20,8 +20,11 @@ def create_student(username, UniId, firstname, lastname, email, password,
 
 def delete_student(uni_id):
   student = get_student_by_UniId(uni_id)
-  db.session.delete(student)
-  db.session.commit()
+  if student:
+    db.session.delete(student)
+    db.session.commit()
+    return f"Successfully deleted student {uni_id}"
+  return "Student does not exist." 
 
 def create_student_from_transcript(transcript_data, student_data):
   try:

@@ -712,8 +712,9 @@ def view_karma_history(student_id):
 @click.argument("gpa")
 def add_student(uni_id, first_name, last_name, email, faculty, admit_term, degree, gpa):
     create_student("", uni_id, first_name, last_name, email, "", faculty, admit_term, degree, gpa)
+    print(f"Created student {uni_id} successfully")
 
 @app.cli.command("delete_student")
 @click.argument("uni_id")
 def remove_student(uni_id):
-    delete_student(uni_id)
+    print(delete_student(uni_id))
