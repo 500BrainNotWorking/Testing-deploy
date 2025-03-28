@@ -724,10 +724,12 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
   
     // URLs corresponding to each karma point (modify URL pattern as needed) - /viewKarmaDetail/{{ karma.id }}
     const urls = [
-        {% for review in reviews|reverse %}
-            "/jsreview/{{ review.ID }}"{% if not loop.last %}, {% endif %}
+        {% for review in history|reverse %}
+            "/jsreview/{{ review.reviewID - 1}}"{% if not loop.last %}, {% endif %}
         {% endfor %}
     ];
+
+    console.log("Review IDs used for plotting:", urls);
 
     // Create the chart with a click event
     const ctx = document.getElementById("myChart").getContext("2d");
@@ -761,7 +763,10 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
           if (elements.length > 0) {
             const index = typeof elements[0]._index !== 'undefined' ? elements[0]._index : elements[0].index;
             const studentId = "{{ student.UniId }}";
-            const url = `/students/${studentId}/reviews/${index}`;
+            const reviewUrl = urls[index];
+            const reviewID = reviewUrl.split('/').pop(); 
+            const url = `/students/${studentId}/reviews/${reviewID}`;
+            //console.log(`Student ID: ${studentId}, Review ID: ${reviewId}`);
             window.location.href = url;
           }
         }
