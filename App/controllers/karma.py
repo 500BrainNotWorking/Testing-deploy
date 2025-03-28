@@ -27,8 +27,8 @@ def get_karma_student(student):
   else:
     return None
 
-def create_karma(studentID, points):
-  newKarma = Karma(points=points, studentID=studentID)
+def create_karma(studentID, points, reviewID):
+  newKarma = Karma(points=points, studentID=studentID, reviewID=reviewID)
   db.session.add(newKarma)
   try:
     db.session.commit()

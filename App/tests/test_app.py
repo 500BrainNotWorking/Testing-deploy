@@ -57,7 +57,7 @@ from App.controllers import (
 
     get_root_parent_reply,
 
-    get_karma, create_karma, like, dislike
+    get_karma, create_karma, like, dislike, get_karma_history
 
 )
 
@@ -184,7 +184,7 @@ class ReplyUnitTests(unittest.TestCase):
 class KarmaUnitTests(unittest.TestCase):
 
     def test_new_karma(self):
-        karma = Karma(points=100, studentID=1)
+        karma = Karma(points=100, studentID=1, reviewID=1)
         assert karma.points == 100
         assert karma is not None
 
@@ -1454,17 +1454,23 @@ class KarmaIntegrationTests(unittest.TestCase):
     def test_create_karma(self):
 
 
-        assert create_student(username="billyjoel", firstname="Billyjoel", lastname="Johnson", email="billyjoel@example.com", password="billyjoelpass", faculty="FST", admittedTerm="2022/2023", UniId="816000777", degree="BSc Computer Science", gpa="3.5") == True
+        assert create_student(username="tobi", firstname="Tobi", lastname="Brown", email="tobi@example.com", password="tobipass", faculty="FST", admittedTerm="2022/2023", UniId="816000792", degree="BSc Computer Science", gpa="3.5") == True
         
-        student = get_student_by_username("billyjoel")
+        assert create_staff(username="joe",firstname="Joe", lastname="Mama", email="joe@example.com", password="joepass", faculty="FST") == True
+        
+        staff = get_staff_by_username("joe")
 
-        karma_status = create_karma(points=100, studentID=student.ID)
+        student = get_student_by_username("tobi")
+
+        review1 = create_review(staff=staff, student=student, starRating=5, details="Tobi is Amazing.")
+
+        karma_status = create_karma(points=5, studentID=student.ID, reviewID=review1.ID)
 
         assert karma_status is True
 
         karma = get_karma(student.ID)
 
-        assert karma.points == 100
+        assert karma.points == 5
 
 
     def test_get_karma(self):
@@ -1472,15 +1478,23 @@ class KarmaIntegrationTests(unittest.TestCase):
 
         assert create_student(username="billyjoel", firstname="Billyjoel", lastname="Johnson", email="billyjoel@example.com", password="billyjoelpass", faculty="FST", admittedTerm="2022/2023", UniId="816000777", degree="BSc Computer Science", gpa="3.5") == True
         
-        student = get_student_by_username("billyjoel")
+        assert create_staff(username="joe",firstname="Joe", lastname="Mama", email="joe@example.com", password="joepass", faculty="FST") == True
+        
+        staff = get_staff_by_username("joe")
 
-        karma_status = create_karma(points=100, studentID=student.ID)
+
+        student = get_student_by_username("billyjoel")
+        
+
+        review1 = create_review(staff=staff, student=student, starRating=5, details="Billy is Amazing.")
+
+        karma_status = create_karma(points=5, studentID=student.ID, reviewID=review1.ID)
 
         assert karma_status is True
 
         karma = get_karma(student.ID)
 
-        assert karma.points == 100
+        assert karma.points == 5
         assert karma is not None
         assert karma.studentID == student.ID
 
@@ -1643,7 +1657,34 @@ class KarmaIntegrationTests(unittest.TestCase):
 
         assert new_karma_1.points == new_karma.points
         
+
     
+    def test_karma_history(self):
+
+        assert create_student(username="billyjoel", firstname="Billyjoel", lastname="Johnson", email="billyjoel@example.com", password="billyjoelpass", faculty="FST", admittedTerm="2022/2023", UniId="816000777", degree="BSc Computer Science", gpa="3.5") == True
+        
+        assert create_staff(username="joe",firstname="Joe", lastname="Mama", email="joe@example.com", password="joepass", faculty="FST") == True
+        
+        staff = get_staff_by_username("joe")
+
+
+        student = get_student_by_username("billyjoel")
+        
+
+        review1 = create_review(staff=staff, student=student, starRating=5, details="Billy is Amazing.")
+        review2 = create_review(staff=staff, student=student, starRating=4, details="Billy is Amazing2.")
+        review3 = create_review(staff=staff, student=student, starRating=3, details="Billy is Amazing3.")
+        review4 = create_review(staff=staff, student=student, starRating=2, details="Billy is Amazing4.")
+
+        karma_status = create_karma(points=5, studentID=student.ID, reviewID=review1.ID)
+        karma_status2 = create_karma(points=5, studentID=student.ID, reviewID=review2.ID)
+        karma_status3 = create_karma(points=5, studentID=student.ID, reviewID=review3.ID)
+        karma_status4 = create_karma(points=5, studentID=student.ID, reviewID=review4.ID)
+    
+
+        history = get_karma_history(student.ID)
+
+        assert history is not None
     
 
       #assert parent_reply == new_reply1  
