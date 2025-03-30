@@ -757,10 +757,10 @@
             <!-- Comment Card -->
             <div class="comment-card" id="comment-{{comment.ID}}">
               <div class="review-header">
-                <img src="{{ staff.profile_pic or 'https://sta.uwi.edu/fst/dcit/sites/default/files/dcit/styles/medium/public/vijay.png?itok=RvPGd4fb' }}" alt="Staff Profile" class="review-avatar">
+                <img src="{{ get_staff(comment.createdByStaffID).profile_pic or 'https://sta.uwi.edu/fst/dcit/sites/default/files/dcit/styles/medium/public/vijay.png?itok=RvPGd4fb' }}" alt="Staff Profile" class="review-avatar">
                 <div class="review-details">
                   <a href="/staff-profile/{{comment.createdByStaffID}}">
-                    <strong>{{staff.firstname}} {{staff.lastname}}</strong>
+                    <strong>{{get_staff(comment.createdByStaffID).firstname}} {{get_staff(comment.createdByStaffID).lastname}}</strong>
                   </a>
                   <p>Comment posted on {{comment.dateCreated}}</p>
                 </div>
@@ -776,10 +776,10 @@
               
               <div class="comment-card reply-card" id="reply-{{reply.ID}}">
                 <div class="review-header">
-                  <img src="{{ replier.profile_pic or 'https://sta.uwi.edu/fst/dcit/sites/default/files/dcit/styles/medium/public/vijay.png?itok=RvPGd4fb' }}" alt="Replier Profile" class="review-avatar">
+                  <img src="{{ get_staff(reply.createdByStaffID).profile_pic or 'https://sta.uwi.edu/fst/dcit/sites/default/files/dcit/styles/medium/public/vijay.png?itok=RvPGd4fb' }}" alt="Replier Profile" class="review-avatar">
                   <div class="review-details">
                     <a href="/staff-profile/{{reply.createdByStaffID}}">
-                      <strong>{{ replier.firstname }} {{ replier.lastname }}</strong>
+                      <strong>{{ get_staff(reply.createdByStaffID).firstname }} {{ get_staff(reply.createdByStaffID).lastname }}</strong>
                     </a>
                     <p>Reply posted on {{ reply.dateCreated }}</p>
                   </div>

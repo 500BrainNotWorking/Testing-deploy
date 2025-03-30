@@ -170,7 +170,7 @@ def review_detail(student_id, review_index):
                     replier_staffs.append(replier_list)
 
                 comment_info = zip(review.comments, comment_staffs)
-                return render_template('ReviewDetail.html', review=review, comment_info=comment_info, replier_staffs=replier_staffs)
+                return render_template('ReviewDetail.html', review=review, comment_info=comment_info, replier_staffs=replier_staffs, get_staff=get_staff_by_id)
             else:
                 flash("Review does not exist", "error")
     else:
