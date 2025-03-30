@@ -765,7 +765,10 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
             const studentId = "{{ student.UniId }}";
             const reviewUrl = urls[index];
             const reviewID = reviewUrl.split('/').pop(); 
-            const url = `/students/${studentId}/reviews/${reviewID}`;
+            const url = `/reviews/${reviewID}`;
+
+            sessionStorage.setItem("lastStudentProfile", window.location.href);
+
             //console.log(`Student ID: ${studentId}, Review ID: ${reviewId}`);
             window.location.href = url;
           }
@@ -899,6 +902,20 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
       if (event.target == modal) {
         modal.style.display = "none";
       }
+    }
+
+    // Check if the user is returning and trigger the modal
+    window.onload = function () {
+        if (sessionStorage.getItem("returning")) {
+            sessionStorage.removeItem("returning"); // Clear flag after use
+            document.getElementById("myBtn").click(); // Auto-click graph button
+        }
+    };
+
+    // Function to navigate back to the student page
+    function goBackToStudent(url) {
+      sessionStorage.setItem("returning", "true"); // Mark as returning
+      window.location.href = url; // Redirect
     }
 
 
