@@ -740,6 +740,7 @@
                     
                     <div class="comments"><i class="fas fa-comment"></i>{{review.comments | length}}</div>
                     <button class="expand-btn">Expand</button>
+                    <button onclick="goBackToStudent()" type="submit" style="background:none; border:none; cursor:pointer;"><i class="fa fa-area-chart" aria-hidden="true"></i></button>
                 </div>
             </div>
 
@@ -967,6 +968,17 @@
                 button.disabled = false;
             });
         }
+
+
+
+        function goBackToStudent() {
+            var lastProfile = sessionStorage.getItem("lastStudentProfile");
+            if (lastProfile) {
+                sessionStorage.setItem("returning", "true"); // Set return flag
+                window.location.href = lastProfile;
+            }
+        }
+
     </script>
 </body>
 
