@@ -515,6 +515,7 @@
 
         /* For comments and replies */
         .comment-card {
+            margin-top: 10px;
             background-color: #FFFAFF;
             padding: 20px;
             border-radius: 8px;
@@ -561,9 +562,10 @@
                 .reply-card {
                     padding: 15px 20px;
                     border-radius: 8px;
-                    margin-left: 40px; /* << this gives the nested effect */
+                    margin-left: 10%; /* << this gives the nested effect */
                     margin-top: 10px;
                     margin-bottom: 10px;
+                    width: 60%;
                 }
 
                 .likes form button:hover i,
@@ -697,6 +699,13 @@
 
                         <p>Posted on {{review.dateCreated}} </p>
                     </div>
+                    {%if review.createdByStaffID == current_user.ID%}
+                        <a href="/deleteReview/{{review.ID}}" style="padding-right: 15px;"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                    {%endif%}
+                    {%if review.createdByStaffID == current_user.ID%}
+                        <div style="padding-right: 10px;"><a href="/editReviewPage/{{review.ID}}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                          </div>
+                    {%endif%}
                 </div>
                 <div class="stars">
                     {% if review.starRating is not none %}
@@ -770,25 +779,34 @@
               <button class="button button2" onclick='createReply({{comment.ID}})'>Reply</button>
             </div>
           
-            <!-- Replies (first 2 shown) -->
-            {% for reply in comment.replies %}
-              {% set j = loop.index0 %}
-              {% set replier = replier_staffs[i][j] %}
-              
-              <div class="comment-card reply-card" id="reply-{{reply.ID}}">
-                <div class="review-header">
-                  <img src="{{ get_staff(reply.createdByStaffID).profile_pic or 'https://sta.uwi.edu/fst/dcit/sites/default/files/dcit/styles/medium/public/vijay.png?itok=RvPGd4fb' }}" alt="Replier Profile" class="review-avatar">
-                  <div class="review-details">
-                    <a href="/staff-profile/{{reply.createdByStaffID}}">
-                      <strong>{{ get_staff(reply.createdByStaffID).firstname }} {{ get_staff(reply.createdByStaffID).lastname }}</strong>
-                    </a>
-                    <p>Reply posted on {{ reply.dateCreated }}</p>
-                  </div>
+            
+            {% if comment.replies %}
+            <button class="button button2 toggle-replies-btn" data-target="replies-{{comment.ID}}" style="margin-bottom: 10px;margin-left: 40%;">
+                View Replies ({{comment.replies|length}})
+            </button>
+
+            <div class="reply-container" id="replies-{{comment.ID}}" style="display: none;">
+                {% for reply in comment.replies %}
+                {% set j = loop.index0 %}
+                {% set replier = replier_staffs[i][j] %}
+
+                <div class="comment-card reply-card" id="reply-{{reply.ID}}">
+                    <div class="review-header">
+                        <img src="{{ get_staff(reply.createdByStaffID).profile_pic or 'https://sta.uwi.edu/fst/dcit/sites/default/files/dcit/styles/medium/public/vijay.png?itok=RvPGd4fb' }}" alt="Replier Profile" class="review-avatar">
+                        <div class="review-details">
+                            <a href="/staff-profile/{{reply.createdByStaffID}}">
+                                <strong>{{ get_staff(reply.createdByStaffID).firstname }} {{ get_staff(reply.createdByStaffID).lastname }}</strong>
+                            </a>
+                            <p>Reply posted on {{ reply.dateCreated }}</p>
+                        </div>
+                    </div>
+                    <p style="white-space: pre-wrap;">{{reply.details}}</p>
                 </div>
-                <p style="white-space: pre-wrap;">{{reply.details}}</p>
-              </div>
-            {% endfor %}
-          {% endfor %}
+                {% endfor %}
+                <br>
+            </div>
+        {% endif %}
+        {% endfor %}
           
         </div>
     </div>
@@ -820,6 +838,26 @@
         });
     </script>
     <script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const toggleButtons = document.querySelectorAll(".toggle-replies-btn");
+
+        toggleButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                const targetId = button.getAttribute("data-target");
+                const repliesContainer = document.getElementById(targetId);
+
+                if (repliesContainer.style.display === "none") {
+                    repliesContainer.style.display = "block";
+                    button.textContent = "Hide Replies";
+                } else {
+                    repliesContainer.style.display = "none";
+                    button.textContent = `View Replies (${repliesContainer.children.length})`;
+                }
+            });
+        });
+    });
+
         document.addEventListener("DOMContentLoaded", function () {
             var el = document.querySelector('.more');
             var btn = el.querySelector('.more-btn');
