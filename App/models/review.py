@@ -11,6 +11,7 @@ class Review(db.Model):
     createdByStaffID = db.Column(db.Integer, db.ForeignKey('staff.ID'))
     dateCreated = db.Column(db.DateTime, server_default=func.now())
     starRating = db.Column(db.Integer, nullable=False)
+    value = db.Column(db.Integer, nullable=False)
     details = db.Column(db.String(400), nullable=False)
     likes = db.Column(db.Integer, nullable=False, default=0)
     dislikes = db.Column(db.Integer, nullable=False, default=0)
@@ -26,6 +27,16 @@ class Review(db.Model):
         self.createdByStaffID = staff.ID
         self.studentID = student.ID
         self.starRating = starRating
+        if starRating == 5:
+            self.value = 5
+        elif starRating == 4:
+            self.value = 3
+        elif starRating == 3:
+            self.value = 1
+        elif starRating == 2:
+            self.value = -1
+        else:
+            self.value = -3
         self.details = details
         self.comments = []
 
