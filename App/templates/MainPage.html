@@ -562,6 +562,48 @@
     font-weight: bold;
 }
 
+.reviews-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* or center, or start */
+    gap: 20px;
+}
+
+.review-card {
+    flex: 1 1 calc(33.333% - 20px); /* 3 per row with spacing */
+    max-width: calc(33.333% - 20px);
+    box-sizing: border-box;
+}
+
+.review-card {
+    flex: 1 1 300px;
+    max-width: 32%;
+    box-sizing: border-box;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.review-card:hover {
+    transform: translateY(-5px); /* lift the card slightly */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* add shadow for depth */
+    background-color: #f3f3f3; 
+}
+
+
+
+
+
+@media (max-width: 900px) {
+    .review-card {
+        max-width: 48%;
+    }
+}
+
+@media (max-width: 600px) {
+    .review-card {
+        max-width: 100%;
+    }
+}
+
 
     </style>
 </head>
@@ -631,13 +673,15 @@
     
 
     <!-- Reviews Section -->
-    <div class="reviews-container">
-        <h3>Latest Reviews:</h3>
+    <div class="reviews-container" style="width: 100vw;">
+        <div style="padding-bottom: 30px;">
+            <h3 style="margin-left: 25%;">Latest Reviews:</h3>
 
-        <input type="text" id="myInput" onkeyup="filterReviews()" placeholder="Search for reviews by name or ID..." title="Type in a name" style="width: 700px;">
+        <input type="text" id="myInput" onkeyup="filterReviews()" placeholder="Search for reviews by name or ID..." title="Type in a name" style="width: 700px;margin-left: 25%;">
+        </div>
 
         
-        <div id="reviewsList" style="margin-top: 30px;">
+        <div id="reviewsList" class="reviews-grid" style="width: 100vw;">
            {% for review in reviews %} 
            <div class="review-card">
                 <div class="review-header">
@@ -675,7 +719,7 @@
                         <h4>Review for {{review.student_name}} ({{review.student_id}})</h4>
                     </a>
                     
-                    <p style="white-space: pre-wrap;">{{review.details}}</p>
+                    <!-- <p style="white-space: pre-wrap;">{{review.details}}</p> -->
                 </div>
                 <div class="review-footer">
                     <div class="likes">
@@ -700,9 +744,9 @@
                     <button class="expand-btn">Expand</button>
 
 
-                    {%if review.createdByStaffID == current_user.ID%}
+                    <!-- {%if review.createdByStaffID == current_user.ID%}
                         <a href="/deleteReview/{{review.ID}}"><i class="fa fa-trash" aria-hidden="true"></i></a>
-                    {%endif%}
+                    {%endif%} -->
                 </div>
         </div>
 
