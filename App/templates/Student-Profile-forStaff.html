@@ -725,7 +725,7 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
     // URLs corresponding to each karma point (modify URL pattern as needed) - /viewKarmaDetail/{{ karma.id }}
     const urls = [
         {% for review in history|reverse %}
-            "/jsreview/{{ review.reviewID - 1}}"{% if not loop.last %}, {% endif %}
+            "/jsreview/{{ review.reviewID}}"{% if not loop.last %}, {% endif %}
         {% endfor %}
     ];
 
