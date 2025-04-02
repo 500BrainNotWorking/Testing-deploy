@@ -111,7 +111,7 @@ def vote(review_id):
   if review:
     student = get_student_by_id(review.studentID)
     current_karma = student.get_karma()
-    new_karma_points = current_karma.points + review.starRating * ((review.likes - review.dislikes) / (4 * (review.likes + review.dislikes)))
+    new_karma_points = current_karma.points + review.value * ((review.likes - review.dislikes) / (4 * (review.likes + review.dislikes)))
     newKarma = Karma(new_karma_points, student.ID, review.ID)
   db.session.add(newKarma)
   try:
