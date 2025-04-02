@@ -101,19 +101,21 @@
         }
 
         #main-content {
+            width: 100%;
             margin-top: 80px;
             transition: margin-left 0.5s;
-            padding: 16px;
+            /* padding: 16px; */
         }
 
         /* Profile Section */
         .profile-container {
+            margin-top: 50px;
             color: black;
             text-align: center;
             background-color: #FFFAFF;
             padding: 30px;
             border-radius: 10px;
-            width: 60%;
+            width: 80%;
             margin: 5px auto;
             box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
         }
@@ -491,6 +493,49 @@
             color: white;
         }
 
+        .split1 {
+  height: 100%;
+  width: 30%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+.split2 {
+  height: 100%;
+  width: 70%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+.left {
+  left: 0;
+  background-color: #7C90A0;
+}
+
+.right {
+  right: 0;
+  background-color: #7a94a9ed;
+}
+
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.centered img {
+  width: 150px;
+  border-radius: 50%;
+}
+
     </style>
 </head>
 <body>
@@ -544,6 +589,7 @@
         </nav>
 
     <!-- Main Content -->
+    <div class="split1 left">
     <div id="main-content">
         <!-- Profile Section -->
         <div class="profile-container">
@@ -559,10 +605,12 @@
             </div>
 
         </div>
-        <br><hr>
-
+    </div>
+    
+    <div class="split2 right">
         <!-- Reviews Section -->
         <div class="reviews-container">
+            <br><br><br>
             <h3>Reviews Made:</h3>
 
             {% for i in range(reviews|length) %}
@@ -634,6 +682,7 @@
             <h4 style="text-align: center;color: white;margin-top: 30px;">No Reviews</h4>
             {% endif %}
         </div>
+    </div>
 
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
