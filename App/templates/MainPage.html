@@ -562,6 +562,48 @@
     font-weight: bold;
 }
 
+.reviews-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /*center, or start */
+    gap: 20px;
+}
+
+.review-card {
+    flex: 1 1 calc(33.333% - 20px); /* 3 per row with spacing */
+    max-width: calc(33.333% - 20px);
+    box-sizing: border-box;
+}
+
+.review-card {
+    flex: 1 1 300px;
+
+    box-sizing: border-box;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.review-card:hover {
+    transform: translateY(-5px); /* lift the card slightly */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* add shadow for depth */
+    background-color: #f3f3f3; 
+}
+
+
+
+
+
+@media (max-width: 900px) {
+    .review-card {
+        max-width: 48%;
+    }
+}
+
+@media (max-width: 600px) {
+    .review-card {
+        max-width: 100%;
+    }
+}
+
 
     </style>
 </head>
@@ -631,13 +673,15 @@
     
 
     <!-- Reviews Section -->
-    <div class="reviews-container">
-        <h3>Latest Reviews:</h3>
+    <div class="reviews-container" style="width: 100vw;">
+        <div style="padding-bottom: 30px;">
+            <h3 style="margin-left: 25%;">Latest Reviews:</h3>
 
-        <input type="text" id="myInput" onkeyup="filterReviews()" placeholder="Search for reviews by name or ID..." title="Type in a name" style="width: 700px;">
+        <input type="text" id="myInput" onkeyup="filterReviews()" placeholder="Search for reviews by name or ID..." title="Type in a name" style="width: 700px;margin-left: 25%;">
+        </div>
 
         
-        <div id="reviewsList" style="margin-top: 30px;">
+        <div id="reviewsList" class="reviews-grid" style="width: 100vw;">
            {% for review in reviews %} 
            <div class="review-card">
                 <div class="review-header">
@@ -649,10 +693,10 @@
                         
                         <p>Posted on {{review.dateCreated.strftime('%Y-%m-%d %H:%M:%S')}} </p>
                     </div>
-                    {%if review.createdByStaffID == current_user.ID%}
+                    <!-- {%if review.createdByStaffID == current_user.ID%}
                         <div style="padding-right: 40px;"><a href="/editReviewPage/{{review.ID}}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                           </div>
-                    {%endif%}
+                    {%endif%} -->
                     <a href="/reviews/{{review.ID}}" class="fas fa-external-link-alt"></a>
                 </div>
                 <div class="stars">
@@ -675,7 +719,7 @@
                         <h4>Review for {{review.student_name}} ({{review.student_id}})</h4>
                     </a>
                     
-                    <p style="white-space: pre-wrap;">{{review.details}}</p>
+                    <!-- <p style="white-space: pre-wrap;">{{review.details}}</p> -->
                 </div>
                 <div class="review-footer">
                     <div class="likes">
@@ -694,10 +738,10 @@
                         </form>
                     </div>
                     
-                    <a href="/reviews/{{review.ID}}">
+                    <!-- <a href="/reviews/{{review.ID}}">
                         <div class="comments"><i class="fas fa-comment"></i>{{review.comments | length}}</div>
-                      </a>
-                    <button class="expand-btn">Expand</button>
+                      </a> -->
+                    <!-- <button class="expand-btn">Expand</button> -->
 
 
                     {%if review.createdByStaffID == current_user.ID%}
@@ -712,6 +756,7 @@
         <h4 style="text-align: center;color: white;margin-top: 30px;">No Reviews</h4>
         {% endif %}
         </div>
+        <div id="pagination" style="text-align: center; margin-top: 20px;"></div>
     </div>
 
     <script>
@@ -752,6 +797,54 @@
 
 
     <!-- JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          const reviewsPerPage = 16;                           //HERE! - CHANGE FOR PAGINATION, HE SAID HE DIDNT WANT SCROLL
+          const reviewCards = Array.from(document.querySelectorAll('.review-card'));
+          const paginationContainer = document.getElementById('pagination');
+      
+          const totalPages = Math.ceil(reviewCards.length / reviewsPerPage);
+          let currentPage = 1;
+      
+          function showPage(page) {
+            const start = (page - 1) * reviewsPerPage;
+            const end = start + reviewsPerPage;
+      
+            reviewCards.forEach((card, index) => {
+              card.style.display = index >= start && index < end ? 'block' : 'none';
+            });
+      
+            renderPagination(page);
+          }
+      
+          function renderPagination(current) {
+            paginationContainer.innerHTML = '';
+      
+            for (let i = 1; i <= totalPages; i++) {
+              const btn = document.createElement('button');
+              btn.innerText = i;
+              btn.style.margin = '0 5px';
+              btn.style.padding = '6px 12px';
+              btn.style.border = 'none';
+              btn.style.borderRadius = '5px';
+              btn.style.backgroundColor = i === current ? '#25283D' : '#ccc';
+              btn.style.color = i === current ? 'white' : 'black';
+              btn.style.cursor = 'pointer';
+      
+              btn.addEventListener('click', () => {
+                currentPage = i;
+                showPage(currentPage);
+              });
+      
+              paginationContainer.appendChild(btn);
+            }
+          }
+      
+          // Initialize
+          showPage(currentPage);
+        });
+      </script>
+      
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             var el = document.querySelector('.more');
