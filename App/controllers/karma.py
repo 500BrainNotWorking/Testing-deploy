@@ -6,7 +6,7 @@ from .transcript import (calculate_academic_score)
 
 
 def get_karma(studentID):
-  karma = Karma.query.filter_by(studentID=studentID).order_by(Karma.timestamp.desc()).first()
+  karma = Karma.query.filter_by(studentID=studentID).order_by(Karma.karmaID.desc()).first()
   if karma:
     return karma
   else:
@@ -14,14 +14,14 @@ def get_karma(studentID):
 
 
 def get_karma_history(studentID):
-  history = Karma.query.filter_by(studentID = studentID).order_by(Karma.timestamp.desc())
+  history = Karma.query.filter_by(studentID = studentID).order_by(Karma.karmaID.desc())
   if history:                                                                                  #FOR GRAPH, IF BREAK ITS HERE
     return history
   else:
     return None
 
 def get_karma_student(student):
-  karma = Karma.query.filter_by(studentID=student.ID).order_by(Karma.timestamp.desc()).first()
+  karma = Karma.query.filter_by(studentID=student.ID).order_by(Karma.karmaID.desc()).first()
   if karma:
     return karma
   else:

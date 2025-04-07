@@ -92,7 +92,7 @@ class Student(User, StudentInterface):
 
   def get_karma(self):
       if self.karma_history:
-          return max(self.karma_history, key=lambda k: k.timestamp)  # Get latest karma entry
+          return max(self.karma_history, key=lambda k: k.karmaID)  # Get latest karma entry
       return None
 
 
