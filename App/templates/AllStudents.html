@@ -567,10 +567,20 @@
         .students-list {
             width: 100%;
             border-radius: 10px;
+            background-color: white;
+        }
+
+        .students-list .student-item:nth-child(1) {
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .students-list .student-item:nth-last-child(1) {
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
         }
 
         .student-item {
-            background-color: white;
             display: block;
             padding: 10px;
         }
