@@ -641,7 +641,7 @@
         <div id="main-content">
             <div class="students-list">
                 {% for student in students %}
-                <a class="student-item" href="#">{{student.firstname}} {{student.lastname}}</a>
+                <a class="student-item{% if student.UniId == selected_student.UniId %} active{% endif %}" href="{{ url_for('staff_views.view_students', uni_id=student.UniId) }}">{{student.firstname}} {{student.lastname}}</a>
                 {% endfor %}
             </div>
         </div>
