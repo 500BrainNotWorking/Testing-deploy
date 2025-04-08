@@ -691,11 +691,13 @@ def view_all_student_achievements(uniID):
 @staff_views.route('/students/<int:uni_id>')
 @login_required
 def view_students(uni_id=-1):
+  students = get_all_students_json()
   if uni_id == -1:
-    selected_student = get_student_by_id(1)
+    selected_student = get_student_by_id(students[0]['id'])
   else:
     selected_student = get_student_by_UniId(uni_id)
-  students = get_all_students_json()
+  
+  students.sort(key = lambda e: e['firstname'])
   return render_template('AllStudents.html', students=students, selected_student=selected_student)
   
 
