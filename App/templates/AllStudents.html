@@ -123,6 +123,10 @@
             box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
         }
 
+        .profile-container div:nth-child(n) {
+            display: inline;
+        }
+
         .profile-description {
             text-align: left;
             background-color: #FFFAFF;
@@ -565,9 +569,9 @@
 
         /* Students master detail */
         .students-list {
-            width: 100%;
             border-radius: 10px;
             background-color: white;
+            margin: 10px;
         }
 
         .students-list .student-item:nth-child(1) {
@@ -591,6 +595,59 @@
 
         .active {
             background-color: skyblue;
+        }
+
+        .recommendation-form {
+            max-width: max-content;
+            margin: 16vh auto 100px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            position: relative;
+            border: 2px solid #051d3c;
+            display: flex;
+            /* Use flexbox */
+            flex-direction: column;
+            /* Arrange children vertically */
+            align-items: center;
+            /* Center children horizontally */
+        }
+
+        .recommendation-form h2 {
+            text-align: center;
+            color: #051d3c;
+        }
+
+        .recommendation-form input,
+        .recommendation-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            height: 200px;
+        }
+
+        .recommendation-form button {
+            background-color: #051d3c;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 50px;
+        }
+
+        .recommendation-form img {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+            /* Add margin to space out from other elements */
         }
     </style>
 </head>
@@ -650,7 +707,9 @@
         <div class="main-content">
             <div class="students-list">
                 {% for student in students %}
-                <a class="student-item{% if student.UniId == selected_student.UniId %} active{% endif %}" href="{{ url_for('staff_views.view_students', uni_id=student.UniId) }}">{{student.firstname}} {{student.lastname}}</a>
+                <a class="student-item{% if student.UniId == selected_student.UniId %} active{% endif %}"
+                    href="{{ url_for('staff_views.view_students', uni_id=student.UniId) }}">{{student.firstname}}
+                    {{student.lastname}}</a>
                 {% endfor %}
             </div>
         </div>
@@ -664,6 +723,48 @@
                         <p>Faculty: {{selected_student.faculty}}</p>
                         <p>Degree: {{selected_student.degree}}</p>
                         <p>Email: {{selected_student.email}}</p>
+                    </div>
+                    <div class="recommendation-form">
+                        <form id="review-form" action="/createReview" method="post">
+                            <input type="hidden" value="{{selected_student.UniId}}" id="studentID" name="studentID"
+                                placeholder="Student ID" required>
+                            <input type="hidden" value="{{selected_student.firstname}} {{selected_student.lastname}}"
+                                id="name" name="name" placeholder="Student Name" required>
+                            <div id="suggestions" class="dropdown-content" style="display: none;"></div>
+                            <input type="hidden" id="num" name="num" value="0">
+                            <input type="hidden" id="points" name="points" value="0">
+                            <input type="hidden" id="details" name="details" value="">
+
+                            <!-- Star Rating Section -->
+                            <p>Rate Student Conduct:
+                            <p>
+                            <div class="star-rating">
+                                <input type="radio" id="star5" name="starRating" value="5">
+                                <label for="star5"></label>
+                                <input type="radio" id="star4" name="starRating" value="4">
+                                <label for="star4"></label>
+                                <input type="radio" id="star3" name="starRating" value="3">
+                                <label for="star3"></label>
+                                <input type="radio" id="star2" name="starRating" value="2">
+                                <label for="star2"></label>
+                                <input type="radio" id="star1" name="starRating" value="1">
+                                <label for="star1"></label>
+                            </div>
+
+                            <input type="hidden" id="selectedRating" name="selectedRating">
+
+
+
+                            <h3 id="pr" style="display: none;">Personal Review</h3>
+                            <textarea name="manual-review" id="manual-review" placeholder="Personal Review"
+                                style="resize: vertical;min-height: 200px;" required></textarea>
+
+
+                            <textarea name="selected-details" id="selected-details" placeholder="Selected Reviews"
+                                style="display: none;"></textarea>
+
+                            <button type="submit">Submit</button>
+                        </form>
                     </div>
                 </div>
             </div>
