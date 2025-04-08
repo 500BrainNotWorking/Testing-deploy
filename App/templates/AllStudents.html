@@ -563,6 +563,26 @@
             font-weight: bold;
             margin-bottom: 20px;
         }
+
+        /* Students master detail */
+        .students-list {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .student-item {
+            background-color: white;
+            display: block;
+            padding: 10px;
+        }
+
+        .student-item:hover {
+            background-color: lightblue;
+        }
+
+        .active {
+            background-color: skyblue;
+        }
     </style>
 </head>
 
@@ -619,11 +639,9 @@
     <!-- Main Content -->
     <div class="split1 left">
         <div id="main-content">
-            <div id="students-list">
+            <div class="students-list">
                 {% for student in students %}
-                <div class="student-item">
-                    <a href="#">{{student.firstname}} {{student.lastname}}</a>
-                </div>
+                <a class="student-item" href="#">{{student.firstname}} {{student.lastname}}</a>
                 {% endfor %}
             </div>
         </div>
