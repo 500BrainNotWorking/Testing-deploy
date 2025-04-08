@@ -103,7 +103,7 @@
             cursor: pointer;
         }
 
-        #main-content {
+        .main-content {
             width: 100%;
             margin-top: 80px;
             transition: margin-left 0.5s;
@@ -114,7 +114,6 @@
         .profile-container {
             margin-top: 50px;
             color: black;
-            text-align: center;
             background-color: #FFFAFF;
             padding: 30px;
             border-radius: 10px;
@@ -638,7 +637,7 @@
 
     <!-- Main Content -->
     <div class="split1 left">
-        <div id="main-content">
+        <div class="main-content">
             <div class="students-list">
                 {% for student in students %}
                 <a class="student-item{% if student.UniId == selected_student.UniId %} active{% endif %}" href="{{ url_for('staff_views.view_students', uni_id=student.UniId) }}">{{student.firstname}} {{student.lastname}}</a>
@@ -647,7 +646,17 @@
         </div>
 
         <div class="split2 right">
-
+            <div class="main-content">
+                <div class="profile-container">
+                    <div class="profile-description">
+                        <h2>{{selected_student.firstname}} {{selected_student.lastname}}</h2>
+                        <p>University ID: {{selected_student.UniId}}</p>
+                        <p>Faculty: {{selected_student.faculty}}</p>
+                        <p>Degree: {{selected_student.degree}}</p>
+                        <p>Email: {{selected_student.email}}</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
         {% with messages = get_flashed_messages(with_categories=true) %}
