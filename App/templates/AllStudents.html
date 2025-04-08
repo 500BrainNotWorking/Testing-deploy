@@ -112,28 +112,24 @@
 
         /* Profile Section */
         .profile-container {
+            overflow: hidden;
             margin-top: 50px;
             color: black;
             background-color: #FFFAFF;
             padding: 30px;
             border-radius: 10px;
             width: 80%;
-            height: 70%;
+            height: min-content;
             margin: 5px auto;
             box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
         }
 
-        .profile-container div:nth-child(n) {
-            display: inline;
-        }
-
         .profile-description {
+            float: left;
             text-align: left;
             background-color: #FFFAFF;
-            padding: 0px;
-            border-radius: 10px;
-            width: 100%;
-            margin-top: 30px;
+            width: max-content;
+            height: max-content;
         }
 
         .profile-image {
@@ -597,42 +593,19 @@
             background-color: skyblue;
         }
 
-        .recommendation-form {
-            max-width: max-content;
-            margin: 16vh auto 100px;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 5px;
-            position: relative;
-            border: 2px solid #051d3c;
-            display: flex;
-            /* Use flexbox */
-            flex-direction: column;
-            /* Arrange children vertically */
-            align-items: center;
-            /* Center children horizontally */
+        #review-form {
+            float: left;
+            padding-left: 20px;
         }
 
-        .recommendation-form h2 {
-            text-align: center;
-            color: #051d3c;
-        }
-
-        .recommendation-form input,
-        .recommendation-form textarea {
+        #review-form textarea {
+            height: 30%;
             width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-            box-sizing: border-box;
+            resize: none;
+            padding: 5px;
         }
 
-        textarea {
-            height: 200px;
-        }
-
-        .recommendation-form button {
+        #review-form button {
             background-color: #051d3c;
             color: white;
             padding: 10px 20px;
@@ -647,7 +620,38 @@
             width: 100px;
             height: 100px;
             margin-bottom: 20px;
-            /* Add margin to space out from other elements */
+        }
+
+        .star-rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: center;
+            font-size: 2rem;
+            position: relative;
+            margin: 10px 0;
+        }
+
+        .star-rating input {
+            display: none;
+        }
+
+        .star-rating label {
+            cursor: pointer;
+            color: lightgray;
+            transition: color 0.3s;
+        }
+
+        .star-rating label:before {
+            content: "★";
+        }
+
+        .star-rating input:checked~label {
+            color: gold;
+        }
+
+        .star-rating label:hover,
+        .star-rating label:hover~label {
+            color: gold;
         }
     </style>
 </head>
@@ -724,49 +728,119 @@
                         <p>Degree: {{selected_student.degree}}</p>
                         <p>Email: {{selected_student.email}}</p>
                     </div>
-                    <div class="recommendation-form">
-                        <form id="review-form" action="/createReview" method="post">
-                            <input type="hidden" value="{{selected_student.UniId}}" id="studentID" name="studentID"
-                                placeholder="Student ID" required>
-                            <input type="hidden" value="{{selected_student.firstname}} {{selected_student.lastname}}"
-                                id="name" name="name" placeholder="Student Name" required>
-                            <div id="suggestions" class="dropdown-content" style="display: none;"></div>
-                            <input type="hidden" id="num" name="num" value="0">
-                            <input type="hidden" id="points" name="points" value="0">
-                            <input type="hidden" id="details" name="details" value="">
+                    <form id="review-form" action="/createReview" method="post">
+                        <input type="hidden" value="{{selected_student.UniId}}" id="studentID" name="studentID"
+                            placeholder="Student ID" required>
+                        <input type="hidden" value="{{selected_student.firstname}} {{selected_student.lastname}}"
+                            id="name" name="name" placeholder="Student Name" required>
+                        <div id="suggestions" class="dropdown-content" style="display: none;"></div>
+                        <input type="hidden" id="num" name="num" value="0">
+                        <input type="hidden" id="points" name="points" value="0">
+                        <input type="hidden" id="details" name="details" value="">
 
-                            <!-- Star Rating Section -->
-                            <p>Rate Student Conduct:
-                            <p>
-                            <div class="star-rating">
-                                <input type="radio" id="star5" name="starRating" value="5">
-                                <label for="star5"></label>
-                                <input type="radio" id="star4" name="starRating" value="4">
-                                <label for="star4"></label>
-                                <input type="radio" id="star3" name="starRating" value="3">
-                                <label for="star3"></label>
-                                <input type="radio" id="star2" name="starRating" value="2">
-                                <label for="star2"></label>
-                                <input type="radio" id="star1" name="starRating" value="1">
-                                <label for="star1"></label>
-                            </div>
+                        <!-- Star Rating Section -->
+                        <p>Rate Student Conduct:
+                        <p>
+                        <div class="star-rating">
+                            <input type="radio" id="star5" name="starRating" value="5">
+                            <label for="star5"></label>
+                            <input type="radio" id="star4" name="starRating" value="4">
+                            <label for="star4"></label>
+                            <input type="radio" id="star3" name="starRating" value="3">
+                            <label for="star3"></label>
+                            <input type="radio" id="star2" name="starRating" value="2">
+                            <label for="star2"></label>
+                            <input type="radio" id="star1" name="starRating" value="1">
+                            <label for="star1"></label>
+                        </div>
 
-                            <input type="hidden" id="selectedRating" name="selectedRating">
-
+                        <input type="hidden" id="selectedRating" name="selectedRating">
 
 
-                            <h3 id="pr" style="display: none;">Personal Review</h3>
-                            <textarea name="manual-review" id="manual-review" placeholder="Personal Review"
-                                style="resize: vertical;min-height: 200px;" required></textarea>
+
+                        <h3 id="pr" style="display: none;">Personal Review</h3>
+                        <textarea name="manual-review" id="manual-review" placeholder="Personal Review"
+                            required></textarea>
 
 
-                            <textarea name="selected-details" id="selected-details" placeholder="Selected Reviews"
-                                style="display: none;"></textarea>
+                        <textarea name="selected-details" id="selected-details" placeholder="Selected Reviews"
+                            style="display: none;"></textarea>
 
-                            <button type="submit">Submit</button>
-                        </form>
-                    </div>
+                        <button type="submit">Submit</button>
+                    </form>
                 </div>
+                <div class="reviews-container">
+                    <h3>{{selected_student.fullname}}'s Reviews:</h3>
+              
+                    {% for review in selected_student.reviews %}
+                    <div class="review-card">
+                      <div class="review-header">
+                        <div class="review-details">
+                          <p>Posted on {{review.dateCreated}} </p>
+                        </div>
+                        {%if review.createdByStaffID == current_user.ID%}
+                                      <div style="padding-right: 40px;"><a href="/editReviewPage/{{review.ID}}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                                        </div>
+                                  {%endif%}
+                        <a href="/reviews/{{review.ID}}" class="fas fa-external-link-alt"></a>
+                      </div>
+                      <div class="stars">
+                        {% if review.starRating is not none %}
+                        {% for i in range(review.starRating|int) %}
+                        <i class="fas fa-star"></i>
+                        {% endfor %}
+                        {% for i in range(5 - review.starRating|int) %}
+                        <i class="far fa-star empty"></i>
+                        {% endfor %}
+                        {% else %}
+                        {% for i in range(5) %}
+                        <i class="far fa-star empty"></i>
+                        {% endfor %}
+                        {% endif %}
+                      </div>
+              
+                      <div class="review-content">
+                        <a href="/getStudentProfile/{{selected_student.UniId}}">
+                          <h4>Review for {{selected_student.fullname}} ({{selected_student.UniId}})</h4>
+                        </a>
+              
+                        <p style="white-space: pre-wrap;">{{review.details}}</p>
+                      </div>
+                      <div class="review-footer">
+                        <div class="likes">
+                          <form action="/like/{{review.ID}}" method="POST" style="display:inline;">
+                              <button type="submit" style="background:none; border:none; cursor:pointer;">
+                                  <i class="fas fa-thumbs-up"></i>
+                              </button>
+                              <span>{{review.likes}}</span>
+                          </form>
+                      
+                          <form action="/dislike/{{review.ID}}" method="POST" style="display:inline; margin-left: 15px;">
+                              <button type="submit" style="background:none; border:none; cursor:pointer;">
+                                  <i class="fas fa-thumbs-down"></i>
+                              </button>
+                              <span>{{review.dislikes}}</span>
+                          </form>
+                      </div>
+                      
+                        <a href="/reviews/{{review.ID}}">
+                          <div class="comments"><i class="fas fa-comment"></i>{{review.comments | length}}</div>
+                        </a>
+                        <button class="expand-btn">Expand</button>
+              
+                                  {%if review.createdByStaffID == current_user.ID%}
+                                      <a href="/deleteReview/{{review.ID}}"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                  {%endif%}
+                      </div>
+                    </div>
+                    {% endfor %}
+              
+                    {% if selected_student.reviews|length == 0 %}
+                    <h4 style="text-align: center; color: white; margin-top: 30px;">
+                      No Reviews
+                    </h4>
+                    {% endif %}
+                  </div>
             </div>
         </div>
 
