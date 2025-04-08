@@ -397,7 +397,7 @@ def createReview():
     else:
         flash(f"Error creating review for {studentName}. Please check student details.", "error")
 
-    return redirect(url_for('staff_views.create_review_page'))  # Redirect to the create review page
+    return redirect(request.referrer)  # Redirect to the create review page
 
 @staff_views.route('/deleteReview/<int:review_id>', methods=['GET'])
 @login_required
