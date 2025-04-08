@@ -690,7 +690,7 @@ def view_all_student_achievements(uniID):
 @staff_views.route('/students')
 @staff_views.route('/students/<int:uni_id>')
 @login_required
-def view_all_students(uni_id=-1):
+def view_students(uni_id=-1):
   if uni_id == -1:
     selected_student = get_student_by_id(1)
   else:
