@@ -125,9 +125,9 @@ def like(review_id, staff_id):
   if staff_id in review.disliked_by_staff:
     #print ('change to likes')
     disliked_by_staff.remove(staff_id)
+    new_karma_points += review.value / review.dislikes
     review.dislikes = review.dislikes - 1
     review.likes = review.likes +1
-    new_karma_points += review.value / review.likes
     liked_by_staff.append(staff_id)
   else:
     #print('already in likes')
@@ -146,12 +146,6 @@ def like(review_id, staff_id):
 
   db.session.commit()
   return True
-
-
-
-  # if review:
-  #   review.likes += 1
-  #   vote(review_id)
 
 def dislike(review_id, staff_id):
 
@@ -172,10 +166,9 @@ def dislike(review_id, staff_id):
   if staff_id in review.liked_by_staff:
     #print('change to likes likes')
     liked_by_staff.remove(staff_id)
+    new_karma_points -= review.value / review.likes
     review.likes = review.likes - 1
-
     review.dislikes = review.dislikes +1
-    new_karma_points -= review.value / review.dislikes
     disliked_by_staff.append(staff_id)
   else:
     #print('already in dislikes')
@@ -190,10 +183,6 @@ def dislike(review_id, staff_id):
 
   staff = int(staff_id)
 
-
-
-  db.session.commit()
-  return True
 
 
   db.session.commit()
