@@ -564,7 +564,7 @@
         }
 
         /* Students master detail */
-        .students-list {
+        #students-list {
             border-radius: 10px;
             background-color: white;
             margin: 10px;
@@ -572,12 +572,12 @@
             max-height: 85vh;
         }
 
-        .students-list .student-item:nth-child(1) {
+        #students-list .student-item:nth-child(1) {
             border-top-left-radius: 10px;
             border-top-right-radius: 10px;
         }
 
-        .students-list .student-item:nth-last-child(1) {
+        #students-list .student-item:nth-last-child(1) {
             border-bottom-left-radius: 10px;
             border-bottom-right-radius: 10px;
         }
@@ -710,7 +710,8 @@
     <!-- Main Content -->
     <div class="split1 left">
         <div class="main-content">
-            <div class="students-list">
+            <input type="text" id="myInput" onkeyup="filterReviews()" placeholder="Search for reviews by name or ID..." title="Type in a name" style="width: 700px;margin-left: 25%;">
+            <div id="students-list">
                 {% for student in students %}
                 <a class="student-item{% if student.UniId == selected_student.UniId %} active{% endif %}"
                     href="{{ url_for('staff_views.view_students', uni_id=student.UniId) }}">{{student.firstname}}
@@ -956,20 +957,21 @@
 
             // Function to Filter Reviews in Search Bar
             function filterReviews() {
-                let input, filter, reviews, studentName, i, txtValue;
+                let input, filter, students, studentName, i, txtValue;
                 input = document.getElementById("myInput");
                 filter = input.value.toUpperCase();
-                reviews = document.getElementById("reviewsList").getElementsByClassName("review-card");
+                students = "{{students|safe}}".replace(/\'/g, "\"");
+                students = JSON.parse(students);
+                studentItems = document.getElementById("students-list").getElementsByClassName("student-item");
 
-                for (i = 0; i < reviews.length; i++) {
-                    studentName = reviews[i].querySelector("h4");
-
-                    if (studentName) {
-                        txtValue = studentName.textContent || studentName.innerText;
-                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                            reviews[i].style.display = "";
+                for (i = 0; i < students.length; i++) {
+                    var studentId = students[i].UniId;
+                    if (studentName || studentId) {
+                        txtValue = studentItems[i].textContent || studentItems[i].innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1 || studentId.indexOf(filter) > -1) {
+                            studentItems[i].style.display = "";
                         } else {
-                            reviews[i].style.display = "none";
+                            studentItems[i].style.display = "none";
                         }
                     }
                 }
