@@ -792,7 +792,11 @@
                         alt="User Profile" class="profile-image" />
                     <h2>{{selected_student.firstname}} {{selected_student.lastname}}</h2>
                     <h4 id="myBtn" style="color: #111; cursor: pointer;">
-                        Karma: {{selected_student.get_karma().points}}
+                        Karma: {% if selected_student.get_karma() %}
+                        {{ '%.2f' % selected_student.get_karma().points}}
+                        {% else %}
+                        0
+                        {% endif %}
                         <i class="fa fa-area-chart" aria-hidden="true"></i>
                     </h4>
                     <p>University ID: {{selected_student.UniId}}</p>
