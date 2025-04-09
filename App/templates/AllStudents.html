@@ -1131,7 +1131,7 @@
 
         const yValues = [
             {% for karma in selected_student.karma_history | reverse %}
-        { { karma.points } } {% if not loop.last %}, {% endif %}
+        {{karma.points}} {% if not loop.last %}, {% endif %}
         {% endfor %}
     ];
 
