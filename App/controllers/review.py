@@ -7,6 +7,8 @@ from .comment import delete_comment
 
 import ast
 
+review_factor = 0.25
+
 def create_review(staff, student, starRating, details):
   if starRating is None:
         return False
@@ -19,21 +21,11 @@ def create_review(staff, student, starRating, details):
   newReview.comments=[]
   db.session.add(newReview)
   """Adjust the student's karma based on the star rating of the review."""
-  if newReview.starRating == 5:
-    points = 5
-  elif newReview.starRating == 4:
-    points = 3
-  elif newReview.starRating == 3:
-    points = 1
-  elif newReview.starRating == 2:
-    points = -1
-  else:
-    points = -3
   current_karma = student.get_karma()
   if current_karma:
-    new_karma_points = current_karma.points + points
+    new_karma_points = current_karma.points + newReview.value
   else:
-     new_karma_points = points
+     new_karma_points = newReview.value
   newKarma = Karma(new_karma_points, student.ID, newReview.ID)
   db.session.add(newKarma)
   try:
@@ -116,26 +108,12 @@ def get_recent_reviews(top):
   reviews = Review.query.order_by(Review.dateCreated.desc()).limit(top).all()
   return reviews
 
-def vote(review_id):
-  review = get_review(review_id)
-  if review:
-    student = get_student_by_id(review.studentID)
-    current_karma = student.get_karma()
-    new_karma_points = current_karma.points + review.starRating * ((review.likes - review.dislikes) / (4 * (review.likes + review.dislikes)))
-    newKarma = Karma(new_karma_points, student.ID, review.ID)
-  db.session.add(newKarma)
-  try:
-    db.session.commit()
-  except Exception as e:
-    print(str(e))
-    db.session.rollback()
-
 def like(review_id, staff_id):
   review = get_review(review_id)
 
   liked_by_staff = ast.literal_eval(review.liked_by_staff or '[]')
   disliked_by_staff = ast.literal_eval(review.disliked_by_staff or '[]')
-
+  student = get_student_by_id(review.studentID)
   staff_id = str(staff_id)
 
   #print(review.liked_by_staff)
@@ -144,20 +122,23 @@ def like(review_id, staff_id):
     #print('already liked')
     return False
 
+  current_karma = student.get_karma()
+  new_karma_points = current_karma.points
   if staff_id in review.disliked_by_staff:
     #print ('change to likes')
     disliked_by_staff.remove(staff_id)
+    new_karma_points += review_factor * review.value / review.dislikes
     review.dislikes = review.dislikes - 1
-
     review.likes = review.likes +1
-    vote(review_id)
     liked_by_staff.append(staff_id)
   else:
     #print('already in likes')
     review.likes = review.likes +1
-    vote(review_id)
     liked_by_staff.append(staff_id)
 
+  new_karma_points += review_factor * review.value / review.likes
+  newKarma = Karma(new_karma_points, student.ID, review.ID)
+  db.session.add(newKarma)
   
   review.liked_by_staff = str(liked_by_staff)
   review.disliked_by_staff = str(disliked_by_staff)
@@ -168,51 +149,42 @@ def like(review_id, staff_id):
   db.session.commit()
   return True
 
-
-
-  # if review:
-  #   review.likes += 1
-  #   vote(review_id)
-
 def dislike(review_id, staff_id):
 
   review = get_review(review_id)
 
   liked_by_staff = ast.literal_eval(review.liked_by_staff or '[]')
   disliked_by_staff = ast.literal_eval(review.disliked_by_staff or '[]')
-
+  student = get_student_by_id(review.studentID)
   staff_id = str(staff_id)
-
   #print(review.disliked_by_staff)
 
   if staff_id in review.disliked_by_staff:
     #print('already disliked')
     return False
 
+  current_karma = student.get_karma()
+  new_karma_points = current_karma.points
   if staff_id in review.liked_by_staff:
     #print('change to likes likes')
     liked_by_staff.remove(staff_id)
+    new_karma_points -= review_factor * review.value / review.likes
     review.likes = review.likes - 1
-
     review.dislikes = review.dislikes +1
-    vote(review_id)
     disliked_by_staff.append(staff_id)
   else:
     #print('already in dislikes')
     review.dislikes = review.dislikes +1
-    vote(review_id)
     disliked_by_staff.append(staff_id)
 
-
+  new_karma_points -= review_factor * review.value / review.dislikes
+  newKarma = Karma(new_karma_points, student.ID, review.ID)
+  db.session.add(newKarma)
   review.liked_by_staff = str(liked_by_staff)
   review.disliked_by_staff = str(disliked_by_staff)
 
   staff = int(staff_id)
 
-
-
-  db.session.commit()
-  return True
 
 
   db.session.commit()

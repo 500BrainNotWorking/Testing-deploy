@@ -4,6 +4,14 @@ from .karma import Karma  # Import Karma model
 from datetime import datetime
 from sqlalchemy import func
 
+starValue = {
+        1:-3,
+        2:-1,
+        3:1,
+        4:3,
+        5:5
+    }
+
 class Review(db.Model):
     __tablename__ = 'review'
     ID = db.Column(db.Integer, primary_key=True)
@@ -11,6 +19,7 @@ class Review(db.Model):
     createdByStaffID = db.Column(db.Integer, db.ForeignKey('staff.ID'))
     dateCreated = db.Column(db.DateTime, server_default=func.now())
     starRating = db.Column(db.Integer, nullable=False)
+    value = db.Column(db.Integer, nullable=False)
     details = db.Column(db.String(400), nullable=False)
     likes = db.Column(db.Integer, nullable=False, default=0)
     dislikes = db.Column(db.Integer, nullable=False, default=0)
@@ -26,6 +35,10 @@ class Review(db.Model):
         self.createdByStaffID = staff.ID
         self.studentID = student.ID
         self.starRating = starRating
+        if (starValue[starRating]):
+            self.value = starValue[starRating]
+        else:
+            self.value = 0
         self.details = details
         self.comments = []
 

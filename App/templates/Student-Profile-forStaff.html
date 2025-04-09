@@ -681,7 +681,7 @@ src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
       <h2>{{student.fullname}}</h2>
       <!-- Added id and cursor style to indicate clickability -->
       <h4 id="myBtn" style="color: #111; cursor: pointer;">
-        Karma: {{student.get_karma().points}} 
+        Karma: {{ '%.2f' % student.get_karma().points}} 
         <i class="fa fa-area-chart" aria-hidden="true"></i>
       </h4>
 
