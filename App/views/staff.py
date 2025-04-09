@@ -19,7 +19,7 @@ from App.controllers import (
     get_reviews, get_review, edit_review, edit_review_work, delete_review_work,
     create_comment, get_comment, get_comment_staff,
     get_reply, create_reply, get_all_reviews, create_staff, get_student_review_index, get_karma_history,
-    like, dislike, update_staff_profile)            #added get_reviews
+    like, dislike, update_staff_profile, get_all_students_json)            #added get_reviews
 
 
 staff_views = Blueprint('staff_views',
@@ -397,7 +397,7 @@ def createReview():
     else:
         flash(f"Error creating review for {studentName}. Please check student details.", "error")
 
-    return redirect(url_for('staff_views.create_review_page'))  # Redirect to the create review page
+    return redirect(request.referrer)  # Redirect to the create review page
 
 @staff_views.route('/deleteReview/<int:review_id>', methods=['GET'])
 @login_required
@@ -687,6 +687,25 @@ def view_all_student_achievements(uniID):
   user = User.query.filter_by(ID=current_user.ID).first()
   return render_template('AllStudentAchivements.html', student=student,user=user)
 
+@staff_views.route('/students')
+@staff_views.route('/students/<int:uni_id>')
+@login_required
+def view_students(uni_id=-1):
+  students = get_all_students_json()
+  if uni_id == -1:
+    selected_student = get_student_by_id(students[0]['id'])
+  else:
+    selected_student = get_student_by_UniId(uni_id)
+    
+  reviews = selected_student.reviews
+  for review in reviews:
+        staff = get_staff_by_id(review.createdByStaffID)  # Get Staff object
+        review.staff_name = staff.firstname + " " + staff.lastname if staff else "Unknown Staff"  # Attach fullname
+        review.staffpic = staff.profile_pic
+  
+  students.sort(key = lambda e: e['firstname'])
+  return render_template('AllStudents.html', students=students, selected_student=selected_student, reviews=reviews)
+  
 
 # @staff_views.route('/getStudentProfile/<string:uniID>', methods=['GET'])
 # @login_required

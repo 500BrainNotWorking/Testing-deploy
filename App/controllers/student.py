@@ -193,6 +193,7 @@ def get_all_students_json():
   for student in students:
     student_data = {
         'id': student.ID,
+        'UniId': student.UniId,
         'username': student.username,
         'firstname': student.firstname,
         'lastname': student.lastname,
