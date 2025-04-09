@@ -1124,13 +1124,13 @@
     <script>
         // Generate x and y values dynamically from Jinja, 
         const xValues = [
-            {% for karma in selected_student.karma_history | reverse %}
+            {% for karma in selected_student.karma_history %}
         "{{ karma.timestamp.strftime('%Y-%m-%d %H:%M') }}"{% if not loop.last %}, {% endif %}
         {% endfor %}
     ];
 
         const yValues = [
-            {% for karma in selected_student.karma_history | reverse %}
+            {% for karma in selected_student.karma_history %}
         {{karma.points}} {% if not loop.last %}, {% endif %}
         {% endfor %}
     ];
