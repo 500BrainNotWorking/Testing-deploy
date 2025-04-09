@@ -7,6 +7,8 @@ from .comment import delete_comment
 
 import ast
 
+review_factor = 0.25
+
 def create_review(staff, student, starRating, details):
   if starRating is None:
         return False
@@ -112,20 +114,20 @@ def like(review_id, staff_id):
   liked_by_staff = ast.literal_eval(review.liked_by_staff or '[]')
   disliked_by_staff = ast.literal_eval(review.disliked_by_staff or '[]')
   student = get_student_by_id(review.studentID)
-  current_karma = student.get_karma()
   staff_id = str(staff_id)
 
   #print(review.liked_by_staff)
 
   if staff_id in review.liked_by_staff:
-    print('already liked')
+    #print('already liked')
     return False
 
+  current_karma = student.get_karma()
   new_karma_points = current_karma.points
   if staff_id in review.disliked_by_staff:
     #print ('change to likes')
     disliked_by_staff.remove(staff_id)
-    new_karma_points += review.value / review.dislikes
+    new_karma_points += review_factor * review.value / review.dislikes
     review.dislikes = review.dislikes - 1
     review.likes = review.likes +1
     liked_by_staff.append(staff_id)
@@ -134,7 +136,7 @@ def like(review_id, staff_id):
     review.likes = review.likes +1
     liked_by_staff.append(staff_id)
 
-  new_karma_points += review.value / review.likes
+  new_karma_points += review_factor * review.value / review.likes
   newKarma = Karma(new_karma_points, student.ID, review.ID)
   db.session.add(newKarma)
   
@@ -154,19 +156,19 @@ def dislike(review_id, staff_id):
   liked_by_staff = ast.literal_eval(review.liked_by_staff or '[]')
   disliked_by_staff = ast.literal_eval(review.disliked_by_staff or '[]')
   student = get_student_by_id(review.studentID)
-  current_karma = student.get_karma()
   staff_id = str(staff_id)
   #print(review.disliked_by_staff)
 
   if staff_id in review.disliked_by_staff:
-    print('already disliked')
+    #print('already disliked')
     return False
 
+  current_karma = student.get_karma()
   new_karma_points = current_karma.points
   if staff_id in review.liked_by_staff:
     #print('change to likes likes')
     liked_by_staff.remove(staff_id)
-    new_karma_points -= review.value / review.likes
+    new_karma_points -= review_factor * review.value / review.likes
     review.likes = review.likes - 1
     review.dislikes = review.dislikes +1
     disliked_by_staff.append(staff_id)
@@ -175,7 +177,7 @@ def dislike(review_id, staff_id):
     review.dislikes = review.dislikes +1
     disliked_by_staff.append(staff_id)
 
-  new_karma_points -= review.value / review.dislikes
+  new_karma_points -= review_factor * review.value / review.dislikes
   newKarma = Karma(new_karma_points, student.ID, review.ID)
   db.session.add(newKarma)
   review.liked_by_staff = str(liked_by_staff)
