@@ -14,7 +14,7 @@ from App.controllers import (
     get_recommendation, get_staff_by_id, get_students_by_faculty,
     get_staff_by_id, get_requested_accomplishments, get_transcript,
     get_total_As, get_student_for_ir, create_review, get_karma,
-    analyze_sentiment, get_requested_accomplishments_count,
+    get_requested_accomplishments_count,
     get_recommendations_staff_count, calculate_ranks, get_all_verified, 
     get_reviews, get_review, edit_review, edit_review_work, delete_review_work,
     create_comment, get_comment, get_comment_staff,

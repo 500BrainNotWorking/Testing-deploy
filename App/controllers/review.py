@@ -118,7 +118,7 @@ def like(review_id, staff_id):
   #print(review.liked_by_staff)
 
   if staff_id in review.liked_by_staff:
-    #print('already liked')
+    print('already liked')
     return False
 
   new_karma_points = current_karma.points
@@ -159,7 +159,7 @@ def dislike(review_id, staff_id):
   #print(review.disliked_by_staff)
 
   if staff_id in review.disliked_by_staff:
-    #print('already disliked')
+    print('already disliked')
     return False
 
   new_karma_points = current_karma.points

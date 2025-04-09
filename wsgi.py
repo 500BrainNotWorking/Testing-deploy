@@ -1,5 +1,4 @@
 import click, pytest, sys
-import nltk
 import csv
 from flask import current_app
 from flask import Flask
@@ -11,8 +10,7 @@ from App.models import Student, Karma, Badges, Accomplishment, Comment
 from App.models import User
 from App.controllers import (
     create_student, create_staff, create_admin, get_all_users_json,
-    get_all_users, get_transcript, get_student_by_UniId, setup_nltk,
-    analyze_sentiment, get_total_As, get_total_courses_attempted,
+    get_all_users, get_transcript, get_student_by_UniId, get_total_As, get_total_courses_attempted,
     calculate_academic_score, create_review, create_incident_report,
     create_accomplishment, get_staff_by_id, get_student_by_id,
     create_job_recommendation, create_karma, get_karma, create_badge, 
