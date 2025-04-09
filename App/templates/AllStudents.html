@@ -126,7 +126,7 @@
 
         .profile-description {
             float: left;
-            text-align: left;
+            text-align: center;
             background-color: #FFFAFF;
             width: 35%;
             height: max-content;
@@ -720,7 +720,8 @@
     <!-- Main Content -->
     <div class="split1 left">
         <div class="main-content">
-            <input type="text" id="student-search" onkeyup="filterReviews()" placeholder="Search for students by name or ID..." title="Type in a name or ID">
+            <input type="text" id="student-search" onkeyup="filterReviews()"
+                placeholder="Search for students by name or ID..." title="Type in a name or ID">
             <div id="students-list">
                 {% for student in students %}
                 <a class="student-item{% if student.UniId == selected_student.UniId %} active{% endif %}"
@@ -737,6 +738,8 @@
         <div class="main-content">
             <div class="profile-container">
                 <div class="profile-description">
+                    <img src="https://th.bing.com/th/id/OIP.ddo_V6IbnSEbnhL7HaPuJAHaHb?rs=1&pid=ImgDetMain"
+                        alt="User Profile" class="profile-image" />
                     <h2>{{selected_student.firstname}} {{selected_student.lastname}}</h2>
                     <p>University ID: {{selected_student.UniId}}</p>
                     <p>Faculty: {{selected_student.faculty}}</p>
