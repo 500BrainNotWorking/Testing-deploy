@@ -564,6 +564,16 @@
         }
 
         /* Students master detail */
+        #student-search {
+            margin: 2%;
+            padding: 5px;
+            display: block;
+            border-radius: 10px;
+            width: 94%;
+            height: 3vh;
+            border-style: none;
+        }
+
         #students-list {
             border-radius: 10px;
             background-color: white;
@@ -710,12 +720,14 @@
     <!-- Main Content -->
     <div class="split1 left">
         <div class="main-content">
-            <input type="text" id="myInput" onkeyup="filterReviews()" placeholder="Search for reviews by name or ID..." title="Type in a name" style="width: 700px;margin-left: 25%;">
+            <input type="text" id="student-search" onkeyup="filterReviews()" placeholder="Search for students by name or ID..." title="Type in a name or ID">
             <div id="students-list">
                 {% for student in students %}
                 <a class="student-item{% if student.UniId == selected_student.UniId %} active{% endif %}"
                     href="{{ url_for('staff_views.view_students', uni_id=student.UniId) }}">{{student.firstname}}
-                    {{student.lastname}}</a>
+                    {{student.lastname}}
+                    <sub><em>({{student.UniId}})</em></sub>
+                </a>
                 {% endfor %}
             </div>
         </div>
@@ -958,7 +970,7 @@
             // Function to Filter Reviews in Search Bar
             function filterReviews() {
                 let input, filter, students, studentName, i, txtValue;
-                input = document.getElementById("myInput");
+                input = document.getElementById("student-search");
                 filter = input.value.toUpperCase();
                 students = "{{students|safe}}".replace(/\'/g, "\"");
                 students = JSON.parse(students);
@@ -1013,7 +1025,7 @@
             }
 
             //  Attach Filter Function to Input Field
-            document.getElementById("myInput").addEventListener("keyup", filterReviews);
+            document.getElementById("student-search").addEventListener("keyup", filterReviews);
         });
 
         //for navbar
