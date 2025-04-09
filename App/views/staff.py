@@ -17,7 +17,7 @@ from App.controllers import (
     analyze_sentiment, get_requested_accomplishments_count,
     get_recommendations_staff_count, calculate_ranks, get_all_verified, 
     get_reviews, get_review, edit_review, edit_review_work, delete_review_work,
-    create_comment, get_comment, get_comment_staff,
+    create_comment, get_comment, get_comment_staff, get_user_by_username,
     get_reply, create_reply, get_all_reviews, create_staff, get_student_review_index, get_karma_history,
     like, dislike, update_staff_profile)            #added get_reviews
 
@@ -955,6 +955,11 @@ def signup():
         password = request.form['password']
         confirm_password = request.form['confirm_password']
 
+        temp_user = get_user_by_username(username)
+
+        if temp_user:
+          return render_template('SignUp.html', message="Username is already taken!")
+
         if password != confirm_password:
             return render_template('SignUp.html', message="Passwords do not match!")
 
@@ -965,7 +970,7 @@ def signup():
             email=email, password=password
         )
 
-        return render_template('login.html') # Redirect to login after signup
+        return redirect("/getMainPage") # Redirect to login after signup
 
     return render_template('SignUp.html')
 

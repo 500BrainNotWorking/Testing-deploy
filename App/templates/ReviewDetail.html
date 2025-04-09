@@ -772,7 +772,7 @@
                   <a href="/staff-profile/{{comment.createdByStaffID}}">
                     <strong>{{get_staff(comment.createdByStaffID).firstname}} {{get_staff(comment.createdByStaffID).lastname}}</strong>
                   </a>
-                  <p>Comment posted on {{comment.dateCreated}}</p>
+                  <p>Comment posted on {{comment.dateCreated.strftime('%Y-%m-%d %H:%M:%S')}}</p>
                 </div>
               </div>
               <p style="white-space: pre-wrap;">{{comment.details}}</p>
@@ -797,13 +797,12 @@
                             <a href="/staff-profile/{{reply.createdByStaffID}}">
                                 <strong>{{ get_staff(reply.createdByStaffID).firstname }} {{ get_staff(reply.createdByStaffID).lastname }}</strong>
                             </a>
-                            <p>Reply posted on {{ reply.dateCreated }}</p>
+                            <p>Reply posted on {{ reply.dateCreated.strftime('%Y-%m-%d %H:%M:%S') }}</p>
                         </div>
                     </div>
                     <p style="white-space: pre-wrap;">{{reply.details}}</p>
                 </div>
                 {% endfor %}
-                <br>
             </div>
         {% endif %}
         {% endfor %}
