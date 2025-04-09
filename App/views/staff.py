@@ -696,9 +696,15 @@ def view_students(uni_id=-1):
     selected_student = get_student_by_id(students[0]['id'])
   else:
     selected_student = get_student_by_UniId(uni_id)
+    
+  reviews = selected_student.reviews
+  for review in reviews:
+        staff = get_staff_by_id(review.createdByStaffID)  # Get Staff object
+        review.staff_name = staff.firstname + " " + staff.lastname if staff else "Unknown Staff"  # Attach fullname
+        review.staffpic = staff.profile_pic
   
   students.sort(key = lambda e: e['firstname'])
-  return render_template('AllStudents.html', students=students, selected_student=selected_student)
+  return render_template('AllStudents.html', students=students, selected_student=selected_student, reviews=reviews)
   
 
 # @staff_views.route('/getStudentProfile/<string:uniID>', methods=['GET'])

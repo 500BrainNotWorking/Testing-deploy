@@ -852,10 +852,14 @@
             <div class="reviews-container">
                 <h3>{{selected_student.fullname}}'s Reviews:</h3>
 
-                {% for review in selected_student.reviews %}
+                {% for review in reviews %}
                 <div class="review-card">
                     <div class="review-header">
+                        <img src="{{review.staffpic}}" alt="User" class="review-avatar" />
                         <div class="review-details">
+                            <a href="/staff-profile/{{review.createdByStaffID}}">
+                                <strong>{{review.staff_name}}</strong>
+                            </a>
                             <p>Posted on {{review.dateCreated}} </p>
                         </div>
                         {%if review.createdByStaffID == current_user.ID%}
@@ -1127,7 +1131,7 @@
 
         const yValues = [
             {% for karma in selected_student.karma_history | reverse %}
-        {{karma.points}} {% if not loop.last %}, {% endif %}
+        { { karma.points } } {% if not loop.last %}, {% endif %}
         {% endfor %}
     ];
 
