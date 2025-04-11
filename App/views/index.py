@@ -57,7 +57,7 @@ def init():
                  password="billypass",
                  faculty="FST",
                  admittedTerm="",
-                 UniId='816031060',
+                 UniId='816031160',
                  degree="",
                  gpa="")
 
@@ -91,7 +91,7 @@ def init():
                  faculty="FST",
                  admittedTerm="2019/2021",
                  UniId='816030847',
-                 degree="Bachelor of Computer Science (General",
+                 degree="Bachelor of Computer Science (General)",
                  gpa='')
 
   create_student(username="brian",
@@ -136,20 +136,24 @@ def init():
       "I am seeking a recommnedation for a position at a company", "WebTech",
       "Web Developer", "webtech@gmail.com")
   create_accomplishment(2, False, "Permanand Mohan", "Runtime",
-                        "I placed first at runtime.", 0, "None Yet")
+                        "I placed first at runtime.", 1, "None Yet")
   create_accomplishment(2, False, "Vijayanandh Rajamanickam", "Runtime",
-                        "I placed first at runtime.", 0, "None Yet")
+                        "I placed first at runtime.", 1, "None Yet")
+
 
   staff = get_staff_by_id(7)
   student1 = get_student_by_UniId(816031609)
-  create_review(staff, student1, True, 5, "Behaves very well in class!")
+  review1 = create_review(staff, student1, 5, "Behaves very well in class!")
+  create_review(staff, student1, 2, "Late to class")
+  create_review(staff, student1, 5, "Good CW grades")
+  create_review(staff, student1, 3, "Okay Final grades")
 
   student2 = get_student_by_UniId(816016480)
-  create_review(staff, student2, True, 5, "Behaves very well in class!")
+  create_review(staff, student2, 5, "Behaves very well in class!")
   student3 = get_student_by_UniId(816026834)
-  create_review(staff, student3, True, 5, "Behaves very well in class!")
+  create_review(staff, student3, 3, "Behaves very well in class!")
   student4 = get_student_by_UniId(816030847)
-  create_review(staff, student4, True, 5, "Behaves very well in class!")
+  create_review(staff, student4, 5, "Behaves very well in class!")
   create_admin(username="admin",
                firstname="Admin",
                lastname="Admin",
@@ -159,10 +163,10 @@ def init():
 
   students = Student.query.all()
 
-  for student in students:
-    create_karma(student.ID)
-    student.karmaID = Karma.query.filter_by(
-        studentID=student.ID).first().karmaID
+  # for student in students:
+  #   create_karma(student.ID)
+  #   student.karmaID = Karma.query.filter_by(
+  #       studentID=student.ID).first().karmaID
 
   return jsonify(message='db initialized!')
 
