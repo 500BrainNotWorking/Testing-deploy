@@ -5,6 +5,7 @@ from datetime import datetime
 from sqlalchemy import func
 
 starValue = {
+        0: -5,
         1:-3,
         2:-1,
         3:1,
