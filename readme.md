@@ -25,4 +25,4 @@
 * Alejandro Marin
 
 # For More information visit the Wiki Page
-* [Wiki](https://github.com/Overly-Optimistic-Procrastinators-II/comp3607project/wiki/Introduction](https://github.com/500BrainNotWorking/Student-Conduct-Tracker-1/wiki)
+* [Wiki](https://github.com/500BrainNotWorking/Student-Conduct-Tracker-1/wiki)
