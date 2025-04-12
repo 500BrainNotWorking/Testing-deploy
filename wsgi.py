@@ -3,6 +3,7 @@ import csv
 from flask import current_app
 from flask import Flask
 from flask.cli import with_appcontext, AppGroup
+import subprocess
 
 from App.database import db, get_migrate
 from App.main import create_app
@@ -283,6 +284,39 @@ def review_tests_command(type):
         sys.exit(pytest.main(["-k", "KarmaIntegrationTests"]))
     else:
         sys.exit(pytest.main(["-k", "Karma"]))
+
+
+
+@test.command("perf", help="Run performance tests")
+@click.argument("target", default="all") 
+@click.option("--users", default=100, help="Number of concurrent users to simulate.")
+@click.option("--ramp", default=10, help="Rate at which users are spawned (users per second).")
+@click.option("--duration", default="1m", help="Run time duration")
+def performance_tests_command(target, users, ramp, duration):
+    locust_file_map = {
+        "login": "App/tests/locust_login.py",
+        "home": "App/tests/locust_home.py",
+        "create_rev": "App/tests/locust_createReview.py",
+        "edit_rev": "App/tests/locust_editReview.py",
+    }
+
+    if target == "all":
+        for name, file in locust_file_map.items():
+            print(f"Running performance test: {name}")
+            subprocess.run([
+                "locust", "-f", file, "--headless", "-u", str(users), "-r", str(ramp),
+                "--host", "https://8080-500brainnot-studentcond-0z6711a4bxh.ws-us118.gitpod.io", "--run-time", duration,
+                "--csv", f"perf_results/{name}"
+            ])
+    elif target in locust_file_map:
+        file = locust_file_map[target]
+        subprocess.run([
+            "locust", "-f", file, "--headless", "-u", str(users), "-r", str(ramp),
+            "--host", "https://8080-500brainnot-studentcond-0z6711a4bxh.ws-us118.gitpod.io", "--run-time", duration,
+            "--csv", f"perf_results/{target}"
+        ])
+    else:
+        print(f"Unknown performance target: {target}")
 
 
 # @test.command("final", help="Runs ALL tests")

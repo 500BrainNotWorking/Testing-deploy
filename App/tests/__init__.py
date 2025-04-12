@@ -1,4 +1,7 @@
 from .test_app import *
+from .locust_login import *
+from .locust_createReview import *
+from .locust_editReview import *
 #from .test_student import *
 # from .test_staff import *
 # from .test_review import *
