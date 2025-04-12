@@ -1,6 +1,6 @@
 from locust import HttpUser, task, between
 
-class CreateReviewTest(HttpUser):
+class CreateReplyTest(HttpUser):
     wait_time = between(1, 2)  
 
     username = "vijay"  
@@ -18,9 +18,8 @@ class CreateReviewTest(HttpUser):
         else:
             print(f"Login failed with status: {response.status_code}")
 
-    @task
-    def create_review(self):
-        self.client.post("/createReview", data={
+
+        create_response = self.client.post("/createReview", data={
             "studentID": "816030847",
             "name": "Kasim Taylor",
             "points": "5",
@@ -28,4 +27,14 @@ class CreateReviewTest(HttpUser):
             "manual-review": "Excellent performance in class. Always participates and helps others.",
             "selected-details": "Active class engagement.",
             "starRating": "5"
+        }, allow_redirects=False)
+
+        comment_response = self.client.post(f"/reviews/1", data={
+            "details": "Test comment for stress load testing.",
+        }, allow_redirects=False)
+
+    @task
+    def create_reply(self):
+        self.client.post(f"/comments/1", data={
+            "reply-details": "Test reply for stress load testing.",
         }, allow_redirects=False)

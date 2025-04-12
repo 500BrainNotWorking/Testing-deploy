@@ -20,8 +20,8 @@ class CreateReviewTest(HttpUser):
 
 
         create_response = self.client.post("/createReview", data={
-            "studentID": "UWI2020123",
-            "name": "Jane Doe",
+            "studentID": "816030847",
+            "name": "Kasim Taylor",
             "points": "5",
             "num": "2",
             "manual-review": "Excellent performance in class. Always participates and helps others.",

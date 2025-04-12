@@ -296,8 +296,13 @@ def performance_tests_command(target, users, ramp, duration):
     locust_file_map = {
         "login": "App/tests/locust_login.py",
         "home": "App/tests/locust_home.py",
-        "create_rev": "App/tests/locust_createReview.py",
-        "edit_rev": "App/tests/locust_editReview.py",
+        "create_review": "App/tests/locust_createReview.py",
+        "edit_review": "App/tests/locust_editReview.py",
+        "create_comment": "App/tests/locust_createComment.py",
+        "create_reply": "App/tests/locust_createReply.py",
+        "like_review": "App/tests/locust_likeReview.py",
+        "dislike_review": "App/tests/locust_dislikeReview.py",
+        "student": "App/tests/locust_student.py",
     }
 
     if target == "all":
@@ -305,15 +310,15 @@ def performance_tests_command(target, users, ramp, duration):
             print(f"Running performance test: {name}")
             subprocess.run([
                 "locust", "-f", file, "--headless", "-u", str(users), "-r", str(ramp),
-                "--host", "https://8080-500brainnot-studentcond-0z6711a4bxh.ws-us118.gitpod.io", "--run-time", duration,
+                "--host", "https://8080-500brainnot-studentcond-0z6711a4bxh.ws-us118.gitpod.io", "--run-time", duration, #Gitpod url: https://8080-500brainnot-studentcond-0z6711a4bxh.ws-us118.gitpod.io
                 "--csv", f"perf_results/{name}"
             ])
     elif target in locust_file_map:
         file = locust_file_map[target]
         subprocess.run([
             "locust", "-f", file, "--headless", "-u", str(users), "-r", str(ramp),
-            "--host", "https://8080-500brainnot-studentcond-0z6711a4bxh.ws-us118.gitpod.io", "--run-time", duration,
-            "--csv", f"perf_results/{target}"
+            "--host", "http://192.168.0.102:8080", "--run-time", duration, #Gitpod url: https://8080-500brainnot-studentcond-0z6711a4bxh.ws-us118.gitpod.io
+            "--csv", f"perf_results/{target}" 
         ])
     else:
         print(f"Unknown performance target: {target}")
