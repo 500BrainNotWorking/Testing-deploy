@@ -6,7 +6,7 @@ from .karma import Karma
 class Student(User, StudentInterface):
   __tablename__ = 'student'
   ID = db.Column(db.Integer, db.ForeignKey('user.ID'), primary_key=True)
-  UniId = db.Column(db.String(10), nullable=False)
+  UniId = db.Column(db.String(10), nullable=False, unique=True)
   degree = db.Column(db.String(120), nullable=False)
   fullname = db.Column(db.String(255), nullable=True)
   degree = db.Column(db.String(120), nullable=False)
