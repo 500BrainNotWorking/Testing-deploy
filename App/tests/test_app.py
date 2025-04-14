@@ -394,7 +394,7 @@ class ReviewIntegrationTests(unittest.TestCase):
                  password="billypass",
                  faculty="FST",
                  admittedTerm="",
-                 UniId='816031160',
+                 UniId='816031161',
                  degree="",
                  gpa="") == True
         student = get_student_by_username("billy")
@@ -417,7 +417,22 @@ class ReviewIntegrationTests(unittest.TestCase):
 
 
     def test_get_review(self):
-        self.test_create_review()
+        assert create_staff(username="joe",firstname="Joe", lastname="Mama", email="joe@example.com", password="joepass", faculty="FST") == True
+        assert create_student(username="billy",
+                 firstname="Billy",
+                 lastname="John",
+                 email="billy@example.com",
+                 password="billypass",
+                 faculty="FST",
+                 admittedTerm="",
+                 UniId='816031521',
+                 degree="",
+                 gpa="") == True
+        student = get_student_by_username("billy")
+        staff = get_staff_by_username("joe")
+        review1 = create_review(staff=staff, student=student, starRating=3, details="Billy is Amazing.")
+
+        review = get_review(review1.ID)
         review = get_review(2)
         #print(review.to_json(student=get_student_by_id(review.studentID), staff=get_staff_by_id(review.createdByStaffID)))
         assert review is not None
@@ -501,7 +516,7 @@ class ReviewIntegrationTests(unittest.TestCase):
                  password="nolanpass",
                  faculty="FST",
                  admittedTerm="",
-                 UniId='816031166',
+                 UniId='816031198',
                  degree="",
                  gpa="") == True
         student = get_student_by_username("Nolan")
@@ -544,7 +559,7 @@ class ReviewIntegrationTests(unittest.TestCase):
                  password="nolanpass",
                  faculty="FST",
                  admittedTerm="",
-                 UniId='816031166',
+                 UniId='816035566',
                  degree="",
                  gpa="") == True
         student = get_student_by_username("Nolan")
@@ -599,7 +614,7 @@ class ReviewIntegrationTests(unittest.TestCase):
                  password="nolanpass",
                  faculty="FST",
                  admittedTerm="",
-                 UniId='816031166',
+                 UniId='816031096',
                  degree="",
                  gpa="") == True
         student = get_student_by_username("Nolan")
@@ -644,7 +659,7 @@ class CommentIntegrationTests(unittest.TestCase):
                  password="nolanpass",
                  faculty="FST",
                  admittedTerm="",
-                 UniId='816031166',
+                 UniId='816033566',
                  degree="",
                  gpa="") == True
         student = get_student_by_username("Nolan")
@@ -699,7 +714,7 @@ class CommentIntegrationTests(unittest.TestCase):
                  password="nolanpass",
                  faculty="FST",
                  admittedTerm="",
-                 UniId='816031166',
+                 UniId='816031117',
                  degree="",
                  gpa="") == True
         student = get_student_by_username("Nolan")
@@ -761,7 +776,7 @@ class CommentIntegrationTests(unittest.TestCase):
                  password="nolanpass",
                  faculty="FST",
                  admittedTerm="",
-                 UniId='816031166',
+                 UniId='816031857',
                  degree="",
                  gpa="") == True
         student = get_student_by_username("Nolan")
@@ -789,7 +804,7 @@ class CommentIntegrationTests(unittest.TestCase):
                  password="nolanpass",
                  faculty="FST",
                  admittedTerm="",
-                 UniId='816031166',
+                 UniId='816039816',
                  degree="",
                  gpa="") == True
 
@@ -834,7 +849,7 @@ class CommentIntegrationTests(unittest.TestCase):
                  password="nolanpass",
                  faculty="FST",
                  admittedTerm="",
-                 UniId='816031166',
+                 UniId='816531166',
                  degree="",
                  gpa="") == True
         student = get_student_by_username("Nolan")
@@ -897,7 +912,7 @@ class CommentIntegrationTests(unittest.TestCase):
                  password="nolanpass",
                  faculty="FST",
                  admittedTerm="",
-                 UniId='816031166',
+                 UniId='816031112',
                  degree="",
                  gpa="") == True
         student = get_student_by_username("Nolan")
@@ -975,7 +990,7 @@ class ReplyIntegrationTests(unittest.TestCase):
                  password="nolanpass",
                  faculty="FST",
                  admittedTerm="",
-                 UniId='816031166',
+                 UniId='816032266',
                  degree="",
                  gpa="") == True
         student = get_student_by_username("Nolan")
@@ -1054,7 +1069,7 @@ class ReplyIntegrationTests(unittest.TestCase):
                  password="nolanpass",
                  faculty="FST",
                  admittedTerm="",
-                 UniId='816031166',
+                 UniId='816031122',
                  degree="",
                  gpa="") == True
         student = get_student_by_username("Nolan")
@@ -1131,7 +1146,7 @@ class ReplyIntegrationTests(unittest.TestCase):
                  password="nolanpass",
                  faculty="FST",
                  admittedTerm="",
-                 UniId='816031166',
+                 UniId='816036536',
                  degree="",
                  gpa="") == True
         student = get_student_by_username("Nolan")
@@ -1164,7 +1179,7 @@ class ReplyIntegrationTests(unittest.TestCase):
                  password="nolanpass",
                  faculty="FST",
                  admittedTerm="",
-                 UniId='816031166',
+                 UniId='816030000',
                  degree="",
                  gpa="") == True
 
@@ -1175,7 +1190,7 @@ class ReplyIntegrationTests(unittest.TestCase):
                  password="amberpass",
                  faculty="FST",
                  admittedTerm="",
-                 UniId='816031170',
+                 UniId='816030002',
                  degree="",
                  gpa="") == True
         student1 = get_student_by_username("Nolan")
@@ -1218,7 +1233,7 @@ class ReplyIntegrationTests(unittest.TestCase):
                  password="nolanpass",
                  faculty="FST",
                  admittedTerm="",
-                 UniId='816031166',
+                 UniId='816034466',
                  degree="",
                  gpa="") == True
         student = get_student_by_username("Nolan")
@@ -1288,7 +1303,7 @@ class ReplyIntegrationTests(unittest.TestCase):
                  password="nolanpass",
                  faculty="FST",
                  admittedTerm="",
-                 UniId='816031166',
+                 UniId='816036534',
                  degree="",
                  gpa="") == True
         student = get_student_by_username("Nolan")
@@ -1369,7 +1384,7 @@ class ReplyIntegrationTests(unittest.TestCase):
                  password="nolanpass",
                  faculty="FST",
                  admittedTerm="",
-                 UniId='816031166',
+                 UniId='816031177',
                  degree="",
                  gpa="") == True
         student = get_student_by_username("Nolan")
@@ -1408,7 +1423,7 @@ class ReplyIntegrationTests(unittest.TestCase):
                  password="nolanpass",
                  faculty="FST",
                  admittedTerm="",
-                 UniId='816031166',
+                 UniId='816031556',
                  degree="",
                  gpa="") == True
         student = get_student_by_username("Nolan")
@@ -1476,7 +1491,7 @@ class KarmaIntegrationTests(unittest.TestCase):
     def test_get_karma(self):
 
 
-        assert create_student(username="billyjoel", firstname="Billyjoel", lastname="Johnson", email="billyjoel@example.com", password="billyjoelpass", faculty="FST", admittedTerm="2022/2023", UniId="816000777", degree="BSc Computer Science", gpa="3.5") == True
+        assert create_student(username="billyjoel", firstname="Billyjoel", lastname="Johnson", email="billyjoel@example.com", password="billyjoelpass", faculty="FST", admittedTerm="2022/2023", UniId="81655555", degree="BSc Computer Science", gpa="3.5") == True
         
         assert create_staff(username="joe",firstname="Joe", lastname="Mama", email="joe@example.com", password="joepass", faculty="FST") == True
         
@@ -1501,7 +1516,7 @@ class KarmaIntegrationTests(unittest.TestCase):
     
     def test_like_karma(self):
 
-        assert create_student(username="billyjoel", firstname="Billyjoel", lastname="Johnson", email="billyjoel@example.com", password="billyjoelpass", faculty="FST", admittedTerm="2022/2023", UniId="816000777", degree="BSc Computer Science", gpa="3.5") == True
+        assert create_student(username="billyjoel", firstname="Billyjoel", lastname="Johnson", email="billyjoel@example.com", password="billyjoelpass", faculty="FST", admittedTerm="2022/2023", UniId="816777777", degree="BSc Computer Science", gpa="3.5") == True
         
         assert create_staff(username="naruto",firstname="Naruto", lastname="Uzumaki", email="naruto@example.com", password="narutopass", faculty="FST") == True
 
@@ -1528,7 +1543,7 @@ class KarmaIntegrationTests(unittest.TestCase):
                  password="billypass",
                  faculty="FST",
                  admittedTerm="",
-                 UniId='816031160',
+                 UniId='816037160',
                  degree="",
                  gpa="") == True
         student = get_student_by_username("billy")
@@ -1608,7 +1623,7 @@ class KarmaIntegrationTests(unittest.TestCase):
                  password="billypass",
                  faculty="FST",
                  admittedTerm="",
-                 UniId='816031160',
+                 UniId='816043260',
                  degree="",
                  gpa="") == True
         student = get_student_by_username("billy")
@@ -1661,7 +1676,7 @@ class KarmaIntegrationTests(unittest.TestCase):
     
     def test_karma_history(self):
 
-        assert create_student(username="billyjoel", firstname="Billyjoel", lastname="Johnson", email="billyjoel@example.com", password="billyjoelpass", faculty="FST", admittedTerm="2022/2023", UniId="816000777", degree="BSc Computer Science", gpa="3.5") == True
+        assert create_student(username="billyjoel", firstname="Billyjoel", lastname="Johnson", email="billyjoel@example.com", password="billyjoelpass", faculty="FST", admittedTerm="2022/2023", UniId="816036363", degree="BSc Computer Science", gpa="3.5") == True
         
         assert create_staff(username="joe",firstname="Joe", lastname="Mama", email="joe@example.com", password="joepass", faculty="FST") == True
         
