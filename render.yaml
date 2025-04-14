@@ -3,7 +3,7 @@ services:
 - type: web
   name: flask-postgres-api
   env: python
-  repo: https://github.com/uwidcit/flaskmvc.git
+  repo: https://github.com/500BrainNotWorking/Testing-deploy.git
   plan: free
   branch: main
   healthCheckPath: /healthcheck
@@ -27,6 +27,8 @@ services:
     fromDatabase:
       name: flask-postgres-api-db
       property: database 
+  - key: SQLALCHEMY_DATABASE_URI
+    value: postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(POSTGRES_URL)/$(POSTGRES_DB)
 
 envVarGroups:
 - name: flask-postgres-api-settings
@@ -35,6 +37,8 @@ envVarGroups:
     value: production
   - key: FLASK_APP
     value: wsgi.py
+  - key: SECRET_KEY
+    value: secret-key #Add rthe secret key here
     
 
 databases:
