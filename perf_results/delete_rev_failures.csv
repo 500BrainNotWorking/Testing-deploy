@@ -1,0 +1,2 @@
+Method,Name,Error,Occurrences
+POST,/deleteReview/1,HTTPError('405 Client Error: Method Not Allowed for url: /deleteReview/1'),3072
