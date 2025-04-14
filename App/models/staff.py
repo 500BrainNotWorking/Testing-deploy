@@ -10,7 +10,7 @@ class Staff(User):
   reports = db.relationship('IncidentReport',
                             backref='staffReports',
                             lazy='joined')
-  profile_pic = db.Column(db.String(120), nullable=True)
+  profile_pic = db.Column(db.String(300), nullable=True)
   pendingAccomplishments = db.relationship('Accomplishment',
                                            backref='studentaccomplishments',
                                            lazy='joined')
