@@ -127,18 +127,18 @@ def init():
                password="password",
                faculty="FST")
 
-  create_job_recommendation(
-      2, 7, False, "Job", "1",
-      "I am seeking a recommnedation for a position at a company", "WebTech",
-      "Web Developer", "webtech@gmail.com")
-  create_job_recommendation(
-      2, 8, False, "Job", "1",
-      "I am seeking a recommnedation for a position at a company", "WebTech",
-      "Web Developer", "webtech@gmail.com")
-  create_accomplishment(2, False, "Permanand Mohan", "Runtime",
-                        "I placed first at runtime.", 1, "None Yet")
-  create_accomplishment(2, False, "Vijayanandh Rajamanickam", "Runtime",
-                        "I placed first at runtime.", 1, "None Yet")
+  # create_job_recommendation(
+  #     2, 7, False, "Job", "1",
+  #     "I am seeking a recommnedation for a position at a company", "WebTech",
+  #     "Web Developer", "webtech@gmail.com")
+  # create_job_recommendation(
+  #     2, 8, False, "Job", "1",
+  #     "I am seeking a recommnedation for a position at a company", "WebTech",
+  #     "Web Developer", "webtech@gmail.com")
+  # create_accomplishment(2, False, "Permanand Mohan", "Runtime",
+  #                       "I placed first at runtime.", 1, "None Yet")
+  # create_accomplishment(2, False, "Vijayanandh Rajamanickam", "Runtime",
+  #                       "I placed first at runtime.", 1, "None Yet")
 
 
   staff = get_staff_by_id(7)
@@ -162,7 +162,6 @@ def init():
                faculty="FST")
 
   students = Student.query.all()
-
   # for student in students:
   #   create_karma(student.ID)
   #   student.karmaID = Karma.query.filter_by(
