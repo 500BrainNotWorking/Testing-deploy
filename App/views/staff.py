@@ -692,16 +692,25 @@ def view_all_student_achievements(uniID):
 @login_required
 def view_students(uni_id=-1):
   students = get_all_students_json()
-  if uni_id == -1:
-    selected_student = get_student_by_id(students[0]['id'])
+
+  if students:
+    if uni_id == -1:
+      selected_student = get_student_by_id(students[0]['id'])
+    else:
+      selected_student = get_student_by_UniId(uni_id)
   else:
-    selected_student = get_student_by_UniId(uni_id)
+      # Handle the case where there are no students
+      selected_student = None
     
   reviews = selected_student.reviews
-  for review in reviews:
+
+  if reviews:
+    for review in reviews:
         staff = get_staff_by_id(review.createdByStaffID)  # Get Staff object
         review.staff_name = staff.firstname + " " + staff.lastname if staff else "Unknown Staff"  # Attach fullname
         review.staffpic = staff.profile_pic
+  else:
+    reviews=None
   
   students.sort(key = lambda e: e['firstname'])
   return render_template('AllStudents.html', students=students, selected_student=selected_student, reviews=reviews)

@@ -774,6 +774,7 @@
             <input type="text" id="student-search" onkeyup="filterReviews()"
                 placeholder="Search for students by name or ID..." title="Type in a name or ID">
             <div id="students-list">
+                {%if students %}
                 {% for student in students %}
                 <a class="student-item{% if student.UniId == selected_student.UniId %} active{% endif %}"
                     href="{{ url_for('staff_views.view_students', uni_id=student.UniId) }}">{{student.firstname}}
@@ -781,17 +782,26 @@
                     <sub><em>({{student.UniId}})</em></sub>
                 </a>
                 {% endfor %}
+                {% else %}
+                    <p>No students found.</p>
+                {% endif %}
             </div>
         </div>
     </div>
 
+    {%if selected_student%}
     <div class="split2 right">
         <div class="main-content">
             <div class="profile-container">
                 <div class="profile-description">
                     <img src="https://th.bing.com/th/id/OIP.ddo_V6IbnSEbnhL7HaPuJAHaHb?rs=1&pid=ImgDetMain"
                         alt="User Profile" class="profile-image" />
+                        {% if selected_student %}
                     <h2>{{selected_student.firstname}} {{selected_student.lastname}}</h2>
+
+                        {%else %}
+                            <h2>No students</h2>
+                        {%endif%}
                     <h4 id="myBtn" style="color: #111; cursor: pointer;">
                         Karma: {% if selected_student.get_karma() %}
                         {{ '%.2f' % selected_student.get_karma().points}}
@@ -800,10 +810,15 @@
                         {% endif %}
                         <i class="fa fa-area-chart" aria-hidden="true"></i>
                     </h4>
+                    {%if selected_student%}
                     <p>University ID: {{selected_student.UniId}}</p>
                     <p>Faculty: {{selected_student.faculty}}</p>
                     <p>Degree: {{selected_student.degree}}</p>
                     <p>Email: {{selected_student.email}}</p>
+
+                    {%else%}
+                        <p>No student</p>
+                    {%endif%}
                 </div>
                 <form id="review-form" action="/createReview" method="post">
                     <input type="hidden" value="{{selected_student.UniId}}" id="studentID" name="studentID"
@@ -934,6 +949,9 @@
             </div>
         </div>
     </div>
+    {%else%}
+        <p>No student</p>
+    {%endif%}
 
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
