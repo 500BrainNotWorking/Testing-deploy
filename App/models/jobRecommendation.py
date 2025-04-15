@@ -5,7 +5,7 @@ from .recommendation import Recommendation
 class JobRecommendation(Recommendation):
   __tablename__ = 'jobRecommendation'
   ID = db.Column(db.Integer,
-                 db.ForeignKey('recommendation.ID'),
+                 db.ForeignKey('recommendation.ID', name='fk_jobrec_id'),
                  primary_key=True)
   company = db.Column(db.String(100), nullable=False)
   position = db.Column(db.String(100), nullable=False)

@@ -5,7 +5,7 @@ from .student import Student
 
 class Staff(User):
   __tablename__ = 'staff'
-  ID = db.Column(db.Integer, db.ForeignKey('user.ID'), primary_key=True)
+  ID = db.Column(db.Integer, db.ForeignKey('user.ID', name='fk_staff_user'), primary_key=True)
   reviews = db.relationship('Review', backref='staffReviews', lazy='joined')
   reports = db.relationship('IncidentReport',
                             backref='staffReports',

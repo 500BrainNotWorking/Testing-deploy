@@ -4,8 +4,8 @@ from datetime import datetime
 class Comment(db.Model):
     __tablename__ = 'comment'
     ID = db.Column(db.Integer, primary_key=True)
-    reviewID = db.Column(db.Integer, db.ForeignKey('review.ID', ondelete='CASCADE'), nullable = False)
-    createdByStaffID = db.Column(db.Integer, db.ForeignKey('staff.ID'), nullable = False)
+    reviewID = db.Column(db.Integer, db.ForeignKey('review.ID', ondelete='CASCADE', name='fk_comment_review'), nullable = False)
+    createdByStaffID = db.Column(db.Integer, db.ForeignKey('staff.ID', name='fk_comment_staff'), nullable = False)
     dateCreated = db.Column(db.DateTime, default=datetime.utcnow)
     details = db.Column(db.String(400), nullable=False)
 

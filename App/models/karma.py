@@ -5,8 +5,8 @@ class Karma(db.Model):
 
   __tablename__ = "karma"
   karmaID = db.Column(db.Integer, primary_key=True)
-  studentID = db.Column(db.Integer, db.ForeignKey('student.ID', use_alter=True))
-  reviewID = db.Column(db.Integer, db.ForeignKey('review.ID', use_alter=True))
+  studentID = db.Column(db.Integer, db.ForeignKey('student.ID', use_alter=True, name='fk_karma_student'))
+  reviewID = db.Column(db.Integer, db.ForeignKey('review.ID', use_alter=True, name='fk_karma_review'))
   points = db.Column(db.Float, nullable=False, default=5.0)
   timestamp = db.Column(db.DateTime, nullable=False, server_default=func.now())
 

@@ -6,8 +6,8 @@ from datetime import datetime
 class IncidentReport(db.Model):
   __tablename__ = "incidentreport"
   id = db.Column(db.Integer, primary_key=True)
-  studentID = db.Column(db.Integer, db.ForeignKey('student.ID'))
-  madeByStaffId = db.Column(db.Integer, db.ForeignKey('staff.ID'))
+  studentID = db.Column(db.Integer, db.ForeignKey('student.ID', name='fk_report_student'))
+  madeByStaffId = db.Column(db.Integer, db.ForeignKey('staff.ID', name='fk_report_staff'))
   topic = db.Column(db.String(40), nullable=False)
   report = db.Column(db.String(400), nullable=False)
   dateCreated = db.Column(db.DateTime, default=datetime.utcnow)

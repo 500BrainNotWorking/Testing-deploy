@@ -4,7 +4,7 @@ from .user import User
 
 class Admin(User):
   __tablename__ = 'admin'
-  ID = db.Column(db.Integer, db.ForeignKey('user.ID'), primary_key=True)
+  ID = db.Column(db.Integer, db.ForeignKey('user.ID', name='fk_admin_user'), primary_key=True)
 
   __mapper_args__ = {"polymorphic_identity": "admin"}
 

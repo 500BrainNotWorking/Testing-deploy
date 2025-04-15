@@ -5,8 +5,8 @@ from datetime import datetime
 class Recommendation(db.Model):
   __tablename__ = 'recommendation'
   ID = db.Column(db.Integer, primary_key=True)
-  createdByStudentID = db.Column(db.String, db.ForeignKey('student.UniId'))
-  taggedStaffID = db.Column(db.Integer, db.ForeignKey('staff.ID'))
+  createdByStudentID = db.Column(db.String, db.ForeignKey('student.UniId', name='rec_student'))
+  taggedStaffID = db.Column(db.Integer, db.ForeignKey('staff.ID', name='rec_staff'))
   studentName = db.Column(db.String(100), nullable=False)
   approved = db.Column(db.Boolean, nullable=False)
   currentYearOfStudy = db.Column(db.String(100), nullable=False)

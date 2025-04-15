@@ -4,7 +4,7 @@ from App.database import db
 class Badges(db.Model):
   __tablename__ = "badges"
   id = db.Column(db.Integer, primary_key=True)
-  studentID = db.Column(db.Integer, db.ForeignKey('student.ID'))
+  studentID = db.Column(db.Integer, db.ForeignKey('student.ID', name='fk_badges_student'))
   name = db.Column(db.String(40), nullable=False)
   details = db.Column(db.String(40), nullable=False)
   imageLink = db.Column(db.String(400), nullable=False)
