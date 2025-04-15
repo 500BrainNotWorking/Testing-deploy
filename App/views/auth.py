@@ -33,7 +33,7 @@ def login_action():
   message="Bad username or password"
   user = login(data['username'], data['password'])
 
-  print(user)
+  
   if user:
     user_type = type(user)
     print("User type:", user_type)
