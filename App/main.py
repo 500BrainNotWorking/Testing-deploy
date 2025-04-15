@@ -15,6 +15,14 @@ from App.controllers import (setup_jwt, setup_flask_login)
 
 from App.views import views
 
+from App.models import Student, Staff, Review  # or wherever your models live
+from App.controllers import (
+    create_student, create_staff, create_admin,
+    create_job_recommendation, create_accomplishment,
+    create_review, get_staff_by_id, get_student_by_UniId
+)
+from App.database import db
+
 
 def add_views(app):
   for view in views:
@@ -31,15 +39,8 @@ def configure_app(app, config, overrides):
 
 
 def populate_database():
-    from App.models import Student, Staff, Review  # or wherever your models live
-    from App.controllers import (
-        create_student, create_staff, create_admin,
-        create_job_recommendation, create_accomplishment,
-        create_review, get_staff_by_id, get_student_by_UniId
-    )
-    from App.database import db
 
-    if not Student.query.first() and not Staff.query.first() and not Review.query.first():
+    
       create_student(username="billy",
                 firstname="Billy",
                 lastname="John",
@@ -151,9 +152,7 @@ def populate_database():
                   password="password",
                   faculty="FST")
       db.session.commit()
-      print("Database populated with initial data.")
-    else:
-        print("Database already populated.")
+      
 
 
 def create_app(config_overrides={}):
