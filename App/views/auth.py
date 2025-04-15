@@ -32,14 +32,16 @@ def login_action():
   data = request.form
   message="Bad username or password"
   user = login(data['username'], data['password'])
+
+  print(user)
   if user:
     user_type = type(user)
     print("User type:", user_type)
     login_user(user)
     if (user.user_type == "staff"):
       return redirect("/getMainPage")  # Redirect to student dashboard
-    elif (user.user_type == "student"):
-      return redirect("/StudentHome")  # Redirect to staff dashboard
+    # elif (user.user_type == "student"):
+    #   return redirect("/StudentHome")  # Redirect to staff dashboard
     elif (user.user_type == "admin"):
       return redirect("/admin")
   return render_template('login.html', message=message)

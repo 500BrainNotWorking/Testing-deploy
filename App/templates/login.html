@@ -172,12 +172,18 @@
 
     /* Add styles for the message box */
     .message {
-    color: red;
-        border: 2px solid #051d3c;
+        color: white;
+        background-color: #ff4d4d; /* Red background for error */
+        border: 2px solid #ff0000;
         padding: 10px;
         border-radius: 8px;
         text-align: center;
+        font-weight: bold;
+        top: 10%;
     }
+
+
+    
 }
 </style>
 
@@ -207,13 +213,13 @@
       <input name="password" id="password" type="password" placeholder="Password">
       <input type="submit" class="btn" style="background-color: #3E92CC;text-align: center;padding:0;" value="Login">
       
-    <!-- {% if message %}
+    {% if message %}
     <div class="message-container">
         <div class="message">
             <p>{{ message }}</p>
         </div>
     </div>
-    {% endif %} -->
+    {% endif %}
   </form>
   <div style="color: black; margin: 25px; text-align: center;" class="signup_link" >
     Not a user? <a style="color: black; text-decoration: underline;" href="/signup" class="signup-link">Sign Up</a>
