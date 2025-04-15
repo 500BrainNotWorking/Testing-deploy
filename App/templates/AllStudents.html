@@ -872,6 +872,7 @@
             <div class="reviews-container">
                 <h3>{{selected_student.fullname}}'s Reviews:</h3>
 
+               {%if reviews %} 
                 {% for review in reviews %}
                 <div class="review-card">
                     <div class="review-header">
@@ -940,12 +941,14 @@
                     </div>
                 </div>
                 {% endfor %}
-
+                
+                {%else%}
                 {% if selected_student.reviews|length == 0 %}
                 <h4 style="text-align: center; color: white; margin-top: 30px;">
                     No Reviews
                 </h4>
                 {% endif %}
+                {%endif%}
             </div>
         </div>
     </div>
