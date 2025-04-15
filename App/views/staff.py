@@ -709,8 +709,9 @@ def view_students(uni_id=-1):
         staff = get_staff_by_id(review.createdByStaffID)  # Get Staff object
         review.staff_name = staff.firstname + " " + staff.lastname if staff else "Unknown Staff"  # Attach fullname
         review.staffpic = staff.profile_pic
-  else:
-    reviews=None
+
+  if reviews is None:
+    reviews = []
   
   students.sort(key = lambda e: e['firstname'])
   return render_template('AllStudents.html', students=students, selected_student=selected_student, reviews=reviews)
