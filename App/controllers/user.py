@@ -2,7 +2,7 @@ from App.models import User, Student
 from App.database import db
 
 def create_user(username, firstname, lastname, password, email, faculty):
-    newuser = User(username=username, firstname=firstname ,lastname=lastname, password=password, email=email, faculty=faculty)
+    newuser = User(username=username, firstname=firstname, lastname=lastname, password=password, email=email, faculty=faculty)
     db.session.add(newuser)
     try:
         db.session.commit()
@@ -14,127 +14,156 @@ def create_user(username, firstname, lastname, password, email, faculty):
     
 
 def get_user_by_username(username):
-    user = User.query.filter_by(username=username).first()
-    if user:
-        return user
-    else:
+    try:
+        user = User.query.filter_by(username=username).first()
+        if user:
+            return user
+        else:
+            return None
+    except Exception as e:
+        print("[user.get_user_by_username] Error occurred: ", str(e))
         return None
+
 
 def get_user(id):
-    user = User.query.get(id)
-    if user:
-        return user
-    else:
+    try:
+        user = User.query.get(id)
+        if user:
+            return user
+        else:
+            return None
+    except Exception as e:
+        print("[user.get_user] Error occurred: ", str(e))
         return None
 
+
 def get_user_student(student):
-  user = User.query.get(student.ID)
-  if user:
-      return user
-  else:
-      return None
+    try:
+        user = User.query.get(student.ID)
+        if user:
+            return user
+        else:
+            return None
+    except Exception as e:
+        print("[user.get_user_student] Error occurred: ", str(e))
+        return None
+
 
 def get_all_users():
-    users = User.query.all()
-    if users:
-        return users
-    else:
+    try:
+        users = User.query.all()
+        if users:
+            return users
+        else:
+            return []
+    except Exception as e:
+        print("[user.get_all_users] Error occurred: ", str(e))
         return []
+
 
 def get_all_users_json():
-    users = User.query.all()
-    # users = Student.query.all()
-    if not users:
+    try:
+        users = User.query.all()
+        if not users:
+            return []
+        users = [user.get_json() for user in users]
+        return users
+    except Exception as e:
+        print("[user.get_all_users_json] Error occurred: ", str(e))
         return []
-    users = [user.get_json() for user in users]
-    return users
+
 
 def update_user_username(id, username):
-    user = get_user(id)
-    if user:
-        user.username = username
-        db.session.add(user)
-        try:
+    try:
+        user = get_user(id)
+        if user:
+            user.username = username
+            db.session.add(user)
             db.session.commit()
             return True
-        except Exception as e:
-            print("[user.update_user_username] Error occurred while creating new user: ", str(e))
-            db.session.rollback()
-            return False
-    return False
+        return False
+    except Exception as e:
+        print("[user.update_user_username] Error occurred while updating username: ", str(e))
+        db.session.rollback()
+        return False
+
 
 def update_username(userID, newUsername):
-    user = get_user(userID)
-    if user:
-        user.username = newUsername
-        try:
+    try:
+        user = get_user(userID)
+        if user:
+            user.username = newUsername
             db.session.commit()
             return True
-        except Exception as e:
-            print("[user.update_username] Error occurred while updating user username:", str(e))
-            db.session.rollback()
+        else:
+            print("[user.update_username] Error: User not found.")
             return False
-    else:
-        print("[user.update_username] Error occurred while updating user username: User "+userID+" not found")
+    except Exception as e:
+        print("[user.update_username] Error occurred while updating username: ", str(e))
+        db.session.rollback()
         return False
+
 
 def update_name(userID, newFirstname, newLastName):
-    user = get_user(userID)
-    if user:
-        user.firstname = newFirstname
-        user.lastname = newLastName
-        try:
+    try:
+        user = get_user(userID)
+        if user:
+            user.firstname = newFirstname
+            user.lastname = newLastName
             db.session.commit()
             return True
-        except Exception as e:
-            print("[user.update_name] Error occurred while updating user name:", str(e))
-            db.session.rollback()
+        else:
+            print("[user.update_name] Error: User not found.")
             return False
-    else:
-        print("[user.update_name] Error occurred while updating user name: User "+userID+" not found")
+    except Exception as e:
+        print("[user.update_name] Error occurred while updating name: ", str(e))
+        db.session.rollback()
         return False
+
 
 def update_email(userID, newEmail):
-    user = get_user(userID)
-    if user:
-        user.email = newEmail
-        try:
+    try:
+        user = get_user(userID)
+        if user:
+            user.email = newEmail
             db.session.commit()
             return True
-        except Exception as e:
-            print("[user.update_email] Error occurred while updating user email:", str(e))
-            db.session.rollback()
+        else:
+            print("[user.update_email] Error: User not found.")
             return False
-    else:
-        print("[user.update_email] Error occurred while updating user email: User "+userID+" not found")
+    except Exception as e:
+        print("[user.update_email] Error occurred while updating email: ", str(e))
+        db.session.rollback()
         return False
+
 
 def update_password(userID, newPassword):
-    user = get_user(userID)
-    if user:
-        user.set_password(newPassword)
-        try:
+    try:
+        user = get_user(userID)
+        if user:
+            user.set_password(newPassword)
             db.session.commit()
             return True
-        except Exception as e:
-            print("[user.update_password] Error occurred while updating user password:", str(e))
-            db.session.rollback()
+        else:
+            print("[user.update_password] Error: User not found.")
             return False
-    else:
-        print("[user.update_password] Error occurred while updating user password: User "+userID+" not found")
+    except Exception as e:
+        print("[user.update_password] Error occurred while updating password: ", str(e))
+        db.session.rollback()
         return False
 
+
 def update_faculty(userID, newFaculty):
-    user = get_user(userID)
-    if user:
-        user.faculty = newFaculty
-        try:
+    try:
+        user = get_user(userID)
+        if user:
+            user.faculty = newFaculty
             db.session.commit()
             return True
-        except Exception as e:
-            print("[user.update_faculty] Error occurred while updating user faculty:", str(e))
-            db.session.rollback()
+        else:
+            print("[user.update_faculty] Error: User not found.")
             return False
-    else:
-        print("[user.update_faculty] Error occurred while updating student faculty: User "+userID+" not found")
+    except Exception as e:
+        print("[user.update_faculty] Error occurred while updating faculty: ", str(e))
+        db.session.rollback()
         return False

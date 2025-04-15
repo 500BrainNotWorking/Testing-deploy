@@ -19,37 +19,47 @@ def create_student(username, UniId, firstname, lastname, email, password,
     return False
 
 def delete_student(uni_id):
-  student = get_student_by_UniId(uni_id)
-  if student:
-    db.session.delete(student)
-    db.session.commit()
-    return f"Successfully deleted student {uni_id}"
-  return "Student does not exist." 
+    student = get_student_by_UniId(uni_id)
+    try:
+        if student:
+            db.session.delete(student)
+            db.session.commit()
+            return f"Successfully deleted student {uni_id}"
+        return "Student does not exist."
+    except Exception as e:
+        print(f"[student.delete_student] Error occurred while deleting student {uni_id}: {str(e)}")
+        db.session.rollback()
+        return f"Error occurred while deleting student {uni_id}"
 
 def update_student(uni_id, field, new_value):
-  student = get_student_by_UniId(uni_id)
-  field = field.lower()
-  if student:
-    if field == 'first_name':
-      student.firstname = new_value
-    elif field == 'last_name':
-      student.lastname = new_value
-    elif field == 'email':
-      student.email = new_value
-    elif field == 'faculty':
-      student.faculty = new_value
-    elif field == 'admit_term':
-      student.admittedTerm = new_value
-    elif field == 'degree':
-      student.degree = new_value
-    elif field == 'gpa':
-      student.gpa = new_value
-    else:
-      return f"Student does not contain a propert {field}"
-    student.fullname = student.firstname + " " + student.lastname
-    db.session.commit()
-    return f"Updated {uni_id}'s {field} to {new_value}"
-  return "Student does not exist"
+    student = get_student_by_UniId(uni_id)
+    field = field.lower()
+    try:
+        if student:
+            if field == 'first_name':
+                student.firstname = new_value
+            elif field == 'last_name':
+                student.lastname = new_value
+            elif field == 'email':
+                student.email = new_value
+            elif field == 'faculty':
+                student.faculty = new_value
+            elif field == 'admit_term':
+                student.admittedTerm = new_value
+            elif field == 'degree':
+                student.degree = new_value
+            elif field == 'gpa':
+                student.gpa = new_value
+            else:
+                return f"Student does not contain a property {field}"
+            student.fullname = student.firstname + " " + student.lastname
+            db.session.commit()
+            return f"Updated {uni_id}'s {field} to {new_value}"
+        return "Student does not exist"
+    except Exception as e:
+        print(f"[student.update_student] Error occurred while updating student {uni_id}: {str(e)}")
+        db.session.rollback()
+        return f"Error occurred while updating student {uni_id}"
 
 def create_student_from_transcript(transcript_data, student_data):
   try:
@@ -96,43 +106,68 @@ def create_student_from_transcript(transcript_data, student_data):
 
 
 def get_student_by_id(id):
-  student = Student.query.filter_by(ID=id).first()
-  if student:
-    return student
-  else:
-    return None
+    try:
+        student = Student.query.filter_by(ID=id).first()
+        if student:
+            return student
+        else:
+            return None
+    except Exception as e:
+        print(f"[student.get_student_by_id] Error occurred while retrieving student by ID: {str(e)}")
+        return None
 
 
 def get_student_by_UniId(UniId):
-  student = Student.query.filter_by(UniId=UniId).first()
-  if student:
-    return student
-  else:
-    return None
+    try:
+        UniId = str(UniId)
+        student = Student.query.filter_by(UniId=UniId).first()
+        if student:
+            return student
+        else:
+            return None
+    except Exception as e:
+        print(f"[student.get_student_by_UniId] Error occurred while retrieving student by UniId: {str(e)}")
+        return None
 
 
 def get_student_by_username(username):
-  student = Student.query.filter_by(username=username).first()
-  if student:
-    return student
-  else:
-    return None
+    try:
+        student = Student.query.filter_by(username=username).first()
+        if student:
+            return student
+        else:
+            return None
+    except Exception as e:
+        print(f"[student.get_student_by_username] Error occurred while retrieving student by username: {str(e)}")
+        return None
 
 
 def get_students_by_faculty(faculty):
-  students = Student.query.filter_by(faculty=faculty).all()
-  if students:
-    return students
-  else:
-    return []
+    try:
+        students = Student.query.filter_by(faculty=faculty).all()
+        if students:
+            return students
+        else:
+            return []
+    except Exception as e:
+        print(f"[student.get_students_by_faculty] Error occurred while retrieving students by faculty: {str(e)}")
+        return []
 
 def get_student_review_index(student_id, review_id):
-  student = get_student_by_id(student_id)
-  return student.get_review_index(review_id)
+    try:
+        student = get_student_by_id(student_id)
+        return student.get_review_index(review_id)
+    except Exception as e:
+        print(f"[student.get_student_review_index] Error occurred: {str(e)}")
+        return None
 
 def get_student_review_id(student_id, review_index):
-  student = get_student_by_id(student_id)
-  return student.get_review_id(review_index)
+    try:
+        student = get_student_by_id(student_id)
+        return student.get_review_id(review_index)
+    except Exception as e:
+        print(f"[student.get_student_review_id] Error occurred: {str(e)}")
+        return None
 
 def get_student_for_ir(firstname, lastname, UniId):
   student = Student.query.filter_by(firstname=firstname,
@@ -145,34 +180,50 @@ def get_student_for_ir(firstname, lastname, UniId):
 
 
 def get_student_by_name(firstname, lastname):
-  students = Student.query.filter_by(firstname=firstname,
-                                     lastname=lastname).all()
-  if students:
-    return students
-  else:
-    return []
+    try:
+        students = Student.query.filter_by(firstname=firstname, lastname=lastname).all()
+        if students:
+            return students
+        else:
+            return []
+    except Exception as e:
+        print(f"[student.get_student_by_name] Error occurred while retrieving student by name: {str(e)}")
+        return []
 
 
 def get_full_name_by_student_id(student_id):
-  student = Student.query.filter_by(UniId=student_id).first()
-  if student:
-    full_name = f"{student.firstname} {student.lastname}"
-    return full_name
-  else:
-    return None
+    try:
+        student_id = str(student_id)
+        student = Student.query.filter_by(UniId=student_id).first()
+        if student:
+            full_name = f"{student.firstname} {student.lastname}"
+            return full_name
+        else:
+            return None
+    except Exception as e:
+        print(f"[student.get_full_name_by_student_id] Error occurred: {str(e)}")
+        return None
 
 
 def get_students_by_degree(degree):
-  students = Student.query.filter_by(degree=degree).all()
-  if students:
-    return students
-  else:
-    return []
+    try:
+        students = Student.query.filter_by(degree=degree).all()
+        if students:
+            return students
+        else:
+            return []
+    except Exception as e:
+        print(f"[student.get_students_by_degree] Error occurred while retrieving students by degree: {str(e)}")
+        return []
 
 
 def get_students_by_ids(student_ids):
-  students = Student.query.filter(Student.ID.in_(student_ids)).all()
-  return students
+    try:
+        students = Student.query.filter(Student.ID.in_(student_ids)).all()
+        return students
+    except Exception as e:
+        print(f"[student.get_students_by_ids] Error occurred: {str(e)}")
+        return []
 
 
 # def get_all_students_json():
