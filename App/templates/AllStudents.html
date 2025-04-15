@@ -869,6 +869,7 @@
 
                 </div>
             </div>
+            <div id="paginated-reviews">
             <div class="reviews-container">
                 <h3>{{selected_student.fullname}}'s Reviews:</h3>
 
@@ -904,7 +905,6 @@
                         {% endfor %}
                         {% endif %}
                     </div>
-
                     <div class="review-content">
                         <a href="/getStudentProfile/{{selected_student.UniId}}">
                             <h4>Review for {{selected_student.fullname}} ({{selected_student.UniId}})</h4>
@@ -943,14 +943,17 @@
                 {% endfor %}
                 
                 {%else%}
-                {% if selected_student.reviews|length == 0 %}
-                <h4 style="text-align: center; color: white; margin-top: 30px;">
-                    No Reviews
-                </h4>
-                {% endif %}
+                        {% if selected_student.reviews|length == 0 %}
+                        <h4 style="text-align: center; color: white; margin-top: 30px;">
+                            No Reviews
+                        </h4>
+                        {% endif %}
                 {%endif%}
             </div>
         </div>
+        <div id="pagination-controls" style="text-align:center; margin-top: 20px;"></div>
+            <br>
+            <br>
     </div>
     {%else%}
         <p>No student</p>
@@ -969,6 +972,48 @@
     {% endwith %}
 
     <!-- JavaScript -->
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const reviewsPerPage = 4;
+            const reviews = document.querySelectorAll("#paginated-reviews .review-card");
+            const pagination = document.getElementById("pagination-controls");
+    
+            let currentPage = 1;
+            const totalPages = Math.ceil(reviews.length / reviewsPerPage);
+    
+            function showPage(page) {
+                const start = (page - 1) * reviewsPerPage;
+                const end = start + reviewsPerPage;
+    
+                reviews.forEach((review, index) => {
+                    review.style.display = (index >= start && index < end) ? "block" : "none";
+                });
+    
+                renderPaginationButtons();
+            }
+    
+            function renderPaginationButtons() {
+                pagination.innerHTML = "";
+    
+                for (let i = 1; i <= totalPages; i++) {
+                    const btn = document.createElement("button");
+                    btn.textContent = i;
+                    btn.style.margin = "0 5px";
+                    btn.className = (i === currentPage) ? "active-page-btn" : "";
+    
+                    btn.addEventListener("click", () => {
+                        currentPage = i;
+                        showPage(currentPage);
+                    });
+    
+                    pagination.appendChild(btn);
+                }
+            }
+    
+            showPage(currentPage);
+        });
+    </script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
