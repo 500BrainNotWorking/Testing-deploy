@@ -998,6 +998,10 @@ def signup():
             email=email, password=password
         )
 
+        staff = get_staff_by_username(username)
+
+        login_user(staff)
+
         return redirect("/getMainPage") # Redirect to login after signup
 
     return render_template('SignUp.html')
