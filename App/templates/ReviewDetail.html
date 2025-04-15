@@ -700,7 +700,7 @@
                             <strong>{{review.staff_name}}</strong>
                         </a>
 
-                        <p>Posted on {{review.dateCreated}} </p>
+                        <p>Posted on {{review.dateCreated.strftime('%Y-%m-%d %H:%M:%S')}} </p>
                     </div>
                     {%if review.createdByStaffID == current_user.ID%}
                         <a href="/deleteReview/{{review.ID}}" style="padding-right: 15px;"><i class="fa fa-trash" aria-hidden="true"></i></a>

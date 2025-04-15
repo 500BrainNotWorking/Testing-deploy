@@ -882,7 +882,7 @@
                             <a href="/staff-profile/{{review.createdByStaffID}}">
                                 <strong>{{review.staff_name}}</strong>
                             </a>
-                            <p>Posted on {{review.dateCreated}} </p>
+                            <p>Posted on {{review.dateCreated.strftime('%Y-%m-%d %H:%M:%S')}} </p>
                         </div>
                         {%if review.createdByStaffID == current_user.ID%}
                         <div style="padding-right: 40px;"><a href="/editReviewPage/{{review.ID}}"><i

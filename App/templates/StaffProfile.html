@@ -641,7 +641,10 @@
                         <a href="/staff-profile/{{reviews[i].createdByStaffID}}">
                             <strong>{{ staff.firstname }} {{ staff.lastname }}</strong>
                         </a>
-                        <p>Posted on {{ reviews[i].dateCreated }} </p>
+                        <!-- <p>Posted on {{ reviews[i].dateCreated }} </p> -->
+                        
+
+                        <p>Posted on {{reviews[i].dateCreated.strftime('%Y-%m-%d %H:%M:%S')}} </p>
                     </div>
                     {%if reviews[i].createdByStaffID == current_user.ID%}
                         <div style="padding-right: 40px;"><a href="/editReviewPage/{{reviews[i].ID}}"><i class="fa fa-pencil" aria-hidden="true"></i></a>
