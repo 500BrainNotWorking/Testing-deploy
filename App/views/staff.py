@@ -701,6 +701,17 @@ def view_students(uni_id=-1):
   else:
       # Handle the case where there are no students
       selected_student = None
+
+
+  
+  if selected_student:
+    karma = get_karma(selected_student.ID)
+
+
+  karma_history = get_karma_history(selected_student.ID)
+
+  if not karma_history:
+    karma_history = []
     
   reviews = selected_student.reviews
 
@@ -712,10 +723,18 @@ def view_students(uni_id=-1):
 
   if reviews is None:
     reviews = []
+
+
+  review_links = []
+  for review in reviews:
+      index = get_student_review_index(selected_student.ID, review.ID)
+      review_links.append(index)
   
   students.sort(key = lambda e: e['firstname'])
-  return render_template('AllStudents.html', students=students, selected_student=selected_student, reviews=reviews)
-  
+  return render_template('AllStudents.html', students=students, selected_student=selected_student, reviews=reviews, karma=karma, history = karma_history, review_links = review_links, student=selected_student,)
+
+
+
 
 # @staff_views.route('/getStudentProfile/<string:uniID>', methods=['GET'])
 # @login_required

@@ -1005,7 +1005,8 @@
             }
         }
     </script>
-    <script>
+
+    <!-- <script>
         document.addEventListener("DOMContentLoaded", function () {
             var el = document.querySelector(".more");
             var btn = el.querySelector(".more-btn");
@@ -1145,9 +1146,79 @@
         }
 
 
-    </script>
+    </script> -->
 
-    <script>
+<script>
+    // Generate x and y values dynamically from Jinja, 
+    const xValues = [
+      {% for karma in history|reverse %}
+        "{{ karma.timestamp.strftime('%Y-%m-%d %H:%M') }}"{% if not loop.last %}, {% endif %}
+      {% endfor %}
+    ];
+  
+    const yValues = [
+      {% for karma in history|reverse %}
+        {{ karma.points }}{% if not loop.last %}, {% endif %}
+      {% endfor %}
+    ];
+  
+    // URLs corresponding to each karma point (modify URL pattern as needed) - /viewKarmaDetail/{{ karma.id }}
+    const urls = [
+        {% for review in history|reverse %}
+            "/jsreview/{{ review.reviewID}}"{% if not loop.last %}, {% endif %}
+        {% endfor %}
+    ];
+
+    console.log("Review IDs used for plotting:", urls);
+
+    // Create the chart with a click event
+    const ctx = document.getElementById("myChart").getContext("2d");
+    const myChart = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: xValues,
+        datasets: [{
+          label: "Karma Points Over Time",
+          backgroundColor: "rgba(0,0,255,0.2)",
+          borderColor: "rgba(0,0,255,1)",
+          data: yValues,
+          fill: true,
+          tension: 0.3,
+          pointRadius: 6, // Make points bigger for clickability
+          pointHoverRadius: 8, // Highlight on hover
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: true, position: 'top' },
+          title: { display: true, text: 'Karma Progression Over Time' }
+        },
+        scales: {
+          x: { title: { display: true, text: 'Timestamp' } },
+          y: { title: { display: true, text: 'Karma Points' }, beginAtZero: true }
+        },
+        // Capture clicks on data points
+        onClick: (event, elements) => {
+          if (elements.length > 0) {
+            const index = typeof elements[0]._index !== 'undefined' ? elements[0]._index : elements[0].index;
+            const studentId = "{{ student.UniId }}";
+            const reviewUrl = urls[index];
+            const reviewID = reviewUrl.split('/').pop(); 
+            const url = `/reviews/${reviewID}`;
+
+            sessionStorage.setItem("lastStudentProfile", window.location.href);
+
+            //console.log(`Student ID: ${studentId}, Review ID: ${reviewId}`);
+            window.location.href = url;
+          }
+        }
+
+      }
+    });
+  </script>
+
+    <!-- <script>
         // Generate x and y values dynamically from Jinja, 
         const xValues = [
             {% for karma in selected_student.karma_history %}
@@ -1215,7 +1286,149 @@
 
             }
         });
-    </script>
+    </script> -->
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          var el = document.querySelector(".more");
+          var btn = el.querySelector(".more-btn");
+          var menu = el.querySelector(".more-menu");
+          var visible = false;
+    
+          // Function to Show Menu
+          function showMenu(e) {
+            e.preventDefault();
+            if (!visible) {
+              visible = true;
+              el.classList.add("show-more-menu");
+              menu.setAttribute("aria-hidden", false);
+              document.addEventListener("mousedown", hideMenu, false);
+            }
+          }
+    
+          // Function to Hide Menu When Clicking Outside
+          function hideMenu(e) {
+            if (btn.contains(e.target) || menu.contains(e.target)) {
+              return; // Don't close if clicking inside the menu
+            }
+            if (visible) {
+              visible = false;
+              el.classList.remove("show-more-menu");
+              menu.setAttribute("aria-hidden", true);
+              document.removeEventListener("mousedown", hideMenu);
+            }
+          }
+    
+          // Ensure Click Works for Profile Link
+          document.querySelector(".more-menu a").addEventListener("click", function () {
+            console.log("Profile link clicked! Navigating...");
+            document.querySelector(".more-menu").classList.remove("show-more-menu");
+            window.location.href = "/staff-profile";
+          });
+    
+          btn.addEventListener("click", showMenu, false);
+    
+          // Function to Open Sidebar Menu
+          window.openNav = function () {
+            document.getElementById("mySidenav").style.width = "250px";
+            document.getElementById("main-content").style.marginLeft = "250px";
+          };
+    
+          // Function to Close Sidebar Menu
+          window.closeNav = function () {
+            document.getElementById("mySidenav").style.width = "0";
+            document.getElementById("main-content").style.marginLeft = "0";
+          };
+    
+          // Function to Filter Reviews in Search Bar
+          function filterReviews() {
+            let input, filter, reviews, studentName, i, txtValue;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            reviews = document.getElementById("reviewsList").getElementsByClassName("review-card");
+    
+            for (i = 0; i < reviews.length; i++) {
+              studentName = reviews[i].querySelector("h4");
+    
+              if (studentName) {
+                txtValue = studentName.textContent || studentName.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                  reviews[i].style.display = "";
+                } else {
+                  reviews[i].style.display = "none";
+                }
+              }
+            }
+          }
+    
+          
+    
+          // Attach Filter Function to Input Field
+          document.getElementById("myInput").addEventListener("keyup", filterReviews);
+    
+          // Modal functionality for Karma
+          var karmaDisplay = document.getElementById("karmaDisplay");
+          var karmaModal = document.getElementById("karmaModal");
+          var closeModal = document.querySelector(".close-modal");
+    
+          karmaDisplay.addEventListener("click", function () {
+            karmaModal.style.display = "block";
+          });
+    
+          closeModal.addEventListener("click", function () {
+            karmaModal.style.display = "none";
+          });
+    
+          window.addEventListener("click", function (event) {
+            if (event.target == karmaModal) {
+              karmaModal.style.display = "none";
+            }
+          });
+        });
+    
+    
+            // Get the modal
+        var modal = document.getElementById("myModal");
+    
+        // Get the button that opens the modal
+        var btn = document.getElementById("myBtn");
+    
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+    
+        // When the user clicks on the button, open the modal
+        btn.onclick = function() {
+          modal.style.display = "block";
+        }
+    
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+          modal.style.display = "none";
+        }
+    
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+          if (event.target == modal) {
+            modal.style.display = "none";
+          }
+        }
+    
+        // Check if the user is returning and trigger the modal
+        window.onload = function () {
+            if (sessionStorage.getItem("returning")) {
+                sessionStorage.removeItem("returning"); // Clear flag after use
+                document.getElementById("myBtn").click(); // Auto-click graph button
+            }
+        };
+    
+        // Function to navigate back to the student page
+        function goBackToStudent(url) {
+          sessionStorage.setItem("returning", "true"); // Mark as returning
+          window.location.href = url; // Redirect
+        }
+    
+    
+      </script>
 
 
 </body>
